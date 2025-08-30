@@ -20,27 +20,15 @@ const client = twilio(accountSid, authToken);
  * Make phone call to Chanel for urgent situations
  */
 async function callChanel(message, priority = "urgent") {
-  const callMessage = `High priority notification from ClutterFreeSpaces: ${message}`;
+  console.log(`📞 CALL (DISABLED): ${message}`);
+  console.log(`   Would call: ${chanelPhone}`);
 
-  try {
-    const call = await client.calls.create({
-      twiml: `<Response><Say voice="Polly.Joanna">${callMessage}</Say><Pause length="1"/><Say>Please check your phone for details. Goodbye.</Say></Response>`,
-      to: chanelPhone,
-      from: twilioPhone,
-    });
-
-    console.log(`📞 Call initiated to Chanel: ${call.sid}`);
-    return call;
-  } catch (error) {
-    console.error("❌ Call failed:", error);
-    // Fallback to SMS if call fails
-    await sendSMSToChanel(`🚨 URGENT (Call failed): ${message}`, "high");
-    throw error;
-  }
+  // Return mock success for now
+  return { sid: "mock-call-" + Date.now() };
 }
 
 /**
- * Send SMS notification to Chanel
+ * Send SMS notification to Chanel (DISABLED - no Twilio phone number)
  */
 async function sendSMSToChanel(message, priority = "normal") {
   const priorityEmojis = {
@@ -49,21 +37,11 @@ async function sendSMSToChanel(message, priority = "normal") {
     low: "ℹ️",
   };
 
-  const fullMessage = `${priorityEmojis[priority]} ${message}`;
+  console.log(`📱 SMS (DISABLED): ${priorityEmojis[priority]} ${message}`);
+  console.log(`   Would send to: ${chanelPhone}`);
 
-  try {
-    const result = await client.messages.create({
-      body: fullMessage,
-      from: twilioPhone,
-      to: chanelPhone,
-    });
-
-    console.log(`✅ SMS sent to Chanel: ${result.sid}`);
-    return result;
-  } catch (error) {
-    console.error("❌ SMS send failed:", error);
-    throw error;
-  }
+  // Return mock success for now
+  return { sid: "mock-sms-" + Date.now() };
 }
 
 /**
