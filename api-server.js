@@ -295,6 +295,12 @@ function calculateNewsletterLeadScore({
 }) {
   let score = 30; // Base score for newsletter signup
 
+  console.log("🧮 SCORING DEBUG:");
+  console.log(
+    `   Input: RV="${rvType}" Challenge="${biggestChallenge}" Timeline="${timeline}" Montana=${montanaResident}`,
+  );
+  console.log(`   Base: ${score}`);
+
   // RV Type scoring (premium RVs indicate higher budget)
   const rvScores = {
     "Class A": 25, // Highest investment RVs
@@ -304,7 +310,9 @@ function calculateNewsletterLeadScore({
     "Class B": 12, // Compact but premium
     Other: 5, // Unknown category
   };
-  score += rvScores[rvType] || 5;
+  const rvPoints = rvScores[rvType] || 5;
+  score += rvPoints;
+  console.log(`   RV Type (${rvType}): +${rvPoints} = ${score}`);
 
   // Challenge scoring (indicates urgency and investment willingness)
   const challengeScores = {
@@ -314,7 +322,11 @@ function calculateNewsletterLeadScore({
     Bedroom: 15, // Personal comfort
     "Seasonal Gear": 10, // Less urgent
   };
-  score += challengeScores[biggestChallenge] || 10;
+  const challengePoints = challengeScores[biggestChallenge] || 10;
+  score += challengePoints;
+  console.log(
+    `   Challenge (${biggestChallenge}): +${challengePoints} = ${score}`,
+  );
 
   // Timeline scoring (urgency indicator)
   const timelineScores = {
@@ -323,24 +335,37 @@ function calculateNewsletterLeadScore({
     "2-3 Months": 15, // Planning ahead
     "Just Exploring": 5, // Information gathering
   };
-  score += timelineScores[timeline] || 5;
+  const timelinePoints = timelineScores[timeline] || 5;
+  score += timelinePoints;
+  console.log(`   Timeline (${timeline}): +${timelinePoints} = ${score}`);
 
   // Montana resident bonus (local service, Montana discount)
   if (montanaResident) {
     score += 15;
+    console.log(`   Montana bonus: +15 = ${score}`);
+  } else {
+    console.log(`   Montana bonus: +0 = ${score}`);
   }
 
   // Email domain analysis for professional emails
-  if (
+  const emailBonus =
     email &&
     !email.includes("gmail") &&
     !email.includes("yahoo") &&
     !email.includes("hotmail")
-  ) {
-    score += 10; // Professional email domains suggest higher investment capacity
+      ? 10
+      : 0;
+  if (emailBonus > 0) {
+    score += emailBonus;
+    console.log(`   Email domain bonus: +${emailBonus} = ${score}`);
+  } else {
+    console.log(`   Email domain bonus: +0 = ${score}`);
   }
 
-  return Math.min(score, 100);
+  const finalScore = Math.min(score, 100);
+  console.log(`   Final (capped at 100): ${finalScore}`);
+
+  return finalScore;
 }
 
 // Determine lead segment based on score
