@@ -216,7 +216,7 @@ const emailSequences = {
               
               <p>One last email coming tomorrow with your final decision point...</p>
               
-              <p>Sarah</p>
+              <p>Best,<br>Chanel Basolo<br><em>Montana RV Organization Expert</em></p>
             </div>
           `,
         },
@@ -533,7 +533,7 @@ const emailSequences = {
               
               <p>Final email coming next week with your path forward...</p>
               
-              <p>Sarah</p>
+              <p>Best,<br>Chanel Basolo<br><em>Montana RV Organization Expert</em></p>
             </div>
           `,
         },
@@ -701,7 +701,7 @@ const emailSequences = {
               
               <p>Hi {{first_name}},</p>
               
-              <p>I want to tell you about Linda, a client who contacted me two years ago. Her first email said: "Sarah, my RV is impossibly messy. I'm embarrassed to even describe it."</p>
+              <p>I want to tell you about Linda, a client who contacted me two years ago. Her first email said: "Chanel, my RV is impossibly messy. I'm embarrassed to even describe it."</p>
               
               <p>She went on to explain that she'd been living in her {{rv_type}} for 8 months and had never had a single visitor inside. She was too ashamed.</p>
               

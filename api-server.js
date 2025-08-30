@@ -25,25 +25,39 @@ const GUIDE_TEMPLATES = {
 // Email sequence template IDs (deployed via deploy-sendgrid-templates.js)
 const SEQUENCE_TEMPLATES = {
   "hot-leads": {
-    email_1: "d-f1a6898e10e641e6b50c90c7e2f14a2f",
-    email_2: "d-fe0bcba3de744a979adf56dd9a39a986",
-    email_3: "d-a28f0d1925384df8bc5e7d7e96725bc7",
-    email_4: "d-507bc5eec63d49d4b0780584173bb442",
-    email_5: "d-607cdd56799d47f4819a016ca98c7e22",
+    email_1: "d-afb751285d0e4516954a1998a84de36e",
+    email_2: "d-ce3f54f9f29047c8aec80307de6dd040",
+    email_3: "d-d85a69f8f07d4d818d1b38a4f517aca9",
+    email_4: "d-0ccb27b3ac1243b79ac24281bcbc153e",
+    email_5: "d-070f1a08d745496492ea47402d8a620b",
   },
   "warm-leads": {
-    email_1: "d-ecfda28c118b48918adae29481dabcce",
-    email_2: "d-a15abb3393d949e7888a068900658a42",
-    email_3: "d-6fd109d0a63d4a84bce61952a1990173",
-    email_4: "d-6b352c4b7d8e4c548d94406dfe3bd8cc",
-    email_5: "d-447d7f5acc244b50a3ca4547dd011dd1",
+    email_1: "d-e2dda8fe19224b07b07d7c7ccad4b2f3",
+    email_2: "d-f4dce7876cab4da797d81db9911e9da1",
+    email_3: "d-52e08e42be3b40c3a38e3251714e082d",
+    email_4: "d-a1e03ad306f540ffbd0ca377c3ce0594",
+    email_5: "d-4d0624d84ef24ab29f61db839e18ae86",
   },
   "cold-leads": {
-    email_1: "d-e3ee97cb417940d0b3afd72c91950569",
-    email_2: "d-48e78d5ea51340ff95e2fd267bdc2217",
-    email_3: "d-74188478217e423491750a72a9f5be9d",
-    email_4: "d-f6ad5c67fe13429db310f55073514271",
-    email_5: "d-73bd6a14f1634afe8c42fd55c0f69da8",
+    email_1: "d-646ae76fc0b045b7b219c396cbbc847e",
+    email_2: "d-4a119321dab3409db55a6d30f638e317",
+    email_3: "d-3627f16998ed4874ac7570fe9ed23428",
+    email_4: "d-c02b5f745e2e4b339dd0cd2f13ec912a",
+    email_5: "d-b17eec78420740f586b589971ca62ca2",
+  },
+};
+
+    email_2: "d-3ebedc6bf63846199639a53b69703265",
+    email_3: "d-583b48aaf964403f8d49e3e25caa4ae6",
+    email_4: "d-06caefd07b8e4ea2aa8b28b0c5f89a99",
+    email_5: "d-e82d75a510fe4d8380d474929f124530",
+  },
+  "cold-leads": {
+    email_1: "d-e5d086a8a79f43ac9e9ef72c266049a3",
+    email_2: "d-9aa93484718645bb97ed9824b716d044",
+    email_3: "d-55a467691e9c41dcb54e8894248dbbd4",
+    email_4: "d-b9ac517abbea4738b7b1b49e045a0982",
+    email_5: "d-5c1af52bf0d74075bbfe4a5461e410d4",
   },
 };
 
