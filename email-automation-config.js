@@ -95,8 +95,8 @@ async function sendSequenceEmail(emailData) {
     const msg = {
       to: email,
       from: {
-        email: fromEmail || "sarah@clutter-free-spaces.com",
-        name: fromName || "Sarah Mitchell - Montana RV Organization",
+        email: fromEmail || "contact@clutter-free-spaces.com",
+        name: fromName || "Chanel - Montana RV Organization",
       },
       templateId: templateId,
       dynamicTemplateData: {
