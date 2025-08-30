@@ -193,8 +193,8 @@ app.post("/api/send-guide", async (req, res) => {
     const leadScore = calculateLeadScore(quiz_results, style);
     console.log(`📊 Lead score calculated: ${leadScore}`);
 
-    // Notify Chanel of high-value leads (80+)
-    if (leadScore >= 80) {
+    // Notify Chanel of high-value leads (60+ for testing, normally 80+)
+    if (leadScore >= 60) {
       try {
         await leadNotifications.highValueLead({
           firstName: capitalizedName,
@@ -424,8 +424,8 @@ app.post("/api/newsletter-signup", async (req, res) => {
       console.log("  Status code:", error.response?.status);
     }
 
-    // Notify Chanel of high-value newsletter leads (80+)
-    if (finalScore >= 80) {
+    // Notify Chanel of high-value newsletter leads (60+ for testing, normally 80+)
+    if (finalScore >= 60) {
       try {
         await leadNotifications.highValueLead({
           firstName,
