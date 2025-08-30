@@ -540,12 +540,16 @@ async function createAirtableLead({
       "Toy Hauler": "Other",
     };
 
+    // Debug mapping
+    const mappedRvType = rvTypeMapping[rvType] || rvType || "Other";
+    console.log(`🔧 RV Type mapping: "${rvType}" → "${mappedRvType}"`);
+
     // Validate required fields exist in Airtable schema
     const airtableData = {
       fields: {
         Name: firstName, // Use "Name" not "First Name"
         Email: email,
-        "RV Type": rvTypeMapping[rvType] || rvType || "Other", // Map to Airtable options
+        "RV Type": mappedRvType, // Map to Airtable options
         "Biggest Challenge": biggestChallenge || "Other", // Fixed in Airtable
         Timeline: timelineMapping[timeline] || timeline || "Just Exploring",
         "Montana Resident": montanaResident === true, // Checkbox field
