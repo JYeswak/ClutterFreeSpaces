@@ -566,15 +566,28 @@ async function createAirtableLead({
       bedroom: "Bedroom",
     };
 
+    // Map AB Test Variation to Airtable options
+    const abTestMapping = {
+      "inline-form": "A",
+      "exit-intent": "B",
+      "footer-form": "A",
+      popup: "B",
+      // Direct mappings
+      A: "A",
+      B: "B",
+      Control: "Control",
+    };
+
     // Apply mappings
     const mappedRvType = rvTypeMapping[rvType] || rvType || "Other";
     const mappedChallenge =
       challengeMapping[biggestChallenge] || biggestChallenge || "Other";
     const mappedTimeline =
       timelineMapping[timeline] || timeline || "Just Exploring";
+    const mappedAbTest = abTestMapping[abTestVariation] || "A";
 
     console.log(
-      `🔧 Airtable mappings: RV("${rvType}"→"${mappedRvType}") Challenge("${biggestChallenge}"→"${mappedChallenge}") Timeline("${timeline}"→"${mappedTimeline}")`,
+      `🔧 Airtable mappings: RV("${rvType}"→"${mappedRvType}") Challenge("${biggestChallenge}"→"${mappedChallenge}") Timeline("${timeline}"→"${mappedTimeline}") ABTest("${abTestVariation}"→"${mappedAbTest}")`,
     );
 
     // Validate required fields exist in Airtable schema
@@ -589,7 +602,7 @@ async function createAirtableLead({
         "Lead Score": leadScore || 0,
         Segment: segment, // New field - must exist in Airtable (HOT/WARM/COLD)
         "Lead Source": sourceMapping[source] || "Website", // Map to existing field
-        "AB Test Variation": abTestVariation || "A", // New field - must exist in Airtable
+        "AB Test Variation": mappedAbTest, // Map form variations to A/B/Control
         Status: "New Lead", // Use existing Status field
         "Follow Up Required": segment === "HOT", // Checkbox field
         // Don't set "Date Created" as it's auto-generated (createdTime field)
