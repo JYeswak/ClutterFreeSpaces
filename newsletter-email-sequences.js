@@ -43,7 +43,7 @@ const emailSequences = {
               
               <div style="text-align: center; margin: 30px 0;">
                 <a href="{{book_consultation_url}}" style="background: #8b4513; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">
-                  Book Your Free 20-Minute Breakthrough Call
+                  Book Your Free 30-Minute Consultation
                 </a>
               </div>
               
@@ -243,12 +243,12 @@ const emailSequences = {
                 <h3 style="color: #856404; margin-top: 0;">Two Paths Forward:</h3>
                 <p><strong>Path 1:</strong> File these emails away, thinking "I'll deal with my {{challenge}} later." Six months from now, you're still frustrated with your {{rv_type}}, still avoiding certain storage areas, still feeling overwhelmed.</p>
                 
-                <p><strong>Path 2:</strong> Take decisive action. Book your breakthrough call. Get a custom plan. Transform your space in the next 30 days.</p>
+                <p><strong>Path 2:</strong> Take decisive action. Book your consultation. Get a custom plan. Transform your space in the next 30 days.</p>
               </div>
               
               <p>{{first_name}}, your high quiz score tells me you're already motivated. You KNOW you need to make a change. The question is: will you act on that knowledge?</p>
               
-              <p>Here's what happens on our breakthrough call:</p>
+              <p>Here's what happens on our consultation:</p>
               <ul style="padding-left: 20px;">
                 <li><strong>Minutes 1-5:</strong> We assess your specific {{rv_type}} layout and {{challenge}} situation</li>
                 <li><strong>Minutes 6-15:</strong> I walk you through the exact system that will work for YOUR space</li>
@@ -596,7 +596,7 @@ const emailSequences = {
                 </ul>
               </div>
               
-              <p>But first, let's see if you're ready for this level of commitment. Book a free 20-minute breakthrough call where we'll:</p>
+              <p>But first, let's see if you're ready for this level of commitment. Book a free 30-minute consultation where we'll:</p>
               <ol style="padding-left: 20px;">
                 <li>Assess your current situation honestly</li>
                 <li>Identify the #1 thing holding you back</li>
@@ -619,7 +619,7 @@ const emailSequences = {
               <p>To your organized adventure,<br>Chanel Basolo<br><em>Montana RV Organization Specialist</em></p>
               
               <p style="font-size: 12px; color: #666; border-top: 1px solid #eee; padding-top: 15px; margin-top: 30px;">
-                P.S. This is your final email in this series, but you'll continue receiving my weekly Montana RV tips newsletter. If you want more intensive, personalized help, the breakthrough call is your next step.
+                P.S. This is your final email in this series, but you'll continue receiving my weekly Montana RV tips newsletter. If you want more intensive, personalized help, the consultation is your next step.
               </p>
             </div>
           `,
