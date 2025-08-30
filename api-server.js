@@ -529,12 +529,23 @@ async function createAirtableLead({
       "Just Exploring": "Just Exploring",
     };
 
+    // Map form values to Airtable options
+    const rvTypeMapping = {
+      "Class A Motorhome": "Class A",
+      "Class B Motorhome": "Class B",
+      "Class C Motorhome": "Class C",
+      "Travel Trailer": "Travel Trailer",
+      "Fifth Wheel": "Fifth Wheel",
+      "Truck Camper": "Other",
+      "Toy Hauler": "Other",
+    };
+
     // Validate required fields exist in Airtable schema
     const airtableData = {
       fields: {
         Name: firstName, // Use "Name" not "First Name"
         Email: email,
-        "RV Type": rvType || "Other", // New field - must exist in Airtable
+        "RV Type": rvTypeMapping[rvType] || rvType || "Other", // Map to Airtable options
         "Biggest Challenge": biggestChallenge || "Other", // Fixed in Airtable
         Timeline: timelineMapping[timeline] || timeline || "Just Exploring",
         "Montana Resident": montanaResident === true, // Checkbox field
