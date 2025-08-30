@@ -5,6 +5,7 @@ const sgClient = require("@sendgrid/client");
 const {
   triggerEmailSequence: triggerAutomatedSequence,
 } = require("./email-automation-config.js");
+const { leadNotifications } = require("./sms-notification-system");
 require("dotenv").config();
 
 const app = express();
@@ -191,6 +192,24 @@ app.post("/api/send-guide", async (req, res) => {
     // Calculate lead score based on quiz results
     const leadScore = calculateLeadScore(quiz_results, style);
     console.log(`📊 Lead score calculated: ${leadScore}`);
+
+    // Notify Chanel of high-value leads (80+)
+    if (leadScore >= 80) {
+      try {
+        await leadNotifications.highValueLead({
+          firstName: capitalizedName,
+          email: email,
+          leadScore: leadScore,
+          rvType: quiz_results?.rv_type || "RV",
+          challenge: quiz_results?.biggest_challenge || style,
+        });
+        console.log(
+          `🚨 High-value lead notification sent for ${capitalizedName} (Score: ${leadScore})`,
+        );
+      } catch (error) {
+        console.error("❌ Failed to send high-value lead notification:", error);
+      }
+    }
 
     res.json({
       success: true,
@@ -405,6 +424,27 @@ app.post("/api/newsletter-signup", async (req, res) => {
       console.log("  Status code:", error.response?.status);
     }
 
+    // Notify Chanel of high-value newsletter leads (80+)
+    if (finalScore >= 80) {
+      try {
+        await leadNotifications.highValueLead({
+          firstName,
+          email,
+          leadScore: finalScore,
+          rvType: rvType,
+          challenge: biggestChallenge,
+        });
+        console.log(
+          `🚨 High-value newsletter lead notification sent for ${firstName} (Score: ${finalScore})`,
+        );
+      } catch (error) {
+        console.error(
+          "❌ Failed to send high-value newsletter lead notification:",
+          error,
+        );
+      }
+    }
+
     // Trigger appropriate email sequence with new automation system
     try {
       await triggerAutomatedSequence({
@@ -432,6 +472,51 @@ app.post("/api/newsletter-signup", async (req, res) => {
     console.error("❌ Newsletter signup error:", error);
     res.status(500).json({
       error: "Failed to process newsletter signup",
+      details:
+        process.env.NODE_ENV === "development" ? error.message : undefined,
+    });
+  }
+});
+
+// Manual appointment notification endpoint
+app.post("/api/appointment-notification", async (req, res) => {
+  try {
+    const {
+      clientName,
+      clientEmail,
+      appointmentTime,
+      appointmentType = "Consultation",
+      notes = "",
+    } = req.body;
+
+    if (!clientName || !clientEmail || !appointmentTime) {
+      return res.status(400).json({
+        error:
+          "Missing required fields: clientName, clientEmail, appointmentTime",
+      });
+    }
+
+    // Import here to avoid circular dependency
+    const { sendSMSToChanel } = require("./sms-notification-system");
+
+    const message = `📅 New ${appointmentType} scheduled!
+👤 ${clientName} (${clientEmail})
+🕒 ${appointmentTime}
+${notes ? `📝 Notes: ${notes}` : ""}`;
+
+    await sendSMSToChanel(message, "normal");
+
+    console.log(`📅 Appointment notification sent for ${clientName}`);
+
+    res.json({
+      success: true,
+      message: "Appointment notification sent to Chanel",
+      data: { clientName, appointmentTime, appointmentType },
+    });
+  } catch (error) {
+    console.error("❌ Appointment notification error:", error);
+    res.status(500).json({
+      error: "Failed to send appointment notification",
       details:
         process.env.NODE_ENV === "development" ? error.message : undefined,
     });
