@@ -541,11 +541,11 @@ async function createAirtableLead({
     };
 
     const challengeMapping = {
-      Storage: "Storage Solutions",
-      "Organization Systems": "Organization Systems",
-      "Weight Management": "Weight Management",
-      "Space Utilization": "Space Utilization",
-      Downsizing: "Downsizing",
+      Storage: "Other",
+      "Organization Systems": "Other",
+      "Weight Management": "Other",
+      "Space Utilization": "Other",
+      Downsizing: "Other",
       Other: "Other",
     };
 
