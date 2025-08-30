@@ -61,6 +61,16 @@ const axios = require("axios");
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID;
 const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
 
+// Debug Airtable configuration
+console.log("🔍 Airtable Debug:");
+console.log("AIRTABLE_BASE_ID exists:", !!AIRTABLE_BASE_ID);
+console.log("AIRTABLE_BASE_ID value:", AIRTABLE_BASE_ID);
+console.log("AIRTABLE_API_KEY exists:", !!AIRTABLE_API_KEY);
+console.log(
+  "AIRTABLE_API_KEY starts with pat:",
+  AIRTABLE_API_KEY?.startsWith("pat"),
+);
+
 // CORS configuration for production
 const corsOptions = {
   origin: [
@@ -363,7 +373,10 @@ app.post("/api/newsletter-signup", async (req, res) => {
         abTestVariation,
       });
     } catch (error) {
-      console.log("⚠️ Airtable integration skipped:", error.message);
+      console.log("⚠️ Airtable integration failed:");
+      console.log("  Error message:", error.message);
+      console.log("  Error response:", error.response?.data);
+      console.log("  Status code:", error.response?.status);
     }
 
     // Trigger appropriate email sequence with new automation system
