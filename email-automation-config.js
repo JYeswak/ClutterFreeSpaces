@@ -103,12 +103,10 @@ async function sendSequenceEmail(emailData) {
         first_name: firstName,
         rv_type: rvType,
         challenge: challenge,
-        consultation_url:
-          "https://calendly.com/clutterfree-montana/rv-consultation",
+        consultation_url: "https://calendly.com/chanelnbasolo/30min",
         quiz_url: "https://clutter-free-spaces.com/organization-quiz",
         newsletter_archive_url: "https://clutter-free-spaces.com/rv-tips",
-        book_consultation_url:
-          "https://calendly.com/clutterfree-montana/rv-consultation",
+        book_consultation_url: "https://calendly.com/chanelnbasolo/30min",
       },
       trackingSettings: {
         clickTracking: { enable: true },

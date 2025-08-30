@@ -51,7 +51,7 @@ const emailSequences = {
               
               <p>Keep an eye out for tomorrow's checklist!</p>
               
-              <p>Best,<br>Sarah Mitchell<br><em>Montana RV Organization Specialist</em></p>
+              <p>Best,<br>Chanel Basolo<br><em>Montana RV Organization Specialist</em></p>
             </div>
           `,
         },
@@ -155,7 +155,7 @@ const emailSequences = {
               
               <p>Next email: The "Montana Maintenance Method" - how to keep your organization systems working with minimal daily effort.</p>
               
-              <p>Sarah Mitchell<br><em>Montana RV Organization Specialist</em></p>
+              <p>Chanel Basolo<br><em>Montana RV Organization Specialist</em></p>
             </div>
           `,
         },
@@ -271,7 +271,7 @@ const emailSequences = {
               
               <p>This is your final email in this series. Make it count.</p>
               
-              <p>To your organized adventure,<br>Sarah Mitchell<br><em>Montana RV Organization Specialist</em></p>
+              <p>To your organized adventure,<br>Chanel Basolo<br><em>Montana RV Organization Specialist</em></p>
               
               <p style="font-size: 12px; color: #666; border-top: 1px solid #eee; padding-top: 15px; margin-top: 30px;">
                 P.S. If you're not ready for a call but want to stay connected, you'll continue receiving my weekly Montana RV tips newsletter. But the intensive transformation guidance ends here.
@@ -336,7 +336,7 @@ const emailSequences = {
               
               <p>First assignment (if you're ready): Pick ONE area in your {{rv_type}} that's been bugging you. Just one. We'll tackle it step-by-step.</p>
               
-              <p>More soon,<br>Sarah Mitchell<br><em>Montana RV Organization Specialist</em></p>
+              <p>More soon,<br>Chanel Basolo<br><em>Montana RV Organization Specialist</em></p>
             </div>
           `,
         },
@@ -616,7 +616,7 @@ const emailSequences = {
               
               <p>The choice is yours.</p>
               
-              <p>To your organized adventure,<br>Sarah Mitchell<br><em>Montana RV Organization Specialist</em></p>
+              <p>To your organized adventure,<br>Chanel Basolo<br><em>Montana RV Organization Specialist</em></p>
               
               <p style="font-size: 12px; color: #666; border-top: 1px solid #eee; padding-top: 15px; margin-top: 30px;">
                 P.S. This is your final email in this series, but you'll continue receiving my weekly Montana RV tips newsletter. If you want more intensive, personalized help, the breakthrough call is your next step.
@@ -682,7 +682,7 @@ const emailSequences = {
               
               <p>More gentle guidance coming in a few days.</p>
               
-              <p>Warmly,<br>Sarah Mitchell<br><em>Montana RV Organization Specialist</em></p>
+              <p>Warmly,<br>Chanel Basolo<br><em>Montana RV Organization Specialist</em></p>
             </div>
           `,
         },
@@ -963,7 +963,7 @@ const emailSequences = {
               
               <p>Whenever you're ready for your next step, I'll be here.</p>
               
-              <p>With gentle encouragement,<br>Sarah Mitchell<br><em>Montana RV Organization Specialist</em></p>
+              <p>With gentle encouragement,<br>Chanel Basolo<br><em>Montana RV Organization Specialist</em></p>
               
               <p style="font-size: 12px; color: #666; border-top: 1px solid #eee; padding-top: 15px; margin-top: 30px;">
                 P.S. If you've found any of these emails helpful, I'd be honored if you shared them with another RV owner who might benefit. Sometimes we all need a gentle reminder that progress comes in many forms.
