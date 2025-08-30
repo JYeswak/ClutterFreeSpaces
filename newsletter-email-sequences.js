@@ -98,7 +98,7 @@ const emailSequences = {
               
               <p>Tomorrow: Why the "one-size-fits-all" RV organization advice fails in Montana (and what works instead).</p>
               
-              <p>Happy organizing!<br>Sarah</p>
+              <p>Happy organizing!<br>Chanel Basolo<br><em>Montana RV Organization Expert</em></p>
             </div>
           `,
         },
@@ -394,7 +394,7 @@ const emailSequences = {
                 </a>
               </div>
               
-              <p>Happy organizing!<br>Sarah</p>
+              <p>Happy organizing!<br>Chanel Basolo<br><em>Montana RV Organization Expert</em></p>
             </div>
           `,
         },
@@ -461,7 +461,7 @@ const emailSequences = {
               
               <p>Next week: Montana-specific storage solutions that actually work (not Pinterest fantasies).</p>
               
-              <p>You've got this,<br>Sarah</p>
+              <p>You've got this,<br>Chanel Basolo<br><em>Montana RV Organization Expert</em></p>
             </div>
           `,
         },
@@ -738,7 +738,7 @@ const emailSequences = {
               
               <p>You can do the same.</p>
               
-              <p>Gently yours,<br>Sarah</p>
+              <p>Gently yours,<br>Chanel Basolo<br><em>Montana RV Organization Expert</em></p>
               
               <p style="font-size: 12px; color: #666; font-style: italic;">
                 P.S. If you're feeling inspired and want to share your tiny progress, feel free to reply to this email. I read every message and love celebrating small wins!
@@ -812,7 +812,7 @@ const emailSequences = {
               
               <p>Next email: Simple systems that actually stick (Montana tested!).</p>
               
-              <p>Working with your nature, not against it,<br>Sarah</p>
+              <p>Working with your nature, not against it,<br>Chanel Basolo<br><em>Montana RV Organization Expert</em></p>
             </div>
           `,
         },
@@ -881,7 +881,7 @@ const emailSequences = {
               
               <p>One more email coming next week with your gentle path forward...</p>
               
-              <p>Rooting for your success,<br>Sarah</p>
+              <p>Rooting for your success,<br>Chanel Basolo<br><em>Montana RV Organization Expert</em></p>
             </div>
           `,
         },
@@ -933,7 +933,7 @@ const emailSequences = {
                 Book a gentle, no-pressure conversation where we talk through your specific situation and create a plan that works for YOU.</p>
               </div>
               
-              <p>If Option 3 interests you, I offer what I call "Clarity Calls" - 20-minute conversations where we focus entirely on understanding your unique situation and creating a realistic plan.</p>
+              <p>If Option 3 interests you, I offer what I call "Clarity Calls" - 30-minute consultations where we focus entirely on understanding your unique situation and creating a realistic plan.</p>
               
               <p>These calls are:</p>
               <ul style="padding-left: 20px;">

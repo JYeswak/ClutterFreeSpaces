@@ -1,26 +1,26 @@
 {
-  "deployedAt": "2025-08-29T23:31:02.246Z",
+  "deployedAt": "2025-08-30T14:46:49.537Z",
   "templateIds": {
     "hot-leads": {
-      "email_1": "d-f1a6898e10e641e6b50c90c7e2f14a2f",
-      "email_2": "d-fe0bcba3de744a979adf56dd9a39a986",
-      "email_3": "d-a28f0d1925384df8bc5e7d7e96725bc7",
-      "email_4": "d-507bc5eec63d49d4b0780584173bb442",
-      "email_5": "d-607cdd56799d47f4819a016ca98c7e22"
+      "email_1": "d-f6fcfb6bcda24a25baae109ad4b0c02f",
+      "email_2": "d-fec0333f3ed2415fbec399b82e5aec91",
+      "email_3": "d-a4de17747dd8478299326f602d4435ca",
+      "email_4": "d-fde03e4e24af4138aeaa2833317cc7f5",
+      "email_5": "d-5dfbc70488794eaa997fafafdab98c44"
     },
     "warm-leads": {
-      "email_1": "d-ecfda28c118b48918adae29481dabcce",
-      "email_2": "d-a15abb3393d949e7888a068900658a42",
-      "email_3": "d-6fd109d0a63d4a84bce61952a1990173",
-      "email_4": "d-6b352c4b7d8e4c548d94406dfe3bd8cc",
-      "email_5": "d-447d7f5acc244b50a3ca4547dd011dd1"
+      "email_1": "d-b95b366e6a9f449890f8a8c892b0c6c8",
+      "email_2": "d-d875ed8176ff40ab86c439804ae7e8fd",
+      "email_3": "d-cd43fdc5dd794b4cb49076fc12044788",
+      "email_4": "d-7b814781793442559ace8c37a1394cee",
+      "email_5": "d-ca6d900a5e824ae9854393136a117df5"
     },
     "cold-leads": {
-      "email_1": "d-e3ee97cb417940d0b3afd72c91950569",
-      "email_2": "d-48e78d5ea51340ff95e2fd267bdc2217",
-      "email_3": "d-74188478217e423491750a72a9f5be9d",
-      "email_4": "d-f6ad5c67fe13429db310f55073514271",
-      "email_5": "d-73bd6a14f1634afe8c42fd55c0f69da8"
+      "email_1": "d-8b25c3a6f1a54870b2be2d253f99eb58",
+      "email_2": "d-68ea8e1a671e4d18b5f7511644fa1fa9",
+      "email_3": "d-a0d9558ae79945dbb4d54d3a873ecb62",
+      "email_4": "d-8945ce28bc5a4249b4d938c44984dbd9",
+      "email_5": "d-d7aa5497dbac4026ab1516675e944811"
     }
   },
   "sequences": {

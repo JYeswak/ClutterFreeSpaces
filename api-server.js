@@ -101,9 +101,42 @@ app.use(
   }),
 );
 
-// Serve the quiz HTML file
+// Serve website pages
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/organization-style-quiz.html");
+});
+
+app.get("/quiz", (req, res) => {
+  res.sendFile(__dirname + "/website-pages/quiz.html");
+});
+
+app.get("/organization-quiz", (req, res) => {
+  res.sendFile(__dirname + "/website-pages/quiz.html");
+});
+
+app.get("/archive", (req, res) => {
+  res.sendFile(__dirname + "/website-pages/archive.html");
+});
+
+app.get("/rv-tips", (req, res) => {
+  res.sendFile(__dirname + "/website-pages/archive.html");
+});
+
+// Organization guides
+app.get("/guide/detailed", (req, res) => {
+  res.sendFile(__dirname + "/website-pages/detailed-guide.html");
+});
+
+app.get("/guide/visual", (req, res) => {
+  res.sendFile(__dirname + "/website-pages/visual-guide.html");
+});
+
+app.get("/guide/flexible", (req, res) => {
+  res.sendFile(__dirname + "/website-pages/flexible-guide.html");
+});
+
+app.get("/guide/simple", (req, res) => {
+  res.sendFile(__dirname + "/website-pages/simple-guide.html");
 });
 
 // API endpoint to send personalized guides
