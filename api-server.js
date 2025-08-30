@@ -540,9 +540,23 @@ async function createAirtableLead({
       "Toy Hauler": "Other",
     };
 
+    const challengeMapping = {
+      Storage: "Storage Solutions",
+      "Organization Systems": "Organization Systems",
+      "Weight Management": "Weight Management",
+      "Space Utilization": "Space Utilization",
+      Downsizing: "Downsizing",
+      Other: "Other",
+    };
+
     // Debug mapping
     const mappedRvType = rvTypeMapping[rvType] || rvType || "Other";
+    const mappedChallenge =
+      challengeMapping[biggestChallenge] || biggestChallenge || "Other";
     console.log(`🔧 RV Type mapping: "${rvType}" → "${mappedRvType}"`);
+    console.log(
+      `🔧 Challenge mapping: "${biggestChallenge}" → "${mappedChallenge}"`,
+    );
 
     // Validate required fields exist in Airtable schema
     const airtableData = {
@@ -550,7 +564,7 @@ async function createAirtableLead({
         Name: firstName, // Use "Name" not "First Name"
         Email: email,
         "RV Type": mappedRvType, // Map to Airtable options
-        "Biggest Challenge": biggestChallenge || "Other", // Fixed in Airtable
+        "Biggest Challenge": mappedChallenge, // Map to Airtable options
         Timeline: timelineMapping[timeline] || timeline || "Just Exploring",
         "Montana Resident": montanaResident === true, // Checkbox field
         "Lead Score": leadScore || 0,
