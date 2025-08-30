@@ -61,15 +61,7 @@ const axios = require("axios");
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID;
 const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
 
-// Debug Airtable configuration
-console.log("🔍 Airtable Debug:");
-console.log("AIRTABLE_BASE_ID exists:", !!AIRTABLE_BASE_ID);
-console.log("AIRTABLE_BASE_ID value:", AIRTABLE_BASE_ID);
-console.log("AIRTABLE_API_KEY exists:", !!AIRTABLE_API_KEY);
-console.log(
-  "AIRTABLE_API_KEY starts with pat:",
-  AIRTABLE_API_KEY?.startsWith("pat"),
-);
+// Airtable integration ready
 
 // CORS configuration for production
 const corsOptions = {
@@ -523,6 +515,11 @@ async function createAirtableLead({
 
     // Map timeline to valid Timeline options
     const timelineMapping = {
+      immediately: "ASAP",
+      "within-month": "Within a month",
+      "2-3-months": "Next 2-3 months",
+      "just-exploring": "Just Exploring",
+      // Legacy mappings for backward compatibility
       ASAP: "ASAP",
       "Within Month": "Within a month",
       "2-3 Months": "Next 2-3 months",
@@ -541,7 +538,7 @@ async function createAirtableLead({
     };
 
     const challengeMapping = {
-      Storage: "Storage Solutions",
+      Storage: "Storage Bays",
       "Organization Systems": "Organization Systems",
       "Weight Management": "Weight Management",
       "Space Utilization": "Space Utilization",
@@ -549,13 +546,15 @@ async function createAirtableLead({
       Other: "Other",
     };
 
-    // Debug mapping
+    // Apply mappings
     const mappedRvType = rvTypeMapping[rvType] || rvType || "Other";
     const mappedChallenge =
       challengeMapping[biggestChallenge] || biggestChallenge || "Other";
-    console.log(`🔧 RV Type mapping: "${rvType}" → "${mappedRvType}"`);
+    const mappedTimeline =
+      timelineMapping[timeline] || timeline || "Just Exploring";
+
     console.log(
-      `🔧 Challenge mapping: "${biggestChallenge}" → "${mappedChallenge}"`,
+      `🔧 Airtable mappings: RV("${rvType}"→"${mappedRvType}") Challenge("${biggestChallenge}"→"${mappedChallenge}") Timeline("${timeline}"→"${mappedTimeline}")`,
     );
 
     // Validate required fields exist in Airtable schema
@@ -565,7 +564,7 @@ async function createAirtableLead({
         Email: email,
         "RV Type": mappedRvType, // Map to Airtable options
         "Biggest Challenge": mappedChallenge, // Map to Airtable options
-        Timeline: timelineMapping[timeline] || timeline || "Just Exploring",
+        Timeline: mappedTimeline,
         "Montana Resident": montanaResident === true, // Checkbox field
         "Lead Score": leadScore || 0,
         Segment: segment, // New field - must exist in Airtable (HOT/WARM/COLD)
