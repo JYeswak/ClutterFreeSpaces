@@ -84,6 +84,7 @@ const corsOptions = {
     "https://clutter-free-spaces.com",
     "https://clutter-free-spaces.squarespace.com",
     "https://clutter-free-spaces.squarespace-staging.com",
+    "https://hen-dog-7cdm.squarespace.com",
     // Allow localhost for development
     "http://localhost:3000",
     "http://localhost:3001",

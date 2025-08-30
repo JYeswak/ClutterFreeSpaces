@@ -12,7 +12,7 @@ async function testWarmTemplate() {
       email: "contact@clutter-free-spaces.com",
       name: "Chanel - Montana RV Organization",
     },
-    templateId: "d-ecfda28c118b48918adae29481dabcce", // WARM Email 1 template
+    templateId: "d-e2dda8fe19224b07b07d7c7ccad4b2f3", // NEW WARM Email 1 template
     dynamicTemplateData: {
       first_name: "Test",
       rv_type: "Class A Motorhome",
