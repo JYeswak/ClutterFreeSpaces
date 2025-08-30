@@ -111,8 +111,9 @@ async function sendTestEmail(template) {
       challenge: "Kitchen Organization",
       consultation_url: "https://calendly.com/chanelnbasolo/30min",
       book_consultation_url: "https://calendly.com/chanelnbasolo/30min",
-      quiz_url: "https://clutter-free-spaces.com/quiz",
-      newsletter_archive_url: "https://clutter-free-spaces.com/archive",
+      quiz_url: "https://clutterfreespaces-production.up.railway.app/quiz",
+      newsletter_archive_url:
+        "https://clutterfreespaces-production.up.railway.app/archive",
     },
   };
 

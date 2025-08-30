@@ -104,8 +104,9 @@ async function sendSequenceEmail(emailData) {
         rv_type: rvType,
         challenge: challenge,
         consultation_url: "https://calendly.com/chanelnbasolo/30min",
-        quiz_url: "https://clutter-free-spaces.com/organization-quiz",
-        newsletter_archive_url: "https://clutter-free-spaces.com/rv-tips",
+        quiz_url: "https://clutterfreespaces-production.up.railway.app/quiz",
+        newsletter_archive_url:
+          "https://clutterfreespaces-production.up.railway.app/archive",
         book_consultation_url: "https://calendly.com/chanelnbasolo/30min",
       },
       trackingSettings: {
