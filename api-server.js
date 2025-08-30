@@ -519,6 +519,9 @@ async function createAirtableLead({
       "within-month": "Within a month",
       "2-3-months": "Next 2-3 months",
       "just-exploring": "Just Exploring",
+      // Form value mappings (what Squarespace forms actually send)
+      asap: "ASAP",
+      exploring: "Just Exploring",
       // Legacy mappings for backward compatibility
       ASAP: "ASAP",
       "Within Month": "Within a month",
@@ -535,6 +538,14 @@ async function createAirtableLead({
       "Fifth Wheel": "Fifth Wheel",
       "Truck Camper": "Other",
       "Toy Hauler": "Other",
+      // Form value mappings (what Squarespace forms actually send)
+      "class-a": "Class A",
+      "class-b": "Class B",
+      "class-c": "Class C",
+      "travel-trailer": "Travel Trailer",
+      "fifth-wheel": "Fifth Wheel",
+      "truck-camper": "Other",
+      "toy-hauler": "Other",
     };
 
     const challengeMapping = {
@@ -544,6 +555,15 @@ async function createAirtableLead({
       "Space Utilization": "Space Utilization",
       Downsizing: "Downsizing",
       Other: "Other",
+      // Form value mappings (what Squarespace forms actually send)
+      "storage-bays": "Storage Bays",
+      "organization-systems": "Organization Systems",
+      "weight-management": "Weight Management",
+      "space-utilization": "Space Utilization",
+      downsizing: "Downsizing",
+      "seasonal-gear": "Seasonal Gear",
+      kitchen: "Kitchen",
+      bedroom: "Bedroom",
     };
 
     // Apply mappings
