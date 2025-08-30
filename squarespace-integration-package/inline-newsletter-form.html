@@ -1,0 +1,696 @@
+<!-- ClutterFreeSpaces Newsletter Signup - Inline Form -->
+<!-- For placement after "Why Choose Me" section in Squarespace -->
+
+<div id="cfs-inline-form" class="cfs-newsletter-container cfs-inline">
+    <style>
+        /* ClutterFreeSpaces Newsletter Form Styles */
+        .cfs-newsletter-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 40px 30px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        .cfs-newsletter-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #0f766e, #ea580c);
+        }
+
+        .cfs-form-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .cfs-montana-badge {
+            display: inline-block;
+            background: #0f766e;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 24px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 16px;
+        }
+
+        .cfs-headline-a {
+            font-size: 32px;
+            font-weight: 800;
+            color: #1f2937;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .cfs-headline-b {
+            font-size: 30px;
+            font-weight: 800;
+            color: #1f2937;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .cfs-subheadline {
+            font-size: 18px;
+            color: #64748b;
+            line-height: 1.5;
+            margin-bottom: 25px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cfs-newsletter-form {
+            display: grid;
+            gap: 24px;
+        }
+
+        .cfs-form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .cfs-form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cfs-form-group.cfs-full-width {
+            grid-column: 1 / -1;
+        }
+
+        .cfs-newsletter-container label {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .cfs-required {
+            color: #dc2626;
+        }
+
+        .cfs-newsletter-container input[type="text"],
+        .cfs-newsletter-container input[type="email"],
+        .cfs-newsletter-container select {
+            padding: 14px 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.2s ease;
+            background: white;
+            font-family: inherit;
+        }
+
+        .cfs-newsletter-container input[type="text"]:focus,
+        .cfs-newsletter-container input[type="email"]:focus,
+        .cfs-newsletter-container select:focus {
+            outline: none;
+            border-color: #0f766e;
+            box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1);
+        }
+
+        .cfs-newsletter-container select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 16px center;
+            background-repeat: no-repeat;
+            background-size: 16px;
+            padding-right: 50px;
+        }
+
+        .cfs-checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .cfs-newsletter-container input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: #0f766e;
+        }
+
+        .cfs-checkbox-label {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #475569;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .cfs-privacy-link {
+            color: #0f766e;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .cfs-privacy-link:hover {
+            text-decoration: underline;
+        }
+
+        .cfs-lead-score-indicator {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+            display: none;
+            border: 1px solid #cbd5e1;
+        }
+
+        .cfs-lead-score-indicator.cfs-show {
+            display: block;
+            animation: cfs-slideIn 0.3s ease-out;
+        }
+
+        @keyframes cfs-slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cfs-score-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 8px;
+        }
+
+        .cfs-score-bar {
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .cfs-score-fill {
+            height: 100%;
+            border-radius: 5px;
+            transition: all 0.4s ease;
+            width: 0%;
+        }
+
+        .cfs-score-low { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .cfs-score-medium { background: linear-gradient(90deg, #f59e0b, #ea580c); }
+        .cfs-score-high { background: linear-gradient(90deg, #10b981, #059669); }
+
+        .cfs-submit-button {
+            background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
+            color: white;
+            border: none;
+            padding: 18px 36px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cfs-submit-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(15, 118, 110, 0.25);
+        }
+
+        .cfs-submit-button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .cfs-success-message,
+        .cfs-error-message {
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            font-weight: 600;
+            display: none;
+            animation: cfs-fadeIn 0.3s ease-out;
+        }
+
+        @keyframes cfs-fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .cfs-success-message {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            color: #14532d;
+            border: 1px solid #86efac;
+        }
+
+        .cfs-error-message {
+            background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+            color: #7f1d1d;
+            border: 1px solid #fca5a5;
+        }
+
+        .cfs-loading-spinner {
+            display: none;
+            margin-left: 12px;
+            width: 18px;
+            height: 18px;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: cfs-spin 1s linear infinite;
+        }
+
+        @keyframes cfs-spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .cfs-newsletter-container {
+                margin: 20px 10px;
+                padding: 30px 20px;
+            }
+
+            .cfs-form-row {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .cfs-headline-a,
+            .cfs-headline-b {
+                font-size: 26px;
+            }
+
+            .cfs-subheadline {
+                font-size: 16px;
+            }
+
+            .cfs-newsletter-container input[type="text"],
+            .cfs-newsletter-container input[type="email"],
+            .cfs-newsletter-container select {
+                font-size: 16px; /* Prevent zoom on iOS */
+            }
+        }
+
+        /* A/B Test Variations */
+        .cfs-variation-b .cfs-headline-a { display: none; }
+        .cfs-variation-a .cfs-headline-b { display: none; }
+    </style>
+
+    <div class="cfs-form-header">
+        <div class="cfs-montana-badge">Montana RV Experts</div>
+        <h2 class="cfs-headline-a">Transform Your RV Into a Clutter-Free Paradise</h2>
+        <h2 class="cfs-headline-b">Discover 7 Proven Secrets to RV Organization That Actually Work</h2>
+        <p class="cfs-subheadline">Join 2,500+ RV owners getting weekly tips, exclusive guides, and Montana-tested solutions delivered to your inbox.</p>
+    </div>
+
+    <form class="cfs-newsletter-form" id="cfs-newsletter-form">
+        <div class="cfs-form-row">
+            <div class="cfs-form-group">
+                <label for="cfs-firstName">First Name <span class="cfs-required">*</span></label>
+                <input type="text" id="cfs-firstName" name="firstName" required>
+            </div>
+            <div class="cfs-form-group">
+                <label for="cfs-email">Email Address <span class="cfs-required">*</span></label>
+                <input type="email" id="cfs-email" name="email" required>
+            </div>
+        </div>
+
+        <div class="cfs-form-row">
+            <div class="cfs-form-group">
+                <label for="cfs-rvType">Your RV Type</label>
+                <select id="cfs-rvType" name="rvType">
+                    <option value="">Select your RV type...</option>
+                    <option value="class-a">Class A Motorhome</option>
+                    <option value="class-b">Class B Van/Camper</option>
+                    <option value="class-c">Class C Motorhome</option>
+                    <option value="travel-trailer">Travel Trailer</option>
+                    <option value="fifth-wheel">Fifth Wheel</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="cfs-form-group">
+                <label for="cfs-timeline">When do you need solutions?</label>
+                <select id="cfs-timeline" name="timeline">
+                    <option value="">Select timeline...</option>
+                    <option value="asap">ASAP - I'm overwhelmed!</option>
+                    <option value="within-month">Within the next month</option>
+                    <option value="2-3-months">2-3 months from now</option>
+                    <option value="exploring">Just exploring options</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="cfs-form-group cfs-full-width">
+            <label for="cfs-biggestChallenge">What's your biggest organization challenge?</label>
+            <select id="cfs-biggestChallenge" name="biggestChallenge">
+                <option value="">Select your biggest challenge...</option>
+                <option value="kitchen">Kitchen & Pantry Organization</option>
+                <option value="bedroom">Bedroom & Closet Space</option>
+                <option value="storage-bays">External Storage Bays</option>
+                <option value="weight-management">Weight & Space Management</option>
+                <option value="seasonal-gear">Seasonal Gear Storage</option>
+            </select>
+        </div>
+
+        <div class="cfs-form-group cfs-full-width">
+            <div class="cfs-checkbox-group">
+                <input type="checkbox" id="cfs-montanaResident" name="montanaResident" value="yes">
+                <label for="cfs-montanaResident" class="cfs-checkbox-label">
+                    I'm a Montana resident (get exclusive local tips!)
+                </label>
+            </div>
+        </div>
+
+        <div class="cfs-lead-score-indicator" id="cfs-leadScore">
+            <div class="cfs-score-label">Profile Completion</div>
+            <div class="cfs-score-bar">
+                <div class="cfs-score-fill" id="cfs-scoreFill"></div>
+            </div>
+        </div>
+
+        <div class="cfs-form-group cfs-full-width">
+            <div class="cfs-checkbox-group">
+                <input type="checkbox" id="cfs-gdprConsent" name="gdprConsent" required>
+                <label for="cfs-gdprConsent" class="cfs-checkbox-label">
+                    I agree to receive emails from ClutterFreeSpaces and understand I can unsubscribe at any time. 
+                    View our <a href="/privacy-policy" class="cfs-privacy-link">Privacy Policy</a>.
+                </label>
+            </div>
+        </div>
+
+        <button type="submit" class="cfs-submit-button" id="cfs-submitButton">
+            Get My Free Organization Guide
+            <div class="cfs-loading-spinner" id="cfs-loadingSpinner"></div>
+        </button>
+
+        <div class="cfs-success-message" id="cfs-successMessage">
+            🎉 Welcome aboard! Check your email for your free organization guide and weekly tips.
+        </div>
+
+        <div class="cfs-error-message" id="cfs-errorMessage">
+            Oops! Something went wrong. Please try again or contact us directly.
+        </div>
+    </form>
+</div>
+
+<script>
+(function() {
+    'use strict';
+    
+    // Configuration - UPDATE THESE FOR PRODUCTION
+    const CONFIG = {
+        apiEndpoint: 'https://your-api-domain.com/api/newsletter-signup', // Replace with your API URL
+        corsMode: 'cors',
+        timeout: 10000 // 10 second timeout
+    };
+
+    // A/B Test Implementation
+    function initABTest() {
+        const variation = Math.random() < 0.5 ? 'a' : 'b';
+        document.getElementById('cfs-inline-form').classList.add(`cfs-variation-${variation}`);
+        window.cfsNewsletterVariation = variation;
+        
+        // Track variation in localStorage for consistency
+        try {
+            localStorage.setItem('cfs-ab-variation', variation);
+        } catch (e) {
+            // Ignore localStorage errors
+        }
+    }
+
+    // Lead Scoring System
+    const scoring = {
+        rvType: {
+            'class-a': 25,
+            'class-b': 15,
+            'class-c': 20,
+            'travel-trailer': 15,
+            'fifth-wheel': 20,
+            'other': 10
+        },
+        biggestChallenge: {
+            'kitchen': 20,
+            'bedroom': 15,
+            'storage-bays': 25,
+            'weight-management': 30,
+            'seasonal-gear': 15
+        },
+        timeline: {
+            'asap': 40,
+            'within-month': 30,
+            '2-3-months': 20,
+            'exploring': 10
+        },
+        montanaResident: 15,
+        hasEmail: 10,
+        hasName: 5
+    };
+
+    function calculateLeadScore() {
+        let score = 0;
+        const formData = new FormData(document.getElementById('cfs-newsletter-form'));
+        
+        // Basic info scoring
+        if (formData.get('firstName')?.trim()) score += scoring.hasName;
+        if (formData.get('email')?.trim()) score += scoring.hasEmail;
+
+        // RV Type scoring
+        const rvType = formData.get('rvType');
+        if (rvType && scoring.rvType[rvType]) {
+            score += scoring.rvType[rvType];
+        }
+
+        // Challenge scoring
+        const challenge = formData.get('biggestChallenge');
+        if (challenge && scoring.biggestChallenge[challenge]) {
+            score += scoring.biggestChallenge[challenge];
+        }
+
+        // Timeline scoring
+        const timeline = formData.get('timeline');
+        if (timeline && scoring.timeline[timeline]) {
+            score += scoring.timeline[timeline];
+        }
+
+        // Montana resident bonus
+        if (formData.get('montanaResident')) {
+            score += scoring.montanaResident;
+        }
+
+        return Math.min(score, 100);
+    }
+
+    function updateLeadScoreDisplay() {
+        const score = calculateLeadScore();
+        const scoreIndicator = document.getElementById('cfs-leadScore');
+        const scoreFill = document.getElementById('cfs-scoreFill');
+
+        if (score > 15) {
+            scoreIndicator.classList.add('cfs-show');
+            scoreFill.style.width = score + '%';
+            
+            // Update color based on score
+            scoreFill.className = 'cfs-score-fill ';
+            if (score < 40) scoreFill.classList.add('cfs-score-low');
+            else if (score < 70) scoreFill.classList.add('cfs-score-medium');
+            else scoreFill.classList.add('cfs-score-high');
+        } else {
+            scoreIndicator.classList.remove('cfs-show');
+        }
+
+        return score;
+    }
+
+    // Form validation
+    function validateForm(formData) {
+        const errors = [];
+        
+        if (!formData.get('firstName')?.trim()) {
+            errors.push('First name is required');
+        }
+        
+        if (!formData.get('email')?.trim()) {
+            errors.push('Email address is required');
+        } else {
+            const email = formData.get('email').trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                errors.push('Please enter a valid email address');
+            }
+        }
+        
+        if (!formData.get('gdprConsent')) {
+            errors.push('You must consent to receive emails');
+        }
+        
+        return errors;
+    }
+
+    // Form submission handler with enhanced error handling
+    async function handleFormSubmission(event) {
+        event.preventDefault();
+
+        const submitButton = document.getElementById('cfs-submitButton');
+        const loadingSpinner = document.getElementById('cfs-loadingSpinner');
+        const successMessage = document.getElementById('cfs-successMessage');
+        const errorMessage = document.getElementById('cfs-errorMessage');
+
+        // Reset messages
+        successMessage.style.display = 'none';
+        errorMessage.style.display = 'none';
+
+        const formData = new FormData(event.target);
+        
+        // Validate form
+        const validationErrors = validateForm(formData);
+        if (validationErrors.length > 0) {
+            errorMessage.textContent = validationErrors[0];
+            errorMessage.style.display = 'block';
+            return;
+        }
+
+        // Show loading state
+        submitButton.disabled = true;
+        loadingSpinner.style.display = 'inline-block';
+
+        try {
+            const leadScore = calculateLeadScore();
+            
+            const payload = {
+                firstName: formData.get('firstName').trim(),
+                email: formData.get('email').trim(),
+                rvType: formData.get('rvType') || '',
+                biggestChallenge: formData.get('biggestChallenge') || '',
+                timeline: formData.get('timeline') || '',
+                montanaResident: formData.get('montanaResident') === 'yes',
+                gdprConsent: formData.get('gdprConsent') === 'on',
+                leadScore: leadScore,
+                abTestVariation: window.cfsNewsletterVariation || 'a',
+                timestamp: new Date().toISOString(),
+                source: 'inline_newsletter_form'
+            };
+
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), CONFIG.timeout);
+
+            const response = await fetch(CONFIG.apiEndpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+                mode: CONFIG.corsMode,
+                signal: controller.signal
+            });
+
+            clearTimeout(timeoutId);
+
+            if (response.ok) {
+                const result = await response.json();
+                successMessage.innerHTML = '🎉 Welcome aboard! Check your email for your free organization guide and weekly tips.';
+                successMessage.style.display = 'block';
+                event.target.reset();
+                document.getElementById('cfs-leadScore').classList.remove('cfs-show');
+                
+                // Track conversion with Google Analytics
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'conversion', {
+                        'send_to': 'AW-CONVERSION_ID/CONVERSION_LABEL',
+                        'value': leadScore,
+                        'currency': 'USD'
+                    });
+                }
+                
+                // Track Facebook Pixel if available
+                if (typeof fbq !== 'undefined') {
+                    fbq('track', 'Lead', {
+                        content_name: 'Newsletter Signup',
+                        value: leadScore
+                    });
+                }
+                
+            } else {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+
+        } catch (error) {
+            console.error('Form submission error:', error);
+            
+            let errorMsg = 'Oops! Something went wrong. Please try again or contact us directly.';
+            
+            if (error.name === 'AbortError') {
+                errorMsg = 'Request timed out. Please check your connection and try again.';
+            } else if (error.message.includes('Failed to fetch')) {
+                errorMsg = 'Network error. Please check your connection and try again.';
+            }
+            
+            errorMessage.textContent = errorMsg;
+            errorMessage.style.display = 'block';
+        } finally {
+            submitButton.disabled = false;
+            loadingSpinner.style.display = 'none';
+        }
+    }
+
+    // Initialize form when DOM is ready
+    function initForm() {
+        initABTest();
+
+        const form = document.getElementById('cfs-newsletter-form');
+        if (!form) {
+            console.error('ClutterFreeSpaces form not found');
+            return;
+        }
+
+        form.addEventListener('submit', handleFormSubmission);
+
+        // Add event listeners for lead scoring
+        const scoringFields = ['cfs-firstName', 'cfs-email', 'cfs-rvType', 'cfs-biggestChallenge', 'cfs-timeline', 'cfs-montanaResident'];
+        scoringFields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.addEventListener('input', updateLeadScoreDisplay);
+                field.addEventListener('change', updateLeadScoreDisplay);
+            }
+        });
+
+        // Initial score calculation
+        updateLeadScoreDisplay();
+    }
+
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initForm);
+    } else {
+        initForm();
+    }
+
+    // Export for external access
+    window.ClutterFreeSpacesInlineForm = {
+        getLeadScore: calculateLeadScore,
+        getVariation: () => window.cfsNewsletterVariation
+    };
+})();
+</script>

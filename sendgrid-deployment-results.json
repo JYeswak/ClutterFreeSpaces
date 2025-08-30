@@ -1,0 +1,70 @@
+{
+  "deployedAt": "2025-08-29T23:31:02.246Z",
+  "templateIds": {
+    "hot-leads": {
+      "email_1": "d-f1a6898e10e641e6b50c90c7e2f14a2f",
+      "email_2": "d-fe0bcba3de744a979adf56dd9a39a986",
+      "email_3": "d-a28f0d1925384df8bc5e7d7e96725bc7",
+      "email_4": "d-507bc5eec63d49d4b0780584173bb442",
+      "email_5": "d-607cdd56799d47f4819a016ca98c7e22"
+    },
+    "warm-leads": {
+      "email_1": "d-ecfda28c118b48918adae29481dabcce",
+      "email_2": "d-a15abb3393d949e7888a068900658a42",
+      "email_3": "d-6fd109d0a63d4a84bce61952a1990173",
+      "email_4": "d-6b352c4b7d8e4c548d94406dfe3bd8cc",
+      "email_5": "d-447d7f5acc244b50a3ca4547dd011dd1"
+    },
+    "cold-leads": {
+      "email_1": "d-e3ee97cb417940d0b3afd72c91950569",
+      "email_2": "d-48e78d5ea51340ff95e2fd267bdc2217",
+      "email_3": "d-74188478217e423491750a72a9f5be9d",
+      "email_4": "d-f6ad5c67fe13429db310f55073514271",
+      "email_5": "d-73bd6a14f1634afe8c42fd55c0f69da8"
+    }
+  },
+  "sequences": {
+    "hot": {
+      "name": "HOT Leads - Aggressive 10-day sequence",
+      "cadence": [
+        0,
+        2,
+        4,
+        7,
+        10
+      ],
+      "totalEmails": 5
+    },
+    "warm": {
+      "name": "WARM Leads - Educational 21-day sequence",
+      "cadence": [
+        0,
+        3,
+        7,
+        14,
+        21
+      ],
+      "totalEmails": 5
+    },
+    "cold": {
+      "name": "COLD Leads - Gentle 30-day sequence",
+      "cadence": [
+        0,
+        5,
+        12,
+        21,
+        30
+      ],
+      "totalEmails": 5
+    }
+  },
+  "personalizationVariables": [
+    "first_name",
+    "rv_type",
+    "challenge",
+    "consultation_url",
+    "quiz_url",
+    "newsletter_archive_url",
+    "book_consultation_url"
+  ]
+}

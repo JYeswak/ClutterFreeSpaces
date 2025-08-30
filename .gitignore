@@ -1,0 +1,25 @@
+# Environment variables
+.env
+
+# API Keys and secrets
+*.key
+*.secret
+
+# Node modules
+node_modules/
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.temp
