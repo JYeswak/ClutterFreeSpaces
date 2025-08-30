@@ -47,20 +47,6 @@ const SEQUENCE_TEMPLATES = {
   },
 };
 
-    email_2: "d-3ebedc6bf63846199639a53b69703265",
-    email_3: "d-583b48aaf964403f8d49e3e25caa4ae6",
-    email_4: "d-06caefd07b8e4ea2aa8b28b0c5f89a99",
-    email_5: "d-e82d75a510fe4d8380d474929f124530",
-  },
-  "cold-leads": {
-    email_1: "d-e5d086a8a79f43ac9e9ef72c266049a3",
-    email_2: "d-9aa93484718645bb97ed9824b716d044",
-    email_3: "d-55a467691e9c41dcb54e8894248dbbd4",
-    email_4: "d-b9ac517abbea4738b7b1b49e045a0982",
-    email_5: "d-5c1af52bf0d74075bbfe4a5461e410d4",
-  },
-};
-
 // SendGrid contact lists (from previous setup)
 const CONTACT_LISTS = {
   quiz_takers: "e4cf8d8d-b5bd-4c0a-a5c4-f1222e2a3462",
@@ -482,7 +468,7 @@ app.get("/api/generate-pdf", (req, res) => {
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 Guide delivery server running on http://localhost:${PORT}`);
-console.log(`📧 Using updated template IDs (no more Sarah Mitchell!)`);
+  console.log(`📧 Using updated template IDs (no more Sarah Mitchell!)`);
   console.log(`📧 SendGrid configured with templates:`);
   Object.entries(GUIDE_TEMPLATES).forEach(([style, id]) => {
     console.log(`   ${style}: ${id}`);
