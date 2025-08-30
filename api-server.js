@@ -10,42 +10,9 @@ require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Debug environment variables
-console.log("🔍 Environment Debug:");
-console.log("NODE_ENV:", process.env.NODE_ENV);
-console.log("PORT:", process.env.PORT);
-console.log("SendGrid_API_Key exists:", !!process.env.SendGrid_API_Key);
-console.log(
-  "SendGrid_API_Key starts with SG.:",
-  process.env.SendGrid_API_Key?.startsWith("SG."),
-);
-console.log(
-  "All env keys:",
-  Object.keys(process.env).filter(
-    (key) => key.includes("Send") || key.includes("API"),
-  ),
-);
-
-// Set up SendGrid with error handling
-const sendGridApiKey =
-  process.env.SendGrid_API_Key || process.env.SENDGRID_API_KEY;
-if (!sendGridApiKey) {
-  console.error("❌ SendGrid API Key not found in environment variables");
-  console.log(
-    "Available environment variables:",
-    Object.keys(process.env).sort(),
-  );
-} else if (!sendGridApiKey.startsWith("SG.")) {
-  console.error(
-    "❌ SendGrid API Key doesn't start with 'SG.':",
-    sendGridApiKey.substring(0, 10) + "...",
-  );
-} else {
-  console.log("✅ SendGrid API Key configured successfully");
-}
-
-sgMail.setApiKey(sendGridApiKey);
-sgClient.setApiKey(sendGridApiKey);
+// Set up SendGrid
+sgMail.setApiKey(process.env.SendGrid_API_Key);
+sgClient.setApiKey(process.env.SendGrid_API_Key);
 
 // Guide template IDs (from our previous setup)
 const GUIDE_TEMPLATES = {
