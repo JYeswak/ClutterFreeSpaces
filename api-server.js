@@ -482,6 +482,7 @@ app.get("/api/generate-pdf", (req, res) => {
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 Guide delivery server running on http://localhost:${PORT}`);
+console.log(`📧 Using updated template IDs (no more Sarah Mitchell!)`);
   console.log(`📧 SendGrid configured with templates:`);
   Object.entries(GUIDE_TEMPLATES).forEach(([style, id]) => {
     console.log(`   ${style}: ${id}`);
