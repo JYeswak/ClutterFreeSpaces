@@ -50,8 +50,8 @@ const SEQUENCE_CONFIG = {
     totalEmails: 5,
     cadence: [0, 2, 4, 7, 10], // Days to send each email
     templates: SEQUENCE_TEMPLATES["hot-leads"],
-    fromName: "Sarah Mitchell - Montana RV Organization",
-    fromEmail: "sarah@clutter-free-spaces.com",
+    fromName: "Chanel - Montana RV Organization",
+    fromEmail: "contact@clutter-free-spaces.com",
     unsubscribeGroup: 25257,
   },
   WARM: {
@@ -59,8 +59,8 @@ const SEQUENCE_CONFIG = {
     totalEmails: 5,
     cadence: [0, 3, 7, 14, 21], // Days to send each email
     templates: SEQUENCE_TEMPLATES["warm-leads"],
-    fromName: "Sarah Mitchell - Montana RV Organization",
-    fromEmail: "sarah@clutter-free-spaces.com",
+    fromName: "Chanel - Montana RV Organization",
+    fromEmail: "contact@clutter-free-spaces.com",
     unsubscribeGroup: 25257,
   },
   COLD: {
@@ -68,8 +68,8 @@ const SEQUENCE_CONFIG = {
     totalEmails: 5,
     cadence: [0, 5, 12, 21, 30], // Days to send each email
     templates: SEQUENCE_TEMPLATES["cold-leads"],
-    fromName: "Sarah Mitchell - Montana RV Organization",
-    fromEmail: "sarah@clutter-free-spaces.com",
+    fromName: "Chanel - Montana RV Organization",
+    fromEmail: "contact@clutter-free-spaces.com",
     unsubscribeGroup: 25257,
   },
 };
@@ -259,7 +259,7 @@ async function testAutomation() {
   // Test data
   const testLeads = [
     {
-      email: "josh+automation-hot@clutter-free-spaces.com",
+      email: "contact+automation-hot@clutter-free-spaces.com",
       firstName: "TestHot",
       rvType: "Class A Motorhome",
       challenge: "Kitchen Organization",
