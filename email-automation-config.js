@@ -52,7 +52,7 @@ const SEQUENCE_CONFIG = {
     templates: SEQUENCE_TEMPLATES["hot-leads"],
     fromName: "Chanel - Montana RV Organization",
     fromEmail: "contact@clutter-free-spaces.com",
-    unsubscribeGroup: 25257,
+    // unsubscribeGroup: 25257, // Removed - was blocking email delivery
   },
   WARM: {
     name: "WARM Leads - Educational 21-day sequence",
@@ -61,7 +61,7 @@ const SEQUENCE_CONFIG = {
     templates: SEQUENCE_TEMPLATES["warm-leads"],
     fromName: "Chanel - Montana RV Organization",
     fromEmail: "contact@clutter-free-spaces.com",
-    unsubscribeGroup: 25257,
+    // unsubscribeGroup: 25257, // Removed - was blocking email delivery
   },
   COLD: {
     name: "COLD Leads - Gentle 30-day sequence",
@@ -70,7 +70,7 @@ const SEQUENCE_CONFIG = {
     templates: SEQUENCE_TEMPLATES["cold-leads"],
     fromName: "Chanel - Montana RV Organization",
     fromEmail: "contact@clutter-free-spaces.com",
-    unsubscribeGroup: 25257,
+    // unsubscribeGroup: 25257, // Removed - was blocking email delivery
   },
 };
 
@@ -88,7 +88,7 @@ async function sendSequenceEmail(emailData) {
     emailNumber,
     fromName,
     fromEmail,
-    unsubscribeGroup,
+    // unsubscribeGroup, // Removed - was causing ASM blocking
   } = emailData;
 
   try {
@@ -114,10 +114,8 @@ async function sendSequenceEmail(emailData) {
         clickTracking: { enable: true },
         openTracking: { enable: true },
       },
-      asm: {
-        group_id: unsubscribeGroup || 25257,
-        groups_to_display: [unsubscribeGroup || 25257],
-      },
+      // ASM groups removed - using SendGrid's default unsubscribe handling
+      // The problematic ASM Group 25257 was blocking email delivery
     };
 
     await sgMail.send(msg);
@@ -188,7 +186,7 @@ async function triggerEmailSequence(leadData) {
       emailNumber: 1,
       fromName: config.fromName,
       fromEmail: config.fromEmail,
-      unsubscribeGroup: config.unsubscribeGroup,
+      // unsubscribeGroup: config.unsubscribeGroup, // Removed ASM group
     });
 
     results.push(welcomeResult);
