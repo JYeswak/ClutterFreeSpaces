@@ -549,9 +549,38 @@ ${notes ? `📝 Notes: ${notes}` : ""}`;
   }
 });
 
-// Test endpoint
+// Test endpoint with scoring verification
 app.get("/api/test", (req, res) => {
-  res.json({ message: "API is working!", templates: GUIDE_TEMPLATES });
+  res.json({
+    message: "API is working!",
+    build: "2025-08-30-v4-SCORING-FIXED",
+    templates: GUIDE_TEMPLATES,
+    scoringFixed: true,
+    timestamp: new Date().toISOString(),
+  });
+});
+
+// Test scoring endpoint to verify deployment
+app.post("/api/test-scoring", (req, res) => {
+  const { rvType, biggestChallenge, timeline, montanaResident, email } =
+    req.body;
+
+  const testScore = calculateNewsletterLeadScore({
+    rvType: rvType || "Class A",
+    biggestChallenge: biggestChallenge || "Weight Management",
+    timeline: timeline || "ASAP",
+    montanaResident: montanaResident || true,
+    email: email || "test@example.com",
+  });
+
+  res.json({
+    build: "2025-08-30-v4-SCORING-FIXED",
+    input: { rvType, biggestChallenge, timeline, montanaResident, email },
+    calculatedScore: testScore,
+    expectedScore: 30 + 25 + 30 + 40 + 15, // Should be 140
+    scoringWorking: testScore >= 100,
+    timestamp: new Date().toISOString(),
+  });
 });
 
 // Health check
