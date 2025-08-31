@@ -303,12 +303,12 @@ function calculateNewsletterLeadScore({
 
   // RV Type scoring (premium RVs indicate higher budget)
   const rvScores = {
-    "Class A": 25, // Highest investment RVs
-    "Fifth Wheel": 20, // High-end trailers
-    "Class C": 15, // Mid-range motorhomes
-    "Travel Trailer": 10, // More budget-conscious
-    "Class B": 12, // Compact but premium
-    Other: 5, // Unknown category
+    "class-a": 25, // Highest investment RVs
+    "fifth-wheel": 20, // High-end trailers
+    "class-c": 15, // Mid-range motorhomes
+    "travel-trailer": 10, // More budget-conscious
+    "class-b": 12, // Compact but premium
+    other: 5, // Unknown category
   };
   const rvPoints = rvScores[rvType] || 5;
   score += rvPoints;
@@ -316,11 +316,11 @@ function calculateNewsletterLeadScore({
 
   // Challenge scoring (indicates urgency and investment willingness)
   const challengeScores = {
-    "Weight Management": 30, // Critical safety issue
-    "Storage Bays": 25, // Major functionality problem
-    Kitchen: 20, // Daily use area
-    Bedroom: 15, // Personal comfort
-    "Seasonal Gear": 10, // Less urgent
+    "weight-management": 30, // Critical safety issue
+    "storage-bays": 25, // Major functionality problem
+    kitchen: 20, // Daily use area
+    bedroom: 15, // Personal comfort
+    "seasonal-gear": 10, // Less urgent
   };
   const challengePoints = challengeScores[biggestChallenge] || 10;
   score += challengePoints;
@@ -330,10 +330,10 @@ function calculateNewsletterLeadScore({
 
   // Timeline scoring (urgency indicator)
   const timelineScores = {
-    ASAP: 40, // Immediate need
-    "Within Month": 30, // High urgency
-    "2-3 Months": 15, // Planning ahead
-    "Just Exploring": 5, // Information gathering
+    asap: 40, // Immediate need
+    "within-month": 30, // High urgency
+    "2-3-months": 15, // Planning ahead
+    exploring: 5, // Information gathering
   };
   const timelinePoints = timelineScores[timeline] || 5;
   score += timelinePoints;
