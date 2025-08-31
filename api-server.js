@@ -321,12 +321,31 @@ function calculateNewsletterLeadScore({
     kitchen: 20, // Daily use area
     bedroom: 15, // Personal comfort
     "seasonal-gear": 10, // Less urgent
+    "external-bay-storage": 25, // Same as storage-bays
+    "kitchen-pantry-organization": 20, // Same as kitchen
+    "bedroom-closet-space": 15, // Same as bedroom
+    "weight-space-management": 30, // Same as weight-management
+    "seasonal-gear-storage": 10, // Same as seasonal-gear
   };
-  const challengePoints = challengeScores[biggestChallenge] || 10;
+
+  // Handle multi-select challenges (can be array or string)
+  let challengePoints = 0;
+  if (Array.isArray(biggestChallenge)) {
+    // For multiple challenges, take the highest scoring one
+    const scores = biggestChallenge.map(
+      (challenge) => challengeScores[challenge] || 10,
+    );
+    challengePoints = Math.max(...scores);
+    console.log(
+      `   Challenges (${biggestChallenge.join(", ")}): +${challengePoints} = ${score + challengePoints}`,
+    );
+  } else {
+    challengePoints = challengeScores[biggestChallenge] || 10;
+    console.log(
+      `   Challenge (${biggestChallenge}): +${challengePoints} = ${score + challengePoints}`,
+    );
+  }
   score += challengePoints;
-  console.log(
-    `   Challenge (${biggestChallenge}): +${challengePoints} = ${score}`,
-  );
 
   // Timeline scoring (urgency indicator)
   const timelineScores = {
@@ -697,14 +716,19 @@ async function createAirtableLead({
 
     // Map timeline to valid Timeline options
     const timelineMapping = {
-      immediately: "ASAP",
-      "within-month": "Within a month",
-      "2-3-months": "Next 2-3 months",
-      "just-exploring": "Just Exploring",
+      // New form options (exact matches)
+      "ASAP - I'm overwhelmed!": "ASAP",
+      "Within the next month": "Within a month",
+      "2-3 months from now": "Next 2-3 months",
+      "Just exploring options": "Just Exploring",
       // Form value mappings (what Squarespace forms actually send)
       asap: "ASAP",
+      "within-month": "Within a month",
+      "2-3-months": "Next 2-3 months",
       exploring: "Just Exploring",
       // Legacy mappings for backward compatibility
+      immediately: "ASAP",
+      "just-exploring": "Just Exploring",
       ASAP: "ASAP",
       "Within Month": "Within a month",
       "2-3 Months": "Next 2-3 months",
@@ -713,11 +737,14 @@ async function createAirtableLead({
 
     // Map form values to Airtable options
     const rvTypeMapping = {
+      // New form options (exact matches)
       "Class A Motorhome": "Class A",
-      "Class B Motorhome": "Class B",
+      "Class B Van/Camper": "Class B",
       "Class C Motorhome": "Class C",
       "Travel Trailer": "Travel Trailer",
       "Fifth Wheel": "Fifth Wheel",
+      Other: "Other",
+      // Legacy mappings
       "Truck Camper": "Other",
       "Toy Hauler": "Other",
       // Form value mappings (what Squarespace forms actually send)
@@ -732,21 +759,25 @@ async function createAirtableLead({
     };
 
     const challengeMapping = {
-      Storage: "Storage Bays",
-      "Organization Systems": "Organization Systems",
-      "Weight Management": "Weight Management",
-      "Space Utilization": "Space Utilization",
-      Downsizing: "Downsizing",
-      Other: "Other",
+      // New form options (exact matches)
+      "Kitchen & Pantry Organization": "Kitchen",
+      "Bedroom & Closet Space": "Bedroom",
+      "External Bay Storage": "Storage Bays",
+      "Weight & Space Management": "Weight Management",
+      "Seasonal Gear Storage": "Seasonal Gear",
       // Form value mappings (what Squarespace forms actually send)
       "storage-bays": "Storage Bays",
       "organization-systems": "Organization Systems",
       "weight-management": "Weight Management",
       "space-utilization": "Space Utilization",
-      downsizing: "Downsizing",
       "seasonal-gear": "Seasonal Gear",
       kitchen: "Kitchen",
       bedroom: "Bedroom",
+      // Legacy mappings
+      Storage: "Storage Bays",
+      "Organization Systems": "Organization Systems",
+      Downsizing: "Downsizing",
+      Other: "Other",
     };
 
     // Map AB Test Variation to Airtable options
@@ -763,14 +794,25 @@ async function createAirtableLead({
 
     // Apply mappings
     const mappedRvType = rvTypeMapping[rvType] || rvType || "Other";
-    const mappedChallenge =
-      challengeMapping[biggestChallenge] || biggestChallenge || "Other";
+
+    // Handle multi-select challenges (biggestChallenge can be array or string)
+    let mappedChallenges;
+    if (Array.isArray(biggestChallenge)) {
+      mappedChallenges = biggestChallenge.map(
+        (challenge) => challengeMapping[challenge] || challenge || "Other",
+      );
+    } else {
+      mappedChallenges = [
+        challengeMapping[biggestChallenge] || biggestChallenge || "Other",
+      ];
+    }
+
     const mappedTimeline =
       timelineMapping[timeline] || timeline || "Just Exploring";
     const mappedAbTest = abTestMapping[abTestVariation] || "A";
 
     console.log(
-      `🔧 Airtable mappings: RV("${rvType}"→"${mappedRvType}") Challenge("${biggestChallenge}"→"${mappedChallenge}") Timeline("${timeline}"→"${mappedTimeline}") ABTest("${abTestVariation}"→"${mappedAbTest}")`,
+      `🔧 Airtable mappings: RV("${rvType}"→"${mappedRvType}") Challenges(${Array.isArray(biggestChallenge) ? biggestChallenge.join(", ") : biggestChallenge}→${mappedChallenges.join(", ")}) Timeline("${timeline}"→"${mappedTimeline}") ABTest("${abTestVariation}"→"${mappedAbTest}")`,
     );
 
     // Validate required fields exist in Airtable schema
@@ -779,7 +821,7 @@ async function createAirtableLead({
         Name: firstName, // Use "Name" not "First Name"
         Email: email,
         "RV Type": mappedRvType, // Map to Airtable options
-        "Biggest Challenge": mappedChallenge, // Map to Airtable options
+        "Biggest Challenge": mappedChallenges, // Multi-select array for Airtable
         Timeline: mappedTimeline,
         "Montana Resident": montanaResident === true, // Checkbox field
         "Lead Score": leadScore || 0,
