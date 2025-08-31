@@ -193,8 +193,8 @@ app.post("/api/send-guide", async (req, res) => {
     const leadScore = calculateLeadScore(quiz_results, style);
     console.log(`📊 Lead score calculated: ${leadScore}`);
 
-    // Notify Chanel of high-value leads (60+ for testing, normally 80+)
-    if (leadScore >= 60) {
+    // Notify Chanel of high-value leads (80+)
+    if (leadScore >= 80) {
       try {
         await leadNotifications.highValueLead({
           firstName: capitalizedName,
@@ -362,17 +362,18 @@ function calculateNewsletterLeadScore({
     console.log(`   Email domain bonus: +0 = ${score}`);
   }
 
-  const finalScore = Math.min(score, 100);
-  console.log(`   Final (capped at 100): ${finalScore}`);
+  // Remove arbitrary 100-point cap - let high-value leads score properly
+  const finalScore = score;
+  console.log(`   Final (no cap): ${finalScore}`);
 
   return finalScore;
 }
 
-// Determine lead segment based on score
+// Determine lead segment based on score (updated for uncapped scoring)
 function getLeadSegment(score) {
-  if (score >= 75) return "HOT";
-  if (score >= 50) return "WARM";
-  return "COLD";
+  if (score >= 90) return "HOT"; // 90+ = immediate action needed
+  if (score >= 60) return "WARM"; // 60+ = high potential
+  return "COLD"; // <60 = nurture needed
 }
 
 // Newsletter signup endpoint
@@ -449,8 +450,8 @@ app.post("/api/newsletter-signup", async (req, res) => {
       console.log("  Status code:", error.response?.status);
     }
 
-    // Notify Chanel of high-value newsletter leads (60+ for testing, normally 80+)
-    if (finalScore >= 60) {
+    // Notify Chanel of high-value newsletter leads (80+)
+    if (finalScore >= 80) {
       try {
         await leadNotifications.highValueLead({
           firstName,
