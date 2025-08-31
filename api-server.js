@@ -728,6 +728,7 @@ async function createAirtableLead({
       "fifth-wheel": "Fifth Wheel",
       "truck-camper": "Other",
       "toy-hauler": "Other",
+      other: "Other",
     };
 
     const challengeMapping = {
