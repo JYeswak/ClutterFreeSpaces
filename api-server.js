@@ -579,8 +579,13 @@ app.get("/api/generate-pdf", (req, res) => {
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 Guide delivery server running on http://localhost:${PORT}`);
-  console.log("📧 Using FRESH template IDs - Build: 2025-08-30-v3");
+  console.log(
+    "📧 Using FRESH template IDs - Build: 2025-08-30-v4-SCORING-FIXED",
+  );
   console.log("📱 SMS & Phone notifications ACTIVE for high-value leads");
+  console.log(
+    "🧮 SCORING BUG FIXED: Removed 100-point cap, debug logging active",
+  );
   console.log(`📧 Using updated template IDs (no more Sarah Mitchell!)`);
   console.log(`📧 SendGrid configured with templates:`);
   Object.entries(GUIDE_TEMPLATES).forEach(([style, id]) => {
