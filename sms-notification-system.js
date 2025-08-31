@@ -14,7 +14,17 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const twilioPhone = process.env.TWILIO_PHONE_NUMBER;
 const chanelPhone = process.env.CHANEL_PHONE_NUMBER || "+14062851525"; // Chanel's mobile number
 
-const client = twilio(accountSid, authToken);
+// Only initialize Twilio client if we have valid credentials
+let client = null;
+if (accountSid && authToken && accountSid.startsWith("AC")) {
+  try {
+    client = twilio(accountSid, authToken);
+  } catch (error) {
+    console.log("⚠️ Twilio initialization failed:", error.message);
+  }
+} else {
+  console.log("⚠️ Twilio not configured (missing or invalid credentials)");
+}
 
 /**
  * Make phone call to Chanel for urgent situations
