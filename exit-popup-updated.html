@@ -176,6 +176,12 @@
             padding-right: 40px;
         }
 
+        .cfs-popup-container select[multiple] {
+            background-image: none;
+            padding-right: 16px;
+            min-height: 120px;
+        }
+
         .cfs-popup-checkbox-group {
             display: flex;
             align-items: flex-start;
@@ -331,6 +337,13 @@
             font-style: italic;
         }
 
+        .cfs-popup-multi-help {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+            font-style: italic;
+        }
+
         /* Mobile Responsiveness */
         @media (max-width: 640px) {
             .cfs-popup-container {
@@ -387,36 +400,36 @@
                         <label for="cfs-popup-rvType">RV Type</label>
                         <select id="cfs-popup-rvType" name="rvType">
                             <option value="">Select type...</option>
-                            <option value="class-a">Class A</option>
-                            <option value="class-b">Class B</option>
-                            <option value="class-c">Class C</option>
-                            <option value="travel-trailer">Travel Trailer</option>
-                            <option value="fifth-wheel">Fifth Wheel</option>
-                            <option value="other">Other</option>
+                            <option value="Class A Motorhome">Class A Motorhome</option>
+                            <option value="Class B Van/Camper">Class B Van/Camper</option>
+                            <option value="Class C Motorhome">Class C Motorhome</option>
+                            <option value="Travel Trailer">Travel Trailer</option>
+                            <option value="Fifth Wheel">Fifth Wheel</option>
+                            <option value="Other">Other</option>
                         </select>
                     </div>
                     <div class="cfs-popup-group">
                         <label for="cfs-popup-timeline">Timeline</label>
                         <select id="cfs-popup-timeline" name="timeline">
                             <option value="">When?</option>
-                            <option value="asap">ASAP!</option>
-                            <option value="within-month">This month</option>
-                            <option value="2-3-months">2-3 months</option>
-                            <option value="exploring">Just exploring</option>
+                            <option value="ASAP - I'm overwhelmed!">ASAP - I'm overwhelmed!</option>
+                            <option value="Within the next month">Within the next month</option>
+                            <option value="2-3 months from now">2-3 months from now</option>
+                            <option value="Just exploring options">Just exploring options</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="cfs-popup-group cfs-popup-full">
-                    <label for="cfs-popup-challenge">Biggest Challenge</label>
-                    <select id="cfs-popup-challenge" name="biggestChallenge">
-                        <option value="">Select your biggest challenge...</option>
-                        <option value="kitchen">Kitchen Organization</option>
-                        <option value="bedroom">Bedroom/Closets</option>
-                        <option value="storage-bays">Storage Bays</option>
-                        <option value="weight-management">Weight Management</option>
-                        <option value="seasonal-gear">Seasonal Gear</option>
+                    <label for="cfs-popup-challenge">Biggest Challenges (select all that apply)</label>
+                    <select id="cfs-popup-challenge" name="biggestChallenge" multiple>
+                        <option value="Kitchen & Pantry Organization">Kitchen & Pantry Organization</option>
+                        <option value="Bedroom & Closet Space">Bedroom & Closet Space</option>
+                        <option value="External Bay Storage">External Bay Storage</option>
+                        <option value="Weight & Space Management">Weight & Space Management</option>
+                        <option value="Seasonal Gear Storage">Seasonal Gear Storage</option>
                     </select>
+                    <div class="cfs-popup-multi-help">Hold Ctrl (PC) or Cmd (Mac) to select multiple options</div>
                 </div>
 
                 <div class="cfs-popup-group cfs-popup-full">
@@ -552,11 +565,29 @@
         lastScrollY = currentScrollY;
     }
 
-    // Lead scoring (simplified for popup)
+    // Lead scoring (updated to match server-side)
     const scoring = {
-        rvType: { 'class-a': 25, 'class-b': 15, 'class-c': 20, 'travel-trailer': 15, 'fifth-wheel': 20, 'other': 10 },
-        biggestChallenge: { 'kitchen': 20, 'bedroom': 15, 'storage-bays': 25, 'weight-management': 30, 'seasonal-gear': 15 },
-        timeline: { 'asap': 40, 'within-month': 30, '2-3-months': 20, 'exploring': 10 },
+        rvType: { 
+            'Class A Motorhome': 25, 
+            'Class B Van/Camper': 15, 
+            'Class C Motorhome': 20, 
+            'Travel Trailer': 15, 
+            'Fifth Wheel': 20, 
+            'Other': 10 
+        },
+        biggestChallenge: { 
+            'Kitchen & Pantry Organization': 20, 
+            'Bedroom & Closet Space': 15, 
+            'External Bay Storage': 25, 
+            'Weight & Space Management': 30, 
+            'Seasonal Gear Storage': 15 
+        },
+        timeline: { 
+            'ASAP - I\'m overwhelmed!': 40, 
+            'Within the next month': 30, 
+            '2-3 months from now': 20, 
+            'Just exploring options': 10 
+        },
         montanaResident: 15,
         hasEmail: 10,
         hasName: 5
@@ -564,7 +595,10 @@
 
     function calculateLeadScore() {
         let score = 0;
-        const formData = new FormData(document.getElementById('cfs-popup-form'));
+        const form = document.getElementById('cfs-popup-form');
+        if (!form) return 0;
+        
+        const formData = new FormData(form);
         
         if (formData.get('firstName')?.trim()) score += scoring.hasName;
         if (formData.get('email')?.trim()) score += scoring.hasEmail;
@@ -572,8 +606,12 @@
         const rvType = formData.get('rvType');
         if (rvType && scoring.rvType[rvType]) score += scoring.rvType[rvType];
 
-        const challenge = formData.get('biggestChallenge');
-        if (challenge && scoring.biggestChallenge[challenge]) score += scoring.biggestChallenge[challenge];
+        // Handle multi-select challenges
+        const challenges = formData.getAll('biggestChallenge');
+        if (challenges.length > 0) {
+            const challengeScores = challenges.map(challenge => scoring.biggestChallenge[challenge] || 0);
+            score += Math.max(...challengeScores); // Take highest scoring challenge
+        }
 
         const timeline = formData.get('timeline');
         if (timeline && scoring.timeline[timeline]) score += scoring.timeline[timeline];
@@ -657,11 +695,14 @@
         try {
             const leadScore = calculateLeadScore();
             
+            // Handle multi-select challenges
+            const challenges = formData.getAll('biggestChallenge');
+            
             const payload = {
                 firstName: formData.get('firstName').trim(),
                 email: formData.get('email').trim(),
                 rvType: formData.get('rvType') || '',
-                biggestChallenge: formData.get('biggestChallenge') || '',
+                biggestChallenge: challenges.length > 0 ? challenges : '',
                 timeline: formData.get('timeline') || '',
                 montanaResident: formData.get('montanaResident') === 'yes',
                 gdprConsent: formData.get('gdprConsent') === 'on',

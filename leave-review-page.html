@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave a Review - ClutterFreeSpaces</title>
+    <meta name="description" content="Thank you for choosing ClutterFreeSpaces! Share your experience to help other Montana RVers find organization solutions.">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .review-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .review-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #0f766e, #ea580c);
+        }
+
+        .montana-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #0f766e 0%, #134e4a 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 20px;
+        }
+
+        .review-emoji {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 800;
+            color: #1f2937;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #64748b;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+
+        .review-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #ea580c 0%, #dc2626 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 40px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .review-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(234, 88, 12, 0.4);
+        }
+
+        .review-stars {
+            font-size: 32px;
+            margin: 20px 0;
+            letter-spacing: 4px;
+        }
+
+        .help-text {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 30px 0;
+            border-left: 4px solid #0369a1;
+        }
+
+        .help-text h3 {
+            color: #1e40af;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .help-text ul {
+            text-align: left;
+            color: #475569;
+            line-height: 1.6;
+        }
+
+        .help-text li {
+            margin-bottom: 8px;
+        }
+
+        .feedback-option {
+            background: #fef7ff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid #a855f7;
+        }
+
+        .feedback-link {
+            color: #a855f7;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .feedback-link:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .company-info {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 640px) {
+            .review-container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .subtitle {
+                font-size: 16px;
+            }
+
+            .review-button {
+                padding: 18px 32px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="review-container">
+        <div class="montana-badge">🏔️ Montana RV Experts</div>
+        
+        <div class="review-emoji">⭐</div>
+        
+        <h1>Thank You for Choosing ClutterFreeSpaces!</h1>
+        
+        <p class="subtitle">
+            Your experience helps other Montana RV owners find the organization solutions they need. 
+            Would you take a moment to share your experience?
+        </p>
+        
+        <div class="review-stars">⭐ ⭐ ⭐ ⭐ ⭐</div>
+        
+        <a href="https://g.page/r/CYxeuJdLuPvUEAE/review" 
+           class="review-button"
+           onclick="trackReviewClick()">
+            Leave Your Google Review
+        </a>
+        
+        <div class="help-text">
+            <h3>💡 What to mention in your review:</h3>
+            <ul>
+                <li>What problem were you hoping to solve?</li>
+                <li>How do you feel in your organized space now?</li>
+                <li>Would you recommend us to other RVers?</li>
+                <li>What surprised you most about the process?</li>
+                <li>How has it changed your RV experience?</li>
+            </ul>
+        </div>
+        
+        <div class="feedback-option">
+            <strong>Not completely satisfied?</strong><br>
+            Please <a href="mailto:contact@clutter-free-spaces.com?subject=Feedback%20-%20Review%20Request" class="feedback-link">email us directly</a> - we want to make things right before you leave a review.
+        </div>
+        
+        <div class="footer">
+            <div class="company-info">ClutterFreeSpaces</div>
+            <div>Montana's Premier RV & Home Organization Service</div>
+            <div>(406) 285-1525 | contact@clutter-free-spaces.com</div>
+            <div style="margin-top: 10px; font-size: 12px;">
+                Serving Missoula and surrounding areas with non-judgmental, 
+                professional organizing services.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Track review button clicks
+        function trackReviewClick() {
+            // Google Analytics tracking (if available)
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'review_click', {
+                    event_category: 'Reviews',
+                    event_label: 'Google Review Button',
+                    value: 1
+                });
+            }
+            
+            // Console log for debugging
+            console.log('Review button clicked - redirecting to Google Reviews');
+        }
+
+        // Track page views
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'page_view', {
+                page_title: 'Leave Review Page',
+                page_location: window.location.href
+            });
+        }
+    </script>
+</body>
+</html>

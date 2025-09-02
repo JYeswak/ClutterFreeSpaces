@@ -20,6 +20,11 @@ sgMail.setApiKey(SENDGRID_API_KEY);
 
 // Email sequence template IDs (deployed from deploy-sendgrid-templates.js)
 const SEQUENCE_TEMPLATES = {
+  newsletter: {
+    email_1: "d-fe9c460e40b4493d9136ce0f533ffdb0", // Day 0 - Welcome to community
+    email_2: "d-48708dbd9e144dcd8e7345891d0c0ee2", // Day 3 - #1 mistake
+    email_3: "d-a504d52cf30b497a93193e121651991a", // Day 7 - 3 principles
+  },
   "hot-leads": {
     email_1: "d-afb751285d0e4516954a1998a84de36e", // Day 0 - Welcome
     email_2: "d-ce3f54f9f29047c8aec80307de6dd040", // Day 2 - Quick-win checklist
@@ -45,6 +50,14 @@ const SEQUENCE_TEMPLATES = {
 
 // Sequence configuration with timing and metadata
 const SEQUENCE_CONFIG = {
+  NEWSLETTER: {
+    name: "Newsletter - Generic welcome sequence",
+    totalEmails: 3,
+    cadence: [0, 3, 7], // Days to send each email
+    templates: SEQUENCE_TEMPLATES["newsletter"],
+    fromName: "Chanel - Montana RV Organization",
+    fromEmail: "contact@clutter-free-spaces.com",
+  },
   HOT: {
     name: "HOT Leads - Aggressive 10-day sequence",
     totalEmails: 5,
@@ -160,7 +173,9 @@ async function triggerEmailSequence(leadData) {
   const { email, firstName, rvType, challenge, segment } = leadData;
 
   if (!SEQUENCE_CONFIG[segment]) {
-    throw new Error(`Invalid segment: ${segment}. Must be HOT, WARM, or COLD`);
+    throw new Error(
+      `Invalid segment: ${segment}. Must be NEWSLETTER, HOT, WARM, or COLD`,
+    );
   }
 
   const config = SEQUENCE_CONFIG[segment];

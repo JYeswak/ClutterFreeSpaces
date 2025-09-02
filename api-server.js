@@ -6,6 +6,12 @@ const {
   triggerEmailSequence: triggerAutomatedSequence,
 } = require("./email-automation-config.js");
 const { leadNotifications } = require("./sms-notification-system");
+const {
+  runAutomation: runReviewAutomation,
+  checkForNewClients,
+  processNewClient,
+  sendReviewEmail,
+} = require("./review-automation-system");
 require("dotenv").config();
 
 const app = express();
@@ -285,6 +291,40 @@ function calculateLeadScore(quizResults, style) {
   return Math.min(score, 100); // Cap at 100
 }
 
+// Check if email already exists in Airtable
+async function checkExistingEmail(email) {
+  try {
+    const response = await axios.get(
+      `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/Leads`,
+      {
+        headers: { Authorization: `Bearer ${AIRTABLE_API_KEY}` },
+        params: {
+          filterByFormula: `{Email} = "${email}"`,
+          maxRecords: 1,
+        },
+      },
+    );
+
+    if (response.data.records && response.data.records.length > 0) {
+      const record = response.data.records[0];
+      console.log(`📧 Found existing email: ${email}`);
+      console.log(`   Record ID: ${record.id}`);
+      console.log(`   Lead Score: ${record.fields["Lead Score"]}`);
+      console.log(`   Source: ${record.fields["Source"]}`);
+      return {
+        exists: true,
+        record: record.fields,
+        recordId: record.id,
+      };
+    }
+
+    return { exists: false };
+  } catch (error) {
+    console.error("❌ Error checking existing email:", error.message);
+    return { exists: false }; // Fail gracefully
+  }
+}
+
 // Enhanced lead scoring for newsletter signups
 function calculateNewsletterLeadScore({
   rvType,
@@ -408,6 +448,7 @@ app.post("/api/newsletter-signup", async (req, res) => {
       gdprConsent,
       leadScore: clientScore,
       abTestVariation,
+      forceUpdate,
     } = req.body;
 
     console.log(`📧 Newsletter signup: ${firstName} (${email})`);
@@ -419,8 +460,29 @@ app.post("/api/newsletter-signup", async (req, res) => {
       });
     }
 
-    // Calculate server-side lead score for validation
-    const serverScore = calculateNewsletterLeadScore({
+    // Check if email already exists in Airtable
+    const existingEmailCheck = await checkExistingEmail(email);
+
+    if (existingEmailCheck.exists && !forceUpdate) {
+      console.log(`📧 Email already exists: ${email}`);
+      return res.status(409).json({
+        success: false,
+        emailExists: true,
+        existingRecord: existingEmailCheck.record,
+        message:
+          "I see you're already in our system! Would you like to update your information, or would you prefer to cancel this request and reach out to us directly?",
+        options: {
+          update: "Submit again to update your information",
+          contact: "Email us at contact@clutter-free-spaces.com",
+        },
+      });
+    }
+
+    // For newsletter signups, use NEWSLETTER segment instead of score-based segments
+    const segment = "NEWSLETTER";
+
+    // Calculate score for analytics but don't use for segmentation
+    const analyticsScore = calculateNewsletterLeadScore({
       rvType,
       biggestChallenge,
       timeline,
@@ -428,9 +490,7 @@ app.post("/api/newsletter-signup", async (req, res) => {
       email,
     });
 
-    // Use server score as authoritative
-    const finalScore = serverScore;
-    const segment = getLeadSegment(finalScore);
+    const finalScore = analyticsScore;
 
     console.log(`📊 Lead score: ${finalScore} (${segment})`);
 
@@ -447,21 +507,44 @@ app.post("/api/newsletter-signup", async (req, res) => {
       abTestVariation,
     });
 
-    // Create Airtable CRM record (disabled for testing)
+    // Create or update Airtable CRM record
     let airtableRecordId = null;
     try {
-      airtableRecordId = await createAirtableLead({
-        firstName,
-        email,
-        rvType,
-        biggestChallenge,
-        timeline,
-        montanaResident,
-        leadScore: finalScore,
-        segment,
-        source: "Newsletter Signup",
-        abTestVariation,
-      });
+      if (existingEmailCheck.exists && forceUpdate) {
+        // Update existing record
+        console.log(
+          `📝 Updating existing Airtable record: ${existingEmailCheck.recordId}`,
+        );
+        airtableRecordId = await updateAirtableLead(
+          existingEmailCheck.recordId,
+          {
+            firstName,
+            rvType,
+            biggestChallenge,
+            timeline,
+            montanaResident,
+            leadScore: finalScore,
+            segment,
+            source: "Newsletter Signup (Updated)",
+            abTestVariation,
+            updatedAt: new Date().toISOString(),
+          },
+        );
+      } else {
+        // Create new record
+        airtableRecordId = await createAirtableLead({
+          firstName,
+          email,
+          rvType,
+          biggestChallenge,
+          timeline,
+          montanaResident,
+          leadScore: finalScore,
+          segment,
+          source: "Newsletter Signup",
+          abTestVariation,
+        });
+      }
     } catch (error) {
       console.log("⚠️ Airtable integration failed:");
       console.log("  Error message:", error.message);
@@ -602,6 +685,72 @@ app.post("/api/test-scoring", (req, res) => {
   });
 });
 
+// ==================== REVIEW AUTOMATION ENDPOINTS ====================
+
+// Manual trigger for review automation (for testing)
+app.post("/api/review-automation/run", async (req, res) => {
+  try {
+    console.log("🤖 Manual review automation triggered via API");
+    await runReviewAutomation();
+    res.json({
+      success: true,
+      message: "Review automation completed successfully",
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error("❌ Review automation failed:", error);
+    res.status(500).json({
+      error: "Review automation failed",
+      details: error.message,
+    });
+  }
+});
+
+// Webhook endpoint for Airtable automation (when Status changes to "Client")
+app.post("/api/review-automation/webhook", async (req, res) => {
+  try {
+    const { recordId, fields } = req.body;
+
+    console.log("📞 Webhook received for record:", recordId);
+
+    if (fields?.Status === "Client" && !fields?.["Review Requested"]) {
+      console.log(
+        "🎯 Processing new client for review automation:",
+        fields["First Name"],
+      );
+
+      // Create a mock client record for processing
+      const clientRecord = {
+        id: recordId,
+        fields: fields,
+      };
+
+      await processNewClient(clientRecord);
+
+      res.json({
+        success: true,
+        message: `Review sequence started for ${fields["First Name"]}`,
+        recordId: recordId,
+      });
+    } else {
+      res.json({
+        success: true,
+        message: "No review automation needed for this record",
+        reason:
+          fields?.Status !== "Client"
+            ? "Not a client"
+            : "Review already requested",
+      });
+    }
+  } catch (error) {
+    console.error("❌ Webhook processing failed:", error);
+    res.status(500).json({
+      error: "Webhook processing failed",
+      details: error.message,
+    });
+  }
+});
+
 // Health check
 app.get("/health", (req, res) => {
   res.json({ status: "healthy", timestamp: new Date().toISOString() });
@@ -624,6 +773,38 @@ app.get("/api/generate-pdf", (req, res) => {
   }
 });
 
+// ==================== SCHEDULED REVIEW AUTOMATION ====================
+
+// Set up scheduled review automation (every 4 hours)
+let reviewInterval;
+
+function startReviewAutomation() {
+  // Run immediately on startup
+  setTimeout(async () => {
+    try {
+      console.log("🤖 Running initial review automation check...");
+      await runReviewAutomation();
+    } catch (error) {
+      console.error("❌ Initial review automation failed:", error);
+    }
+  }, 30000); // Wait 30 seconds after server start
+
+  // Then run every 4 hours
+  reviewInterval = setInterval(
+    async () => {
+      try {
+        console.log("🤖 Running scheduled review automation check...");
+        await runReviewAutomation();
+      } catch (error) {
+        console.error("❌ Scheduled review automation failed:", error);
+      }
+    },
+    4 * 60 * 60 * 1000,
+  ); // 4 hours in milliseconds
+
+  console.log("⏰ Review automation scheduled every 4 hours");
+}
+
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 Guide delivery server running on http://localhost:${PORT}`);
@@ -635,10 +816,14 @@ app.listen(PORT, () => {
     "🧮 SCORING BUG FIXED: Removed 100-point cap, debug logging active",
   );
   console.log(`📧 Using updated template IDs (no more Sarah Mitchell!)`);
+  console.log("⭐ Review automation system ACTIVE");
   console.log(`📧 SendGrid configured with templates:`);
   Object.entries(GUIDE_TEMPLATES).forEach(([style, id]) => {
     console.log(`   ${style}: ${id}`);
   });
+
+  // Start the review automation
+  startReviewAutomation();
 });
 
 // SendGrid contact creation for newsletter signups
@@ -866,6 +1051,138 @@ async function createAirtableLead({
       );
     }
 
+    throw error;
+  }
+}
+
+// Update existing Airtable lead record
+async function updateAirtableLead(
+  recordId,
+  {
+    firstName,
+    rvType,
+    biggestChallenge,
+    timeline,
+    montanaResident,
+    leadScore,
+    segment,
+    source,
+    abTestVariation,
+    updatedAt,
+  },
+) {
+  try {
+    // Map source to valid Lead Source options
+    const sourceMapping = {
+      "Newsletter Signup": "Website",
+      "Newsletter Signup (Updated)": "Website",
+      Quiz: "Quiz",
+      Facebook: "Facebook",
+      Referral: "Referral",
+      Google: "Google",
+      ManyChat: "ManyChat",
+    };
+
+    // Map timeline to valid Timeline options
+    const timelineMapping = {
+      "ASAP - I'm overwhelmed!": "ASAP",
+      "Within the next month": "Within a month",
+      "2-3 months from now": "Next 2-3 months",
+      "Just exploring options": "Just Exploring",
+      asap: "ASAP",
+      "within-month": "Within a month",
+      "2-3-months": "Next 2-3 months",
+      exploring: "Just Exploring",
+      immediately: "ASAP",
+      "just-exploring": "Just Exploring",
+      ASAP: "ASAP",
+      "Within Month": "Within a month",
+      "2-3 Months": "Next 2-3 months",
+      "Just Exploring": "Just Exploring",
+    };
+
+    // Map RV types
+    const rvTypeMapping = {
+      "Class A Motorhome": "Class A",
+      "Class B Van/Camper": "Class B",
+      "Class C Motorhome": "Class C",
+      "Travel Trailer": "Travel Trailer",
+      "Fifth Wheel": "Fifth Wheel",
+      Other: "Other",
+      "Truck Camper": "Other",
+      "Toy Hauler": "Other",
+      "class-a": "Class A",
+      "class-b": "Class B",
+      "class-c": "Class C",
+      "travel-trailer": "Travel Trailer",
+      "fifth-wheel": "Fifth Wheel",
+      other: "Other",
+    };
+
+    // Map challenges to multi-select array format
+    const challengesMapping = {
+      "Kitchen Organization": ["Kitchen"],
+      "Bathroom Organization": ["Bathroom"],
+      "Storage Solutions": ["Storage"],
+      "Closet Organization": ["Closet"],
+      "General Decluttering": ["General Decluttering"],
+      "Time Management": ["Time Management"],
+      Downsizing: ["Downsizing"],
+      // Legacy mappings
+      kitchen: ["Kitchen"],
+      bathroom: ["Bathroom"],
+      storage: ["Storage"],
+      closet: ["Closet"],
+      general: ["General Decluttering"],
+    };
+
+    const airtableData = {
+      fields: {
+        "First Name": firstName,
+        "RV Type": rvTypeMapping[rvType] || "Other",
+        "Biggest Challenge": challengesMapping[biggestChallenge] || [
+          "General Decluttering",
+        ],
+        Timeline: timelineMapping[timeline] || "Just Exploring",
+        "Montana Resident":
+          montanaResident === true || montanaResident === "true",
+        "Lead Score": leadScore || 0,
+        Segment: segment || "COLD",
+        "Lead Source": sourceMapping[source] || "Website",
+        "AB Test Variation": abTestVariation || "Control",
+        Status: "Updated Lead",
+        "Follow Up Required": segment === "HOT",
+        "Last Updated": updatedAt || new Date().toISOString(),
+      },
+    };
+
+    const response = await axios.patch(
+      `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/Leads/${recordId}`,
+      airtableData,
+      {
+        headers: {
+          Authorization: `Bearer ${AIRTABLE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    console.log(`📝 Updated Airtable record ${recordId} for lead`);
+    return response.data.id;
+  } catch (error) {
+    console.error(
+      "❌ Error updating Airtable record:",
+      error.response?.data || error,
+    );
+
+    if (error.response?.status === 422) {
+      console.error("💡 422 Error - Field validation failed during update:");
+      console.error("   Check that all field values match available options");
+      console.error(
+        "   Data sent:",
+        JSON.stringify(airtableData.fields, null, 2),
+      );
+    }
     throw error;
   }
 }

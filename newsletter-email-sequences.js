@@ -5,6 +5,224 @@
  */
 
 const emailSequences = {
+  // NEWSLETTER SEQUENCE - Generic welcome for footer signups (no quiz)
+  newsletter: {
+    metadata: {
+      segment: "NEWSLETTER",
+      scoreRange: "generic",
+      totalEmails: 3,
+      duration: "7 days",
+      cadence: [0, 3, 7], // Days to send
+    },
+    emails: [
+      {
+        id: "newsletter_email_1",
+        day: 0,
+        subject:
+          "{{first_name}}, welcome to the Montana RV organization community!",
+        preheader: "Your journey to a clutter-free RV starts here",
+        template: {
+          html: `
+            <div style="max-width: 600px; font-family: Georgia, serif; line-height: 1.6; color: #2c3e50;">
+              <h1 style="color: #8b4513; font-size: 24px; margin-bottom: 20px;">
+                Welcome to the Community, {{first_name}}!
+              </h1>
+              
+              <p>Thank you for joining hundreds of RV owners who are transforming their mobile homes from chaotic to calm here in Big Sky Country.</p>
+              
+              <p>I'm Chanel Basolo, and I've spent the last 5 years helping RVers across Montana create organized, peaceful spaces that actually work for real life on the road.</p>
+              
+              <div style="background: #f4f1e8; padding: 20px; border-left: 4px solid #8b4513; margin: 25px 0;">
+                <h3 style="color: #8b4513; margin-top: 0;">Here's What You Can Expect:</h3>
+                <ul style="padding-left: 20px; margin-bottom: 0;">
+                  <li><strong>Montana-specific tips</strong> that work at altitude and in extreme weather</li>
+                  <li><strong>Real solutions</strong> tested in everything from Class A coaches to travel trailers</li>
+                  <li><strong>No overwhelming advice</strong> - just practical steps you can actually implement</li>
+                  <li><strong>Stories and strategies</strong> from RVers who've transformed their spaces</li>
+                </ul>
+              </div>
+              
+              <p><strong>But first, let's get you the help that's most relevant to YOUR situation...</strong></p>
+              
+              <p>Every RV is different. Every owner has different challenges. That's why I created a quick 2-minute quiz that helps me understand your specific needs and sends you personalized tips.</p>
+              
+              <div style="text-align: center; margin: 30px 0;">
+                <a href="{{quiz_url}}" style="background: #8b4513; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; font-size: 16px;">
+                  Take the 2-Minute RV Organization Quiz
+                </a>
+                <p style="margin-top: 10px; font-size: 14px; color: #666;">
+                  Get personalized tips based on your RV type and biggest challenges
+                </p>
+              </div>
+              
+              <p>In the meantime, here's one simple tip that works for every RV type:</p>
+              
+              <div style="background: #e8f4f8; padding: 20px; border-left: 4px solid #2980b9; margin: 25px 0;">
+                <h3 style="color: #2980b9; margin-top: 0;">The Montana "Landing Pad" Method</h3>
+                <p>Create one designated spot near your RV entrance for keys, sunglasses, and daily essentials. Use a small tray or basket - nothing fancy needed.</p>
+                <p><strong>Why it works:</strong> It prevents the "where did I put my keys?" scramble that happens when everything gets scattered around your limited space.</p>
+              </div>
+              
+              <p>More Montana RV wisdom coming your way in a few days. For now, consider taking that quiz - it really does help me send you the most relevant tips!</p>
+              
+              <p>Happy trails,<br>Chanel Basolo<br><em>Montana RV Organization Specialist</em></p>
+              
+              <div style="text-align: center; margin: 30px 0;">
+                <a href="{{newsletter_archive_url}}" style="background: #666; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: 14px;">
+                  Browse the Newsletter Archive
+                </a>
+              </div>
+            </div>
+          `,
+        },
+      },
+      {
+        id: "newsletter_email_2",
+        day: 3,
+        subject:
+          "{{first_name}}, the #1 mistake Montana RVers make with organization",
+        preheader: "Plus: How to avoid it completely",
+        template: {
+          html: `
+            <div style="max-width: 600px; font-family: Georgia, serif; line-height: 1.6; color: #2c3e50;">
+              <h1 style="color: #8b4513; font-size: 24px; margin-bottom: 20px;">
+                The #1 Montana RV Organization Mistake
+              </h1>
+              
+              <p>Hi {{first_name}},</p>
+              
+              <p>Last weekend, I was at a campground near Glacier National Park when a fellow RVer asked me the question I hear most often:</p>
+              
+              <p><em>"Chanel, I bought all the organizers everyone recommends, but my RV still feels chaotic. What am I doing wrong?"</em></p>
+              
+              <p>Here's the thing: She wasn't doing anything wrong. She just fell into the #1 trap that 90% of RVers make...</p>
+              
+              <div style="background: #fff3cd; padding: 20px; border-left: 4px solid #ffc107; margin: 25px 0;">
+                <h3 style="color: #856404; margin-top: 0;">Mistake #1: Buying Solutions Before Understanding Problems</h3>
+                <p>Most RVers see a beautiful "organized RV" on Pinterest, buy the products shown, and wonder why it doesn't work for them.</p>
+                <p><strong>The reality:</strong> Every RV has different layouts, different challenges, and different owners with different habits.</p>
+              </div>
+              
+              <p><strong>The Montana Reality Check:</strong> Organization solutions that work in a stationary California RV park might completely fail when you're dealing with:</p>
+              
+              <ul style="padding-left: 20px;">
+                <li>Altitude changes that pop container lids open</li>
+                <li>Temperature swings that make things expand and contract</li>
+                <li>Wind that requires everything to be secured</li>
+                <li>Washboard roads that shake everything loose</li>
+                <li>Limited resupply opportunities in rural Montana</li>
+              </ul>
+              
+              <div style="background: #f4f1e8; padding: 25px; border-radius: 8px; margin: 25px 0;">
+                <h3 style="color: #8b4513; margin-top: 0;">The Right Way to Approach RV Organization:</h3>
+                <p><strong>Step 1:</strong> Identify your specific challenges and RV layout</p>
+                <p><strong>Step 2:</strong> Understand your natural habits and lifestyle</p>
+                <p><strong>Step 3:</strong> Find solutions that work with #1 and #2, not against them</p>
+                <p><strong>Step 4:</strong> Test small before investing big</p>
+              </div>
+              
+              <p>This is exactly why I created the RV Organization Quiz - it helps you skip the guessing and get straight to solutions that actually work for YOUR situation.</p>
+              
+              <div style="text-align: center; margin: 30px 0;">
+                <a href="{{quiz_url}}" style="background: #8b4513; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">
+                  Discover Your Specific RV Challenges
+                </a>
+                <p style="margin-top: 10px; font-size: 14px; color: #666;">
+                  Takes 2 minutes, saves months of trial and error
+                </p>
+              </div>
+              
+              <p><strong>Quick tip for this week:</strong> Before buying any organization products, spend 10 minutes observing how you actually use your space. Where do things naturally get dropped? What areas feel most frustrating? Understanding these patterns first will save you money and frustration.</p>
+              
+              <p>Next email: I'll share the 3 organization principles that work in every Montana RV, regardless of size or style.</p>
+              
+              <p>Stay organized,<br>Chanel Basolo<br><em>Montana RV Organization Expert</em></p>
+            </div>
+          `,
+        },
+      },
+      {
+        id: "newsletter_email_3",
+        day: 7,
+        subject: "{{first_name}}, 3 principles that work in every Montana RV",
+        preheader: "The universal rules for RV organization success",
+        template: {
+          html: `
+            <div style="max-width: 600px; font-family: Georgia, serif; line-height: 1.6; color: #2c3e50;">
+              <h1 style="color: #8b4513; font-size: 24px; margin-bottom: 20px;">
+                3 Universal Montana RV Organization Principles
+              </h1>
+              
+              <p>{{first_name}},</p>
+              
+              <p>After helping hundreds of RV owners across Montana - from tiny travel trailers to massive Class A coaches - I've discovered 3 principles that work universally, regardless of your RV size, type, or layout.</p>
+              
+              <p>Master these, and you'll have a solid foundation for any organization system:</p>
+              
+              <div style="background: #f4f1e8; padding: 25px; border-radius: 8px; margin: 25px 0;">
+                <h3 style="color: #8b4513; margin-top: 0;">🔒 Principle #1: Everything Must Be Secured</h3>
+                <p>In Montana, your RV isn't just a home - it's a mobile home that deals with wind, vibration, and movement.</p>
+                <p><strong>The rule:</strong> If it can slide, roll, or fall during travel, it will. Design your organization with movement in mind, not just aesthetics.</p>
+                <p><strong>Quick wins:</strong> Tension rods in cabinets, non-slip mats on shelves, bungee cord nets for lightweight items.</p>
+              </div>
+              
+              <div style="background: #e8f4f8; padding: 25px; border-radius: 8px; margin: 25px 0;">
+                <h3 style="color: #2980b9; margin-top: 0;">⚡ Principle #2: Accessibility Over Perfection</h3>
+                <p>Beautiful organization that requires moving 3 things to get to what you need won't last a week in real RV life.</p>
+                <p><strong>The rule:</strong> Daily-use items should be accessible without moving other items. Period.</p>
+                <p><strong>Quick wins:</strong> Store frequently used items at eye level, keep pathways clear, use clear containers for visibility.</p>
+              </div>
+              
+              <div style="background: #f0f8f0; padding: 25px; border-radius: 8px; margin: 25px 0;">
+                <h3 style="color: #27ae60; margin-top: 0;">🔄 Principle #3: Systems Over Solutions</h3>
+                <p>A fancy organizer isn't a system - it's just a container. Systems include how you use the space, maintain it, and adapt it over time.</p>
+                <p><strong>The rule:</strong> Focus on creating sustainable habits and processes, not just buying products.</p>
+                <p><strong>Quick wins:</strong> 5-minute daily resets, designated homes for everything, "one in, one out" policies for limited space.</p>
+              </div>
+              
+              <p><strong>Here's the truth:</strong> These principles work because they're based on how people actually live in RVs, not how Instagram makes us think we should live.</p>
+              
+              <p>Want to see how these principles apply specifically to your RV type and challenges? The quiz I mentioned walks you through exactly that, plus gives you a personalized action plan.</p>
+              
+              <div style="text-align: center; margin: 30px 0;">
+                <a href="{{quiz_url}}" style="background: #8b4513; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">
+                  Get Your Personalized RV Organization Plan
+                </a>
+                <p style="margin-top: 10px; font-size: 14px; color: #666;">
+                  Based on these 3 principles + your specific situation
+                </p>
+              </div>
+              
+              <p><strong>Action step for this week:</strong> Look at one problem area in your RV through the lens of these 3 principles. Is the issue that things aren't secured? Not accessible? Or is it a missing system?</p>
+              
+              <p>Understanding the root cause will point you toward the right solution.</p>
+              
+              <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 30px 0; text-align: center;">
+                <h3 style="color: #8b4513; margin-top: 0;">Ready for Personalized Help?</h3>
+                <p>If you'd like specific guidance for your RV situation, I offer free 30-minute consultations where we can discuss your challenges and create a plan that actually works for your lifestyle.</p>
+                <a href="{{consultation_url}}" style="background: #2980b9; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; margin-top: 10px;">
+                  Book Your Free Consultation
+                </a>
+              </div>
+              
+              <p>You'll continue receiving my weekly Montana RV organization tips, real stories from fellow RVers, and practical solutions that actually work in Big Sky Country.</p>
+              
+              <p>Thanks for being part of this community of hundreds of RV owners who are creating more peaceful, organized spaces on the road!</p>
+              
+              <p>Happy organizing,<br>Chanel Basolo<br><em>Montana RV Organization Specialist</em></p>
+              
+              <div style="text-align: center; margin: 30px 0; border-top: 1px solid #eee; padding-top: 20px;">
+                <a href="{{newsletter_archive_url}}" style="background: #666; color: white; padding: 8px 16px; text-decoration: none; border-radius: 3px; font-size: 14px;">
+                  Browse More RV Tips
+                </a>
+              </div>
+            </div>
+          `,
+        },
+      },
+    ],
+  },
+
   // HOT LEADS (Score 75+) - 5 emails over 10 days
   hotLeads: {
     metadata: {
@@ -30,7 +248,7 @@ const emailSequences = {
               
               <p>Your quiz results show you're scoring 75+ - that means you're already motivated and ready for serious change in your {{rv_type}}.</p>
               
-              <p>Here's what I've learned after helping 200+ RVers across Montana's highways: the difference between those who succeed and those who stay stuck isn't motivation (you've got that!) - it's having the RIGHT system.</p>
+              <p>Here's what I've learned after helping hundreds of RVers across Montana's highways: the difference between those who succeed and those who stay stuck isn't motivation (you've got that!) - it's having the RIGHT system.</p>
               
               <div style="background: #f4f1e8; padding: 20px; border-left: 4px solid #8b4513; margin: 25px 0;">
                 <h3 style="color: #8b4513; margin-top: 0;">Your Biggest Challenge: {{challenge}}</h3>
@@ -137,7 +355,7 @@ const emailSequences = {
               
               <p>That's why your {{challenge}} issue isn't just about finding more space - it's about creating systems that work with Montana's environment, not against it.</p>
               
-              <p><strong>Case Study:</strong> My client Sarah (different Sarah!) had the same {{challenge}} struggle in her {{rv_type}}. After we implemented the Montana-specific solutions, she emailed me from Glacier National Park: "I actually ENJOY being inside now. Everything stays put, even on washboard roads!"</p>
+              <p><strong>Case Study:</strong> My client Sarah had the same {{challenge}} struggle in her {{rv_type}}. After we implemented the Montana-specific solutions, she emailed me from Glacier National Park: "I actually ENJOY being inside now. Everything stays put, even on washboard roads!"</p>
               
               <p>The secret isn't buying more organizers. It's understanding the 3 pillars of Montana RV organization:</p>
               
@@ -573,7 +791,7 @@ const emailSequences = {
                 <p><strong>If you started but got stuck:</strong> This is the most common scenario. You're not behind - you're right where most people are.</p>
               </div>
               
-              <p>Here's what I've learned from helping 300+ RV owners: <strong>Information alone doesn't create transformation.</strong></p>
+              <p>Here's what I've learned from helping hundreds of RV owners: <strong>Information alone doesn't create transformation.</strong></p>
               
               <p>You need:</p>
               <ul style="padding-left: 20px;">
