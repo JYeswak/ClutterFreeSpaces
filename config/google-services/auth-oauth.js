@@ -20,18 +20,32 @@ class GoogleOAuthService {
 
   async initialize() {
     try {
-      // Load client credentials
-      const credentials = await this.loadCredentials();
-      if (!credentials) {
-        throw new Error("OAuth credentials not found. Please run setup.");
+      // Try environment variables first (Railway deployment)
+      let client_id = process.env.GOOGLE_CLIENT_ID;
+      let client_secret = process.env.GOOGLE_CLIENT_SECRET;
+      let redirect_uri = process.env.RAILWAY_URL
+        ? `${process.env.RAILWAY_URL}/auth/google/callback`
+        : "http://localhost:3000/auth/google/callback";
+
+      // Fallback to JSON file if env vars not available
+      if (!client_id || !client_secret) {
+        const credentials = await this.loadCredentials();
+        if (!credentials) {
+          throw new Error(
+            "OAuth credentials not found. Add GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET to .env or provide oauth-credentials.json",
+          );
+        }
+
+        const creds = credentials.web || credentials.installed;
+        client_id = creds.client_id;
+        client_secret = creds.client_secret;
+        redirect_uri = creds.redirect_uris[0];
       }
 
-      const { client_secret, client_id, redirect_uris } =
-        credentials.web || credentials.installed;
       this.oAuth2Client = new google.auth.OAuth2(
         client_id,
         client_secret,
-        redirect_uris[0],
+        redirect_uri,
       );
 
       // Try to load existing token
