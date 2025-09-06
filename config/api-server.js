@@ -322,6 +322,101 @@ app.post("/api/create-sendgrid-fields", async (req, res) => {
   }
 });
 
+// Check SendGrid email delivery logs
+app.get("/api/sendgrid-activity", async (req, res) => {
+  try {
+    const { email, hours = 24 } = req.query;
+
+    console.log(
+      `🔍 Checking SendGrid activity for ${email || "all emails"} in last ${hours} hours`,
+    );
+
+    // Get activities from SendGrid
+    const response = await axios.get("https://api.sendgrid.com/v3/messages", {
+      headers: {
+        Authorization: `Bearer ${process.env.SendGrid_API_Key}`,
+      },
+      params: {
+        query: email ? `to_email="${email}"` : undefined,
+        limit: 100,
+      },
+    });
+
+    const messages = response.data.messages || [];
+
+    // If specific email provided, filter for that email
+    const filteredMessages = email
+      ? messages.filter(
+          (msg) =>
+            msg.to_email &&
+            msg.to_email.toLowerCase().includes(email.toLowerCase()),
+        )
+      : messages.slice(0, 10); // Show last 10 if no email specified
+
+    console.log(
+      `📧 Found ${filteredMessages.length} messages for ${email || "recent activity"}`,
+    );
+
+    res.json({
+      success: true,
+      email: email,
+      messageCount: filteredMessages.length,
+      messages: filteredMessages.map((msg) => ({
+        message_id: msg.msg_id,
+        to_email: msg.to_email,
+        from_email: msg.from_email,
+        subject: msg.subject,
+        status: msg.status,
+        opens_count: msg.opens_count,
+        clicks_count: msg.clicks_count,
+        last_event_time: msg.last_event_time,
+        template_id: msg.template_id,
+      })),
+    });
+  } catch (error) {
+    console.error("❌ SendGrid activity check failed:", error.response?.data);
+    res.status(error.response?.status || 500).json({
+      success: false,
+      error: error.response?.data?.error || error.message,
+      details: error.response?.data,
+    });
+  }
+});
+
+// Check specific message events from SendGrid
+app.get("/api/sendgrid-events/:messageId", async (req, res) => {
+  try {
+    const { messageId } = req.params;
+
+    console.log(`🔍 Checking events for message: ${messageId}`);
+
+    const response = await axios.get(
+      `https://api.sendgrid.com/v3/messages/${messageId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.SendGrid_API_Key}`,
+        },
+      },
+    );
+
+    res.json({
+      success: true,
+      messageId: messageId,
+      message: response.data,
+    });
+  } catch (error) {
+    console.error(
+      `❌ SendGrid message ${req.params.messageId} check failed:`,
+      error.response?.data,
+    );
+    res.status(error.response?.status || 500).json({
+      success: false,
+      error: error.response?.data?.error || error.message,
+      details: error.response?.data,
+    });
+  }
+});
+
 // Test individual SendGrid custom fields
 app.post("/api/test-sendgrid-fields", async (req, res) => {
   try {
