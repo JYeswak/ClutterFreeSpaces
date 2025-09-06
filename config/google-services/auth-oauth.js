@@ -1,3 +1,4 @@
+// Load environment variables
 require("dotenv").config({ path: "../../.env" });
 const { google } = require("googleapis");
 const fs = require("fs").promises;

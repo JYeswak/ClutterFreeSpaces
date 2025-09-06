@@ -1,4 +1,12 @@
+// Load environment variables
 require("dotenv").config({ path: "../.env" });
+
+// Debug environment variables on startup
+console.log("🔍 Environment Debug:");
+console.log("NODE_ENV:", process.env.NODE_ENV);
+console.log("GOOGLE_CLIENT_ID exists:", !!process.env.GOOGLE_CLIENT_ID);
+console.log("GOOGLE_CLIENT_SECRET exists:", !!process.env.GOOGLE_CLIENT_SECRET);
+console.log("RAILWAY_URL:", process.env.RAILWAY_URL);
 const express = require("express");
 const cors = require("cors");
 const sgMail = require("@sendgrid/mail");
