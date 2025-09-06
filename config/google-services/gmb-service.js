@@ -1,4 +1,10 @@
-const authService = require("./auth");
+// Try OAuth first, fall back to API key auth
+let authService;
+try {
+  authService = require("./auth-oauth");
+} catch (error) {
+  authService = require("./auth");
+}
 const QRCode = require("qrcode");
 const axios = require("axios");
 

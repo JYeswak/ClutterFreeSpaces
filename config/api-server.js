@@ -10,6 +10,14 @@ const gmbService = require("./google-services/gmb-service");
 const ga4Service = require("./google-services/ga4-service");
 const leadScoringService = require("./google-services/lead-scoring");
 
+// Import OAuth service (fallback if not available)
+let oauthService;
+try {
+  oauthService = require("./google-services/auth-oauth");
+} catch (error) {
+  console.log("OAuth service not available, using API key auth only");
+}
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -61,6 +69,94 @@ app.get("/health", (req, res) => {
     uptime: process.uptime(),
     timestamp: new Date().toISOString(),
   });
+});
+
+// ============================================================================
+// OAUTH AUTHENTICATION ROUTES
+// ============================================================================
+
+// OAuth login endpoint
+app.get("/auth/google", async (req, res) => {
+  try {
+    if (!oauthService) {
+      return res.status(500).json({
+        success: false,
+        error: "OAuth not configured",
+      });
+    }
+
+    const authUrl = await oauthService.getAuthUrl();
+    res.redirect(authUrl);
+  } catch (error) {
+    console.error("OAuth login error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// OAuth callback endpoint
+app.get("/auth/google/callback", async (req, res) => {
+  try {
+    if (!oauthService) {
+      return res.status(500).json({
+        success: false,
+        error: "OAuth not configured",
+      });
+    }
+
+    const { code, error } = req.query;
+
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        error: `OAuth error: ${error}`,
+      });
+    }
+
+    if (!code) {
+      return res.status(400).json({
+        success: false,
+        error: "No authorization code provided",
+      });
+    }
+
+    const tokens = await oauthService.getAccessToken(code);
+
+    res.json({
+      success: true,
+      message:
+        "OAuth authentication successful! Google APIs are now available.",
+      scopes: tokens.scope?.split(" ") || [],
+      expiry: new Date(tokens.expiry_date).toISOString(),
+    });
+  } catch (error) {
+    console.error("OAuth callback error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// OAuth status endpoint
+app.get("/auth/status", async (req, res) => {
+  try {
+    if (!oauthService) {
+      return res.json({
+        authenticated: false,
+        method: "API Key only",
+        message: "OAuth not configured",
+      });
+    }
+
+    const isAuthenticated = oauthService.isAuthenticated();
+    res.json({
+      authenticated: isAuthenticated,
+      method: isAuthenticated ? "OAuth" : "API Key",
+      message: isAuthenticated
+        ? "Full Google API access available"
+        : "Limited API access",
+    });
+  } catch (error) {
+    console.error("OAuth status error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
 });
 
 // ============================================================================

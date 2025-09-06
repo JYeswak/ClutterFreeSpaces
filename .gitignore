@@ -11,6 +11,10 @@ yarn-error.log*
 .env.development
 .env.test
 
+# OAuth credentials and tokens
+oauth-credentials.json
+oauth-token.json
+
 # Logs
 *.log
 logs/
