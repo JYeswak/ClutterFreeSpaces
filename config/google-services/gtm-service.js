@@ -140,6 +140,90 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }
 
   /**
+   * Generate custom variables for GTM
+   */
+  getVariableConfigurations() {
+    return {
+      leadValueVariable: {
+        type: "Data Layer Variable",
+        name: "Lead Value",
+        dataLayerVariableName: "lead_value",
+        defaultValue: "800",
+      },
+
+      serviceTypeVariable: {
+        type: "Data Layer Variable",
+        name: "Service Type",
+        dataLayerVariableName: "service_type",
+        defaultValue: "unknown",
+      },
+
+      leadSourceVariable: {
+        type: "Data Layer Variable",
+        name: "Lead Source",
+        dataLayerVariableName: "lead_source",
+        defaultValue: "website",
+      },
+
+      bookingValueVariable: {
+        type: "Data Layer Variable",
+        name: "Booking Value",
+        dataLayerVariableName: "booking_value",
+        defaultValue: "1200",
+      },
+
+      bookingIdVariable: {
+        type: "Data Layer Variable",
+        name: "Booking ID",
+        dataLayerVariableName: "transaction_id",
+      },
+
+      quizResultVariable: {
+        type: "Data Layer Variable",
+        name: "Quiz Result",
+        dataLayerVariableName: "quiz_result",
+      },
+
+      emailCapturedVariable: {
+        type: "Data Layer Variable",
+        name: "Email Captured",
+        dataLayerVariableName: "email_captured",
+        defaultValue: "false",
+      },
+
+      contactMethodVariable: {
+        type: "Data Layer Variable",
+        name: "Contact Method",
+        dataLayerVariableName: "contact_method",
+      },
+
+      clickElementVariable: {
+        type: "Auto-Event Variable",
+        name: "Click Element",
+        variableType: "element",
+      },
+
+      formTypeVariable: {
+        type: "Data Layer Variable",
+        name: "Form Type",
+        dataLayerVariableName: "form_type",
+      },
+
+      pagePathVariable: {
+        type: "Built-In Variable",
+        name: "Page Path",
+        variableType: "pagePath",
+      },
+
+      clickTextVariable: {
+        type: "Auto-Event Variable",
+        name: "Click Text",
+        variableType: "elementText",
+      },
+    };
+  }
+
+  /**
    * Generate triggers for GTM
    */
   getTriggerConfigurations() {

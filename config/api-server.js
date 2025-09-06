@@ -360,6 +360,46 @@ app.get("/api/google/gtm/triggers", (req, res) => {
   }
 });
 
+app.get("/api/google/gtm/variables", (req, res) => {
+  try {
+    const variables = gtmService.getVariableConfigurations();
+    res.json({ success: true, data: variables });
+  } catch (error) {
+    console.error("GTM variables error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Complete GTM setup configuration
+app.get("/api/google/gtm/setup", (req, res) => {
+  try {
+    const setup = {
+      containerId: "GTM-WKXSWZH7",
+      steps: {
+        1: "Install container snippets on Squarespace",
+        2: "Create variables in GTM interface",
+        3: "Create triggers in GTM interface",
+        4: "Create tags in GTM interface",
+        5: "Test and publish container",
+      },
+      snippets: gtmService.getContainerSnippets(),
+      variables: gtmService.getVariableConfigurations(),
+      triggers: gtmService.getTriggerConfigurations(),
+      tags: gtmService.getTagConfigurations(),
+      dataLayerEvents: gtmService.generateDataLayerEvents(),
+      instructions: {
+        squarespace:
+          "Add head snippet to Settings > Advanced > Code Injection > Header, body snippet to Footer",
+        testing: "Use GTM Preview mode to test events before publishing",
+      },
+    };
+    res.json({ success: true, data: setup });
+  } catch (error) {
+    console.error("GTM setup error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 // ============================================================================
 // GMB ENHANCEMENT ROUTES
 // ============================================================================
