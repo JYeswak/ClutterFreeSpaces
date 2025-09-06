@@ -868,9 +868,9 @@ app.post("/api/request-resources", async (req, res) => {
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`🚀 Guide delivery server running on http://localhost:${PORT}`);
+  console.log(`🚀 ClutterFreeSpaces API server running on port ${PORT}`);
   console.log(
-    "📧 Using FRESH template IDs - Build: 2025-08-30-v4-SCORING-FIXED",
+    "📧 Using ENHANCED template IDs - Build: 2025-09-06-SMART-BUNDLE",
   );
   console.log("📱 SMS & Phone notifications ACTIVE for high-value leads");
   console.log(
