@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Office Setup Guide - Clutter Free Spaces</title>
+    <style>
+        /* PDF-optimized styles */
+        @media print {
+            body { margin: 0.5in; font-size: 12pt; }
+            .page-break { page-break-before: always; }
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.4;
+            color: #333;
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 0.5in;
+        }
+        
+        .header {
+            border-bottom: 3px solid #2D5A87;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: #2D5A87;
+            font-size: 28px;
+            margin: 0 0 10px 0;
+        }
+        
+        .brand {
+            color: #666;
+            font-size: 14px;
+            margin: 0;
+        }
+        
+        h2 {
+            color: #2D5A87;
+            font-size: 20px;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+            margin: 30px 0 20px 0;
+        }
+        
+        h3 {
+            color: #2D5A87;
+            font-size: 16px;
+            margin: 20px 0 10px 0;
+        }
+        
+        h4 {
+            color: #2D5A87;
+            font-size: 14px;
+            margin: 15px 0 10px 0;
+        }
+        
+        .intro-box, .tip-box, .system-box {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-left: 4px solid #2D5A87;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        
+        .system-box {
+            border-left-color: #28a745;
+        }
+        
+        .zone-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .zone-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #2D5A87;
+        }
+        
+        .zone-item h4 {
+            margin: 0 0 10px 0;
+            color: #2D5A87;
+            text-align: center;
+        }
+        
+        .step-list {
+            margin: 0 0 15px 0;
+            padding-left: 0;
+            counter-reset: step-counter;
+        }
+        
+        .step-list li {
+            margin: 8px 0;
+            font-size: 14px;
+            list-style: none;
+            padding-left: 30px;
+            position: relative;
+            counter-increment: step-counter;
+        }
+        
+        .step-list li:before {
+            content: counter(step-counter);
+            color: #2D5A87;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            background: #e9ecef;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            font-size: 12px;
+            line-height: 20px;
+        }
+        
+        .checklist ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .checklist li {
+            margin: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            font-size: 14px;
+        }
+        
+        .checklist li:before {
+            content: "□";
+            position: absolute;
+            left: 0;
+            color: #2D5A87;
+            font-weight: bold;
+        }
+        
+        .digital-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border: 2px solid #2D5A87;
+        }
+        
+        .footer {
+            border-top: 2px solid #e9ecef;
+            padding-top: 20px;
+            margin-top: 40px;
+            text-align: center;
+        }
+        
+        .contact-info p {
+            margin: 5px 0;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏢 Home Office Setup Guide</h1>
+        <p class="brand">Clutter Free Spaces | Montana</p>
+    </div>
+    
+    <section class="content-section">
+        <h2>Creating Your Productive Workspace</h2>
+        <div class="intro-box">
+            <p>Whether you work from home full-time, manage family finances, or coordinate household activities, every Montana home needs a dedicated, organized workspace. Your home office should support productivity while fitting seamlessly into your living space.</p>
+        </div>
+        
+        <h2>🗂️ The 4-Zone Office System</h2>
+        <div class="zone-grid">
+            <div class="zone-item">
+                <h4>Zone 1: Active Work</h4>
+                <ul>
+                    <li>Computer/laptop area</li>
+                    <li>Current project materials</li>
+                    <li>Daily planning tools</li>
+                    <li>Frequently used supplies</li>
+                </ul>
+            </div>
+            
+            <div class="zone-item">
+                <h4>Zone 2: Reference</h4>
+                <ul>
+                    <li>Filing cabinet or system</li>
+                    <li>Reference books/manuals</li>
+                    <li>Important documents</li>
+                    <li>Resource materials</li>
+                </ul>
+            </div>
+            
+            <div class="zone-item">
+                <h4>Zone 3: Supplies</h4>
+                <ul>
+                    <li>Office supplies storage</li>
+                    <li>Extra paper, ink, batteries</li>
+                    <li>Postal supplies</li>
+                    <li>Tech accessories/cables</li>
+                </ul>
+            </div>
+            
+            <div class="zone-item">
+                <h4>Zone 4: Archive</h4>
+                <ul>
+                    <li>Long-term storage</li>
+                    <li>Tax documents (7+ years)</li>
+                    <li>Rarely accessed files</li>
+                    <li>Backup equipment</li>
+                </ul>
+            </div>
+        </div>
+        
+        <h2>📄 The Paperwork System That Works</h2>
+        <div class="system-box">
+            <h3>Action-Based Filing System</h3>
+            <ol class="step-list">
+                <li><strong>Action Required:</strong> Bills to pay, forms to fill, tasks to complete</li>
+                <li><strong>Waiting For:</strong> Pending responses, insurance claims, applications</li>
+                <li><strong>To File:</strong> Documents that need permanent filing</li>
+                <li><strong>To Review:</strong> Statements, reports requiring monthly review</li>
+                <li><strong>Reference:</strong> Manuals, warranties, contact information</li>
+            </ol>
+            
+            <div class="tip-box">
+                <p><strong>Montana Specific:</strong> Create dedicated folders for property taxes, hunting/fishing licenses, vehicle registrations, and seasonal equipment warranties.</p>
+            </div>
+        </div>
+        
+        <h2>💻 Digital Organization Strategy</h2>
+        <div class="digital-section">
+            <h3>Computer File Organization</h3>
+            <h4>Folder Structure:</h4>
+            <ol class="step-list">
+                <li><strong>01_Active_Projects:</strong> Currently working files</li>
+                <li><strong>02_Admin:</strong> Personal admin, finances, household</li>
+                <li><strong>03_Reference:</strong> Manuals, templates, resources</li>
+                <li><strong>04_Archive:</strong> Completed projects and old files</li>
+                <li><strong>05_Personal:</strong> Photos, personal documents</li>
+            </ol>
+            
+            <h4>Email Management System:</h4>
+            <ul>
+                <li><strong>Inbox:</strong> Process to zero daily - action, file, or delete</li>
+                <li><strong>Action Required:</strong> Emails needing follow-up</li>
+                <li><strong>Waiting For:</strong> Tracking pending responses</li>
+                <li><strong>Reference:</strong> Important emails to keep</li>
+                <li><strong>Archive:</strong> Everything else (searchable when needed)</li>
+            </ul>
+            
+            <h4>Desktop Organization Rules:</h4>
+            <ul>
+                <li>Keep desktop clear except for 3-5 current project folders</li>
+                <li>Use meaningful file names with dates (2024-01-15_Budget_Review)</li>
+                <li>Create monthly archive folders for completed work</li>
+                <li>Schedule weekly digital declutter sessions</li>
+            </ul>
+        </div>
+        
+        <div class="page-break"></div>
+        
+        <h2>🖥️ Desk Organization & Layout</h2>
+        <div class="system-box">
+            <h3>Desk Surface Zones</h3>
+            <ol class="step-list">
+                <li><strong>Computer Zone:</strong> Monitor, keyboard, mouse - dominant side</li>
+                <li><strong>Writing Zone:</strong> Space for handwriting, note-taking</li>
+                <li><strong>Input Zone:</strong> Inbox for incoming papers, mail</li>
+                <li><strong>Supply Zone:</strong> Pens, stapler, frequently used tools</li>
+                <li><strong>Personal Zone:</strong> Coffee, water, small personal items</li>
+            </ol>
+        </div>
+        
+        <div class="tip-box">
+            <h4>Montana Home Office Essentials</h4>
+            <ul>
+                <li><strong>Good Lighting:</strong> Crucial during dark winter months</li>
+                <li><strong>Temperature Control:</strong> Space heater or fan for comfort</li>
+                <li><strong>Backup Power:</strong> UPS for power outages during storms</li>
+                <li><strong>Ergonomic Setup:</strong> Proper chair and monitor height</li>
+                <li><strong>Noise Management:</strong> Headphones or sound dampening</li>
+            </ul>
+        </div>
+        
+        <h2>📚 Supply Organization & Storage</h2>
+        <div class="system-box">
+            <h3>Supply Categories & Storage</h3>
+            
+            <h4>Writing Supplies:</h4>
+            <ul>
+                <li>Desktop organizer for daily pens/pencils</li>
+                <li>Drawer dividers for backup supplies</li>
+                <li>Separate area for specialty pens/markers</li>
+            </ul>
+            
+            <h4>Paper & Forms:</h4>
+            <ul>
+                <li>Paper tray or vertical file for letterhead</li>
+                <li>Folder system for frequently used forms</li>
+                <li>Envelope storage by size</li>
+            </ul>
+            
+            <h4>Technology:</h4>
+            <ul>
+                <li>Cable management system</li>
+                <li>Drawer for chargers and adapters</li>
+                <li>Backup drive storage</li>
+                <li>Battery storage container</li>
+            </ul>
+            
+            <h4>Business/Household Admin:</h4>
+            <ul>
+                <li>Checkbook and statement storage</li>
+                <li>Business card organizer</li>
+                <li>Postage and mailing supplies</li>
+                <li>Calculator and financial tools</li>
+            </ul>
+        </div>
+        
+        <h2>📅 Planning & Productivity Systems</h2>
+        <div class="system-box">
+            <h3>Daily Workflow</h3>
+            <ol class="step-list">
+                <li><strong>Morning Setup (5 min):</strong> Clear desk, review daily priorities</li>
+                <li><strong>Hourly Reset (1 min):</strong> Return items to designated spots</li>
+                <li><strong>Project Transition (2 min):</strong> File current work, set up next task</li>
+                <li><strong>End of Day (10 min):</strong> Process inbox, plan tomorrow, clear desk</li>
+            </ol>
+        </div>
+        
+        <h2>🗃️ Filing System for Montana Households</h2>
+        <div class="checklist">
+            <h3>Essential File Categories</h3>
+            
+            <h4>Financial:</h4>
+            <ul>
+                <li>Bank statements & credit card statements</li>
+                <li>Investment & retirement accounts</li>
+                <li>Tax documents (current + 7 years)</li>
+                <li>Budget worksheets and financial planning</li>
+            </ul>
+            
+            <h4>Property & Vehicles:</h4>
+            <ul>
+                <li>Property deeds, mortgage documents</li>
+                <li>Home insurance and claims</li>
+                <li>Vehicle titles, registration, insurance</li>
+                <li>Equipment warranties (tractors, ATVs, etc.)</li>
+            </ul>
+            
+            <h4>Personal & Family:</h4>
+            <ul>
+                <li>Birth certificates, passports, SSN cards</li>
+                <li>Medical records and insurance</li>
+                <li>Education records and diplomas</li>
+                <li>Emergency contact information</li>
+            </ul>
+            
+            <h4>Montana-Specific:</h4>
+            <ul>
+                <li>Hunting and fishing licenses</li>
+                <li>Property tax assessments</li>
+                <li>Well and septic system records</li>
+                <li>Easement and water rights documentation</li>
+            </ul>
+        </div>
+        
+        <h2>🔄 Weekly Office Maintenance</h2>
+        <div class="checklist">
+            <h3>Daily 5-Minute Reset</h3>
+            <ul>
+                <li>Clear desk surface completely</li>
+                <li>Process inbox - file, action, or toss</li>
+                <li>Return supplies to designated spots</li>
+                <li>Plan next day's priorities</li>
+            </ul>
+            
+            <h3>Weekly 30-Minute Deep Clean</h3>
+            <ul>
+                <li>File accumulated papers in action folders</li>
+                <li>Empty trash and shred bin</li>
+                <li>Dust surfaces and clean computer screen</li>
+                <li>Reorganize supply drawers and containers</li>
+                <li>Back up computer files</li>
+                <li>Review and update filing system</li>
+            </ul>
+            
+            <h3>Monthly Office Review</h3>
+            <ul>
+                <li>Purge outdated files and documents</li>
+                <li>Review and update contact information</li>
+                <li>Check supply levels and reorder as needed</li>
+                <li>Evaluate office layout and make improvements</li>
+            </ul>
+        </div>
+        
+        <h2>🏔️ Montana-Specific Office Considerations</h2>
+        <div class="tip-box">
+            <h4>Climate & Location Factors</h4>
+            <ul>
+                <li><strong>Internet Backup:</strong> Mobile hotspot for rural connectivity issues</li>
+                <li><strong>Power Backup:</strong> UPS system for weather-related outages</li>
+                <li><strong>Document Protection:</strong> Fireproof safe for irreplaceable documents</li>
+                <li><strong>Seasonal Planning:</strong> Calendar system for hunting seasons, tax deadlines</li>
+                <li><strong>Multi-Use Space:</strong> Flexible setup for seasonal tax prep or family projects</li>
+            </ul>
+        </div>
+    </section>
+    
+    <div class="footer">
+        <div class="contact-info">
+            <p><strong>Clutter Free Spaces</strong> | (406) 551-3364 | contact@clutter-free-spaces.com</p>
+            <p>Serving Missoula, Hamilton, Stevensville, and Western Montana</p>
+            <p>www.clutter-free-spaces.com</p>
+        </div>
+    </div>
+</body>
+</html>

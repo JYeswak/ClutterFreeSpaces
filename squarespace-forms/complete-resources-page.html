@@ -1,0 +1,889 @@
+<!-- Complete Resources Page for Squarespace -->
+<!-- Single HTML block with modal, content, and styling -->
+
+<style>
+/* Modal Styles */
+.resource-modal {
+  display: none;
+  position: fixed;
+  z-index: 999999 !important;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto;
+  padding: 0;
+  border: none;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  animation: modalSlideIn 0.3s ease-out;
+  position: relative;
+  z-index: 1000000 !important;
+}
+
+@keyframes modalSlideIn {
+  from { opacity: 0; transform: translateY(-50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #2D5A87 0%, #1e3a5f 100%);
+  color: white;
+  padding: 30px 30px 20px;
+  border-radius: 12px 12px 0 0;
+  text-align: center;
+}
+
+.modal-header h2 {
+  margin: 0 0 10px 0;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.modal-header p {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 14px;
+}
+
+.modal-body {
+  padding: 30px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #2D5A87;
+}
+
+.form-group input, .form-group select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.form-group input:focus, .form-group select:focus {
+  outline: none;
+  border-color: #2D5A87;
+  box-shadow: 0 0 0 3px rgba(45, 90, 135, 0.1);
+}
+
+.download-btn {
+  width: 100%;
+  background: #2D5A87;
+  color: white;
+  border: none;
+  padding: 15px 20px;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.download-btn:hover {
+  background: #1e3a5f;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(45, 90, 135, 0.3);
+}
+
+.download-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.close-btn {
+  color: #aaa;
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+  color: white;
+}
+
+.privacy-text {
+  font-size: 12px;
+  color: #666;
+  text-align: center;
+  margin-top: 15px;
+  line-height: 1.4;
+}
+
+.loading-spinner {
+  display: none;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #2D5A87;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+  margin-left: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.success-message {
+  display: none;
+  background: #d4edda;
+  border: 1px solid #c3e6cb;
+  color: #155724;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.error-message {
+  display: none;
+  background: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Page Content Styles */
+.cfs-resources-page {
+  font-family: 'Georgia', serif;
+  line-height: 1.6;
+  color: #333;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.hero-section {
+  background: linear-gradient(135deg, #2D5A87 0%, #1e3a5f 100%);
+  color: white;
+  padding: 80px 40px;
+  text-align: center;
+  margin: -20px -20px 40px -20px;
+  border-radius: 0 0 20px 20px;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.hero-subtext {
+  font-size: 1.3rem;
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.featured-downloads {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 60px 40px;
+  border-radius: 20px;
+  margin: 40px 0;
+  text-align: center;
+}
+
+.featured-downloads h2 {
+  color: #2D5A87;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.featured-downloads .subtitle {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 40px;
+  font-style: italic;
+}
+
+.download-grid {
+  display: grid;
+  gap: 25px;
+  max-width: 800px;
+  margin: 0 auto;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+}
+
+.download-card {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  border: 2px solid #2D5A87;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.download-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.download-card h3 {
+  color: #2D5A87;
+  font-size: 1.5rem;
+  margin: 0 0 15px 0;
+  font-weight: 600;
+}
+
+.download-card p {
+  margin: 0 0 20px 0;
+  color: #666;
+  line-height: 1.5;
+}
+
+.download-card ul {
+  margin: 0 0 25px 0;
+  padding-left: 20px;
+  text-align: left;
+}
+
+.download-card li {
+  margin-bottom: 8px;
+  color: #555;
+  font-size: 14px;
+}
+
+.download-card button {
+  background: #2D5A87;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.download-card button:hover {
+  background: #1e3a5f;
+  transform: translateY(-2px);
+}
+
+.bundle-card {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, #28a745 0%, #20663b 100%);
+  color: white;
+  padding: 40px;
+  border: none;
+}
+
+.bundle-card h3 {
+  color: white;
+  font-size: 1.8rem;
+}
+
+.bundle-card p {
+  color: rgba(255,255,255,0.9);
+  font-size: 1.1rem;
+}
+
+.bundle-card button {
+  background: white;
+  color: #28a745;
+  font-size: 18px;
+  padding: 15px 30px;
+  font-weight: 700;
+}
+
+.bundle-card button:hover {
+  background: #f8f9fa;
+}
+
+.content-section {
+  margin: 60px 0;
+}
+
+.resource-categories {
+  display: grid;
+  gap: 40px;
+  margin-bottom: 60px;
+}
+
+.category-card {
+  background: #f8f9fa;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.category-card h2 {
+  color: #2D5A87;
+  font-size: 2rem;
+  margin-bottom: 30px;
+  text-align: center;
+  border-bottom: 3px solid #2D5A87;
+  padding-bottom: 15px;
+}
+
+.resource-list {
+  display: grid;
+  gap: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.resource-item {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  border-left: 4px solid #2D5A87;
+}
+
+.resource-item h4 {
+  color: #2D5A87;
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.resource-item p {
+  margin-bottom: 15px;
+  color: #666;
+  font-style: italic;
+}
+
+.resource-item ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.resource-item li {
+  margin-bottom: 8px;
+  color: #555;
+}
+
+.maintenance-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 60px 40px;
+  border-radius: 20px;
+  margin: 60px 0;
+}
+
+.maintenance-content {
+  text-align: center;
+}
+
+.maintenance-content h2 {
+  color: #2D5A87;
+  font-size: 2.5rem;
+  margin-bottom: 40px;
+}
+
+.maintenance-tips {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.tip-card {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  text-align: left;
+}
+
+.tip-card h4 {
+  color: #2D5A87;
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+  text-align: center;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.tip-card ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.tip-card li {
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.cta-section {
+  background: linear-gradient(135deg, #2D5A87 0%, #1e3a5f 100%);
+  color: white;
+  padding: 80px 40px;
+  text-align: center;
+  border-radius: 20px;
+  margin: 60px 0;
+}
+
+.cta-content h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.cta-content p {
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+  opacity: 0.9;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.cta-button {
+  display: inline-block;
+  padding: 15px 30px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  min-width: 200px;
+}
+
+.cta-button.primary {
+  background: #ffffff;
+  color: #2D5A87;
+}
+
+.cta-button.primary:hover {
+  background: #f8f9fa;
+  transform: translateY(-2px);
+}
+
+.cta-button.secondary {
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+}
+
+.cta-button.secondary:hover {
+  background: white;
+  color: #2D5A87;
+  transform: translateY(-2px);
+}
+
+.service-area {
+  font-size: 1rem;
+  opacity: 0.8;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 2.2rem;
+  }
+
+  .hero-subtext {
+    font-size: 1.1rem;
+  }
+
+  .download-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .category-card {
+    padding: 25px;
+  }
+
+  .resource-list {
+    grid-template-columns: 1fr;
+  }
+
+  .maintenance-tips {
+    grid-template-columns: 1fr;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cta-button {
+    width: 80%;
+    max-width: 300px;
+  }
+}
+</style>
+
+<!-- Modal HTML -->
+<div id="resourceModal" class="resource-modal">
+  <div class="modal-content">
+    <span class="close-btn">&times;</span>
+    <div class="modal-header">
+      <h2>📥 Download Your Free Guide</h2>
+      <p>Get instant access to professional organization strategies</p>
+    </div>
+    <div class="modal-body">
+      <div id="successMessage" class="success-message">
+        <strong>Check your email!</strong> Your guide has been sent and should arrive within a few minutes.
+      </div>
+      <div id="errorMessage" class="error-message">
+        Something went wrong. Please try again or email us directly.
+      </div>
+      
+      <form id="resourceForm">
+        <div class="form-group">
+          <label for="firstName">First Name *</label>
+          <input type="text" id="firstName" name="firstName" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Email Address *</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="resourceType">Which guide would you like? *</label>
+          <select id="resourceType" name="resourceType" required>
+            <option value="">Select a guide...</option>
+            <option value="Kitchen Guide">🍳 Kitchen Organization Essentials</option>
+            <option value="Seasonal Guide">🏔️ Montana Seasonal Gear Organization</option>
+            <option value="Daily Routine">✅ Daily Maintenance Routine</option>
+            <option value="Closet Guide">👕 Closet & Bedroom Organization</option>
+            <option value="Office Guide">🏢 Home Office Setup</option>
+            <option value="Mudroom Guide">🥾 Mudroom & Entryway Solutions</option>
+            <option value="Labels & Templates">🏷️ Printable Labels & Templates</option>
+            <option value="Organization Checklists">📋 Organization Checklists</option>
+            <option value="Planning Worksheets">📐 Planning Worksheets</option>
+            <option value="All Guides">📦 Complete Organization Bundle (Recommended!)</option>
+          </select>
+        </div>
+        
+        <button type="submit" class="download-btn">
+          <span id="btnText">Get My Free Guide</span>
+          <span class="loading-spinner"></span>
+        </button>
+      </form>
+      
+      <p class="privacy-text">
+        We respect your privacy. Unsubscribe at any time.<br>
+        You'll also receive helpful organization tips from Chanel.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Page Content -->
+<div class="cfs-resources-page">
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1>Free Organization Resources</h1>
+      <p class="hero-subtext">Professional guides and tools to help you create and maintain an organized, clutter-free home in Montana</p>
+    </div>
+  </section>
+
+  <!-- Featured Downloads -->
+  <section class="featured-downloads">
+    <h2>📥 Free Download Library</h2>
+    <p class="subtitle">Get instant access to our most popular organizing guides - no fluff, just actionable strategies that work</p>
+    
+    <div class="download-grid">
+      <!-- Core Guides -->
+      <div class="download-card">
+        <h3>🍳 Kitchen Organization Essentials</h3>
+        <p>Transform your kitchen with proven systems for pantry, cabinets, and counter space organization.</p>
+        <ul>
+          <li>4-step pantry organization system</li>
+          <li>Cabinet optimization strategies</li>
+          <li>Counter clutter solutions</li>
+          <li>Montana-specific seasonal storage</li>
+        </ul>
+        <button onclick="openResourceModal('Kitchen Guide')">Download Free Guide</button>
+      </div>
+      
+      <div class="download-card">
+        <h3>🏔️ Montana Seasonal Gear Organization</h3>
+        <p>Master year-round outdoor gear storage and rotation systems designed for Montana lifestyles.</p>
+        <ul>
+          <li>Ski & snowboard storage solutions</li>
+          <li>Summer camping gear organization</li>
+          <li>Hunting equipment systems</li>
+          <li>Fishing gear storage strategies</li>
+        </ul>
+        <button onclick="openResourceModal('Seasonal Guide')">Download Free Guide</button>
+      </div>
+      
+      <div class="download-card">
+        <h3>✅ Daily Maintenance Routine</h3>
+        <p>Simple 15-minute daily habits that keep your organized home functioning perfectly.</p>
+        <ul>
+          <li>5-minute morning routine</li>
+          <li>Kitchen clean-as-you-go system</li>
+          <li>Evening reset strategies</li>
+          <li>Weekly maintenance tasks</li>
+        </ul>
+        <button onclick="openResourceModal('Daily Routine')">Download Free Guide</button>
+      </div>
+      
+      <div class="download-card">
+        <h3>👕 Closet & Bedroom Organization</h3>
+        <p>Create peaceful bedrooms and functional closets that work for Montana's seasonal changes.</p>
+        <ul>
+          <li>Seasonal clothing rotation system</li>
+          <li>Closet space maximization</li>
+          <li>Dresser drawer organization</li>
+          <li>Under-bed storage solutions</li>
+        </ul>
+        <button onclick="openResourceModal('Closet Guide')">Download Free Guide</button>
+      </div>
+      
+      <div class="download-card">
+        <h3>🏢 Home Office Setup</h3>
+        <p>Design a productive workspace whether you work from home or manage family life.</p>
+        <ul>
+          <li>Paperwork filing systems</li>
+          <li>Digital organization strategies</li>
+          <li>Desk space optimization</li>
+          <li>Supply storage solutions</li>
+        </ul>
+        <button onclick="openResourceModal('Office Guide')">Download Free Guide</button>
+      </div>
+      
+      <div class="download-card">
+        <h3>🥾 Mudroom & Entryway Solutions</h3>
+        <p>Keep Montana's mud, snow, and outdoor elements from taking over your home's entrance.</p>
+        <ul>
+          <li>Boot and shoe storage systems</li>
+          <li>Coat and jacket organization</li>
+          <li>Glove and accessory storage</li>
+          <li>Pet supply management</li>
+        </ul>
+        <button onclick="openResourceModal('Mudroom Guide')">Download Free Guide</button>
+      </div>
+      
+      <!-- Bundle Card -->
+      <div class="download-card bundle-card">
+        <h3>🎁 Complete Organization Bundle</h3>
+        <p>Get all six guides plus bonus checklists and templates - everything you need to organize your entire Montana home!</p>
+        <button onclick="openResourceModal('All Guides')">Get Complete Bundle FREE</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Additional Resources -->
+  <section class="content-section">
+    <div class="resource-categories">
+      <div class="category-card">
+        <h2>📱 Digital Tools & Templates</h2>
+        <div class="resource-list">
+          <div class="resource-item">
+            <h4>Printable Labels & Tags</h4>
+            <p>Professional labeling templates for consistent organization throughout your home.</p>
+            <ul>
+              <li>Pantry and kitchen labels</li>
+              <li>Storage bin identification tags</li>
+              <li>Seasonal rotation labels</li>
+              <li>Kids' organization labels</li>
+            </ul>
+          </div>
+
+          <div class="resource-item">
+            <h4>Organization Checklists</h4>
+            <p>Step-by-step guides to tackle any organizing project with confidence.</p>
+            <ul>
+              <li>Room-by-room decluttering guides</li>
+              <li>Seasonal organization tasks</li>
+              <li>Moving preparation checklists</li>
+              <li>Holiday decoration storage</li>
+            </ul>
+          </div>
+
+          <div class="resource-item">
+            <h4>Planning Worksheets</h4>
+            <p>Measure, plan, and budget for your organization projects effectively.</p>
+            <ul>
+              <li>Space measurement templates</li>
+              <li>Storage capacity calculators</li>
+              <li>Room planning guides</li>
+              <li>Organization budget planners</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Maintenance Tips -->
+  <section class="maintenance-section">
+    <div class="maintenance-content">
+      <h2>Maintaining Your Organized Space</h2>
+      <div class="maintenance-tips">
+        <div class="tip-card">
+          <h4>Daily Habits (5 minutes)</h4>
+          <ul>
+            <li>Make beds and tidy bedrooms</li>
+            <li>Clear kitchen counters after use</li>
+            <li>Sort mail immediately</li>
+            <li>Put items back in designated spots</li>
+            <li>One-touch rule for handling items</li>
+          </ul>
+        </div>
+
+        <div class="tip-card">
+          <h4>Weekly Tasks (30 minutes)</h4>
+          <ul>
+            <li>Declutter one small problem area</li>
+            <li>File accumulated paperwork</li>
+            <li>Reorganize high-traffic zones</li>
+            <li>Plan for upcoming events or seasons</li>
+            <li>Reset family organization systems</li>
+          </ul>
+        </div>
+
+        <div class="tip-card">
+          <h4>Seasonal Reviews (2 hours)</h4>
+          <ul>
+            <li>Rotate seasonal clothing and gear</li>
+            <li>Evaluate and adjust storage systems</li>
+            <li>Declutter unused or outgrown items</li>
+            <li>Update labels and organization zones</li>
+            <li>Plan for upcoming season's needs</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="cta-section">
+    <div class="cta-content">
+      <h2>Need Personalized Help?</h2>
+      <p>These resources are a great start, but every Montana home and family is unique. Get customized organizing solutions that work for your specific situation and lifestyle.</p>
+      <div class="cta-buttons">
+        <a href="https://calendly.com/chanelnbasolo/30min" class="cta-button primary">Schedule Free Consultation</a>
+        <a href="tel:+14065513364" class="cta-button secondary">Call (406) 551-3364</a>
+      </div>
+      <p class="service-area">Serving Missoula, Hamilton, Stevensville, Florence, Lolo, and all of Western Montana</p>
+    </div>
+  </section>
+</div>
+
+<script>
+// Modal functionality
+const modal = document.getElementById('resourceModal');
+const closeBtn = document.querySelector('.close-btn');
+const form = document.getElementById('resourceForm');
+const submitBtn = document.querySelector('.download-btn');
+const btnText = document.getElementById('btnText');
+const spinner = document.querySelector('.loading-spinner');
+const successMsg = document.getElementById('successMessage');
+const errorMsg = document.getElementById('errorMessage');
+
+// Open modal function
+function openResourceModal(resourceType = '') {
+  modal.style.display = 'block';
+  document.body.style.overflow = 'hidden';
+  
+  if (resourceType) {
+    document.getElementById('resourceType').value = resourceType;
+  }
+  
+  form.reset();
+  if (resourceType) {
+    document.getElementById('resourceType').value = resourceType;
+  }
+  successMsg.style.display = 'none';
+  errorMsg.style.display = 'none';
+  submitBtn.disabled = false;
+  btnText.textContent = 'Get My Free Guide';
+  spinner.style.display = 'none';
+}
+
+// Close modal
+function closeModal() {
+  modal.style.display = 'none';
+  document.body.style.overflow = 'auto';
+}
+
+closeBtn.onclick = closeModal;
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    closeModal();
+  }
+}
+
+// Form submission
+form.addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  submitBtn.disabled = true;
+  btnText.textContent = 'Sending...';
+  spinner.style.display = 'inline-block';
+  successMsg.style.display = 'none';
+  errorMsg.style.display = 'none';
+  
+  const formData = {
+    firstName: document.getElementById('firstName').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    requestedResource: document.getElementById('resourceType').value
+  };
+  
+  try {
+    const response = await fetch('https://clutterfreespaces-production.up.railway.app/api/request-resources', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData)
+    });
+    
+    if (response.ok) {
+      successMsg.style.display = 'block';
+      form.style.display = 'none';
+      
+      setTimeout(() => {
+        closeModal();
+        form.style.display = 'block';
+      }, 3000);
+      
+    } else {
+      throw new Error('Server error');
+    }
+    
+  } catch (error) {
+    console.error('Error submitting form:', error);
+    errorMsg.style.display = 'block';
+    submitBtn.disabled = false;
+    btnText.textContent = 'Get My Free Guide';
+    spinner.style.display = 'none';
+  }
+});
+
+// Make function globally available
+window.openResourceModal = openResourceModal;
+</script>

@@ -1250,10 +1250,28 @@ async function updateAirtableLead(
 
 // Resource download helper functions
 
-// Send email with resource links
+// Send email with complete resource bundle
 async function sendResourceEmail(email, firstName, requestedResource) {
   try {
-    const templateId = "d-e57a6dd9503b40aa93bef76fd1c2c5bf"; // Resource delivery template
+    // Use the new enhanced template (you'll need to update this ID after creating the template)
+    const templateId = "d-e57a6dd9503b40aa93bef76fd1c2c5bf"; // Will be updated to new template
+
+    // Map resource selections to friendly names for email personalization
+    const resourceDisplayNames = {
+      "Kitchen Guide": "Kitchen Organization Essentials guide",
+      "Seasonal Guide": "Montana Seasonal Gear Organization guide",
+      "Daily Routine": "Daily Maintenance Routine guide",
+      "Closet Guide": "Closet & Bedroom Organization guide",
+      "Office Guide": "Home Office Setup guide",
+      "Mudroom Guide": "Mudroom & Entryway Solutions guide",
+      "Labels & Templates": "Printable Labels & Templates",
+      "Organization Checklists": "Organization Checklists",
+      "Planning Worksheets": "Planning Worksheets",
+      "All Guides": "Complete Organization Bundle",
+    };
+
+    const friendlyResourceName =
+      resourceDisplayNames[requestedResource] || requestedResource;
 
     const msg = {
       to: email,
@@ -1263,13 +1281,9 @@ async function sendResourceEmail(email, firstName, requestedResource) {
       },
       templateId: templateId,
       dynamicTemplateData: {
-        name: firstName,
-        requestedResource: requestedResource,
-        downloadLinks: {
-          kitchenGuide: `${process.env.RAILWAY_URL || "http://localhost:3001"}/downloads/kitchen-organization-essentials.pdf`,
-          seasonalGuide: `${process.env.RAILWAY_URL || "http://localhost:3001"}/downloads/montana-seasonal-gear-guide.pdf`,
-          dailyRoutine: `${process.env.RAILWAY_URL || "http://localhost:3001"}/downloads/daily-maintenance-routine.pdf`,
-        },
+        first_name: firstName,
+        requested_guide: friendlyResourceName,
+        // The new template has all download links built-in, so we don't need to pass them
       },
       trackingSettings: {
         clickTracking: { enable: true },
@@ -1278,7 +1292,9 @@ async function sendResourceEmail(email, firstName, requestedResource) {
     };
 
     await sgMail.send(msg);
-    console.log(`📧 Resource email sent to ${email}`);
+    console.log(
+      `📧 Complete resource bundle sent to ${email} (requested: ${requestedResource})`,
+    );
   } catch (error) {
     console.error("❌ Error sending resource email:", error);
     throw error;
@@ -1407,10 +1423,16 @@ function calculateResourceLeadScore(requestedResource) {
 
   // Resource-specific scoring
   const resourceScores = {
-    "kitchen-guide": 10, // Basic organization interest
-    "seasonal-guide": 15, // Montana-specific, outdoor lifestyle
-    "daily-routine": 20, // Ready for implementation
-    "all-guides": 25, // Highest engagement
+    "Kitchen Guide": 10, // Basic organization interest
+    "Seasonal Guide": 15, // Montana-specific, outdoor lifestyle
+    "Daily Routine": 20, // Ready for implementation
+    "Closet Guide": 12, // Personal space organization
+    "Office Guide": 18, // Home business/productivity focus
+    "Mudroom Guide": 16, // Entry-level organizational need
+    "Labels & Templates": 8, // DIY approach, lower engagement
+    "Organization Checklists": 12, // Self-guided approach
+    "Planning Worksheets": 15, // Planning-focused, higher intent
+    "All Guides": 25, // Highest engagement - wants everything
   };
 
   score += resourceScores[requestedResource] || 10;
