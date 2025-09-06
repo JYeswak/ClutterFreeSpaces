@@ -1888,7 +1888,7 @@ async function sendResourceEmail(email, firstName, requestedResource) {
       "Closet Guide": "Closet & Bedroom Organization Guide",
       "Office Guide": "Home Office Setup Guide",
       "Mudroom Guide": "Mudroom & Entryway Solutions Guide",
-      "All Guides": "Complete Organization Bundle",
+      "All Guides": "Organization Collection",
 
       // File-based identifiers (backend/download URLs)
       "kitchen-organization-essentials":
@@ -1934,7 +1934,7 @@ async function sendResourceEmail(email, firstName, requestedResource) {
         email: "contact@clutter-free-spaces.com",
         name: "Chanel @ Clutter Free Spaces",
       },
-      subject: `Your Complete Organization Bundle (9 Resources!) 🏠✨`,
+      subject: `Your ${friendlyResourceName} + Complete Bundle (9 Resources!) 🏠✨`,
       text: `Hi ${firstName},
 
 Thanks for requesting the ${friendlyResourceName}! Here are ALL your organization resources:
