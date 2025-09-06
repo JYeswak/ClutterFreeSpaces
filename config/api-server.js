@@ -55,6 +55,222 @@ const CONTACT_LISTS = {
   warm_leads: "04a543ea-7191-458c-a2dc-460b2a729ebd", // Use cold_leads for now
 };
 
+// ============================================================================
+// SENDGRID DIAGNOSTIC ENDPOINTS
+// ============================================================================
+
+// Diagnostic endpoint for SendGrid 400 error troubleshooting
+app.post("/api/diagnose-sendgrid", async (req, res) => {
+  try {
+    const { email, firstName, testType } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ error: "Email is required for testing" });
+    }
+
+    console.log(`🔍 Testing SendGrid with: ${email}, type: ${testType || 'minimal'}`);
+
+    let contactData;
+
+    // Test minimal contact addition first
+    if (testType === 'minimal' || !testType) {
+      contactData = {
+        list_ids: [CONTACT_LISTS.newsletter_subscribers],
+        contacts: [{
+          email: email,
+        }],
+      };
+    }
+    // Test with name only
+    else if (testType === 'with-name') {
+      contactData = {
+        list_ids: [CONTACT_LISTS.newsletter_subscribers],
+        contacts: [{
+          email: email,
+          first_name: firstName || "Test User",
+        }],
+      };
+    }
+    // Test resource download format
+    else if (testType === 'resource-download') {
+      contactData = {
+        list_ids: [CONTACT_LISTS.newsletter_subscribers],
+        contacts: [{
+          email: email,
+          first_name: firstName || "Test User",
+          custom_fields: {
+            downloaded_resource: req.body.requestedResource || "Kitchen Guide",
+            download_date: new Date().toISOString(),
+            source: "Resource Download",
+          },
+        }],
+      };
+    }
+
+    console.log("📧 SendGrid payload:", JSON.stringify(contactData, null, 2));
+
+    const response = await axios.put(
+      "https://api.sendgrid.com/v3/marketing/contacts",
+      contactData,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.SendGrid_API_Key}`,
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    console.log("✅ SendGrid test successful:", response.data);
+    res.json({
+      success: true,
+      message: "SendGrid contact added successfully",
+      testType: testType || 'minimal',
+      contact: { email, firstName },
+      response: response.data
+    });
+
+  } catch (error) {
+    console.error("❌ SendGrid test failed:", {
+      status: error.response?.status,
+      message: error.response?.data?.errors || error.response?.data?.error,
+      details: error.response?.data,
+      testType: req.body.testType
+    });
+
+    res.status(error.response?.status || 500).json({
+      success: false,
+      error: error.response?.data?.errors || error.response?.data?.error || error.message,
+      details: error.response?.data,
+      testType: req.body.testType || 'minimal',
+      debug: {
+        listId: CONTACT_LISTS.newsletter_subscribers,
+        email: req.body.email
+      }
+    });
+  }
+});
+
+// Check SendGrid contact lists configuration
+app.get("/api/sendgrid-config-check", async (req, res) => {
+  try {
+    console.log("🔍 Checking SendGrid contact lists...");
+
+    const response = await axios.get(
+      "https://api.sendgrid.com/v3/marketing/lists",
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.SendGrid_API_Key}`,
+        },
+      },
+    );
+
+    const lists = response.data.result || [];
+    const configuredLists = ['quiz_takers', 'cold_leads', 'newsletter_subscribers', 'hot_leads', 'warm_leads'];
+
+    const validation = configuredLists.map(listKey => {
+      const listId = CONTACT_LISTS[listKey];
+      const foundList = lists.find(list => list.id === listId);
+      return {
+        key: listKey,
+        id: listId,
+        valid: !!foundList,
+        name: foundList ? foundList.name : 'Not Found'
+      };
+    });
+
+    console.log("📋 SendGrid list validation:", validation);
+
+    res.json({
+      success: true,
+      lists: lists,
+      validation: validation,
+      configured: CONTACT_LISTS
+    });
+
+  } catch (error) {
+    console.error("❌ SendGrid config check failed:", error.response?.data);
+    res.status(error.response?.status || 500).json({
+      success: false,
+      error: error.response?.data?.error || error.message,
+      details: error.response?.data
+    });
+  }
+});
+
+// Test individual SendGrid custom fields
+app.post("/api/test-sendgrid-fields", async (req, res) => {
+  try {
+    const { fieldName, fieldValue, email } = req.body;
+
+    if (!fieldName || !fieldValue || !email) {
+      return res.status(400).json({
+        error: "fieldName, fieldValue, and email are required"
+      });
+    }
+
+    console.log(`🔍 Testing SendGrid custom field: ${fieldName} = ${fieldValue}`);
+
+    const contactData = {
+      list_ids: [CONTACT_LISTS.newsletter_subscribers],
+      contacts: [{
+        email: email,
+        first_name: "Field Test",
+        custom_fields: {
+          [fieldName]: fieldValue,
+        },
+      }],
+    };
+
+    const response = await axios.put(
+      "https://api.sendgrid.com/v3/marketing/contacts",
+      contactData,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.SendGrid_API_Key}`,
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    console.log(`✅ SendGrid field ${fieldName} validated successfully`);
+
+    // Clean up test contact
+    try {
+      await axios.delete(
+        `https://api.sendgrid.com/v3/marketing/contacts?emails=${encodeURIComponent(email)}`,
+        {
+          headers: { Authorization: `Bearer ${process.env.SendGrid_API_Key}` },
+        }
+      );
+      console.log(`🧹 Test contact cleaned up: ${email}`);
+    } catch (cleanupError) {
+      console.log(`⚠️ Could not clean up test contact: ${email}`);
+    }
+
+    res.json({
+      success: true,
+      field: fieldName,
+      value: fieldValue,
+      message: "Custom field validated and test contact cleaned up"
+    });
+
+  } catch (error) {
+    console.error(`❌ SendGrid field ${req.body.fieldName} validation failed:`, {
+      status: error.response?.status,
+      message: error.response?.data?.errors || error.response?.data?.error,
+      details: error.response?.data
+    });
+
+    res.status(error.response?.status || 500).json({
+      success: false,
+      field: req.body.fieldName,
+      value: req.body.fieldValue,
+      error: error.response?.data?.errors || error.response?.data?.error || error.message,
+      details: error.response?.data
+    });
+  }
+});
+
 // Initialize Twilio with proper error handling
 let twilioClient = null;
 try {
