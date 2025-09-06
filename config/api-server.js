@@ -331,13 +331,16 @@ app.get("/api/sendgrid-activity", async (req, res) => {
       `🔍 Checking SendGrid activity for ${email || "all emails"} in last ${hours} hours`,
     );
 
-    // Get activities from SendGrid
-    const response = await axios.get("https://api.sendgrid.com/v3/messages", {
+    // Get activities from SendGrid Activity API
+    const now = new Date();
+    const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+
+    const response = await axios.get("https://api.sendgrid.com/v3/activity", {
       headers: {
         Authorization: `Bearer ${process.env.SendGrid_API_Key}`,
       },
       params: {
-        query: email ? `to_email="${email}"` : undefined,
+        query: email ? `to_email LIKE "${email}%"` : undefined,
         limit: 100,
       },
     });
@@ -826,6 +829,52 @@ app.get("/api/google/gtm/variables", (req, res) => {
   } catch (error) {
     console.error("GTM variables error:", error);
     res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Test SendGrid email delivery - simple test without templates
+app.post("/api/test-email", async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res
+        .status(400)
+        .json({ success: false, error: "Email is required" });
+    }
+
+    const testMessage = {
+      to: email,
+      from: {
+        email: "chanel@clutter-free-spaces.com",
+        name: "Chanel @ Clutter Free Spaces",
+      },
+      subject: "Test Email - SendGrid Verification",
+      text: "This is a simple test email to verify SendGrid delivery.",
+      html: `
+        <h2>SendGrid Test Email</h2>
+        <p>This is a simple test email to verify SendGrid delivery.</p>
+        <p>If you received this, basic SendGrid functionality is working.</p>
+        <p>Sent at: ${new Date().toISOString()}</p>
+      `,
+    };
+
+    console.log("📧 Sending test email to:", email);
+    await sgMail.send(testMessage);
+    console.log("✅ Test email sent successfully");
+
+    res.json({
+      success: true,
+      message: "Test email sent successfully",
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error("❌ Test email error:", error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      details: error.response?.body,
+    });
   }
 });
 
