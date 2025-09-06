@@ -1154,6 +1154,7 @@ app.post("/api/request-resources", async (req, res) => {
     console.error("❌ Error processing resource request:", error);
     res.status(500).json({
       error: "Failed to process resource request. Please try again.",
+      details: error.message,
     });
   }
 });
