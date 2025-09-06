@@ -1,0 +1,235 @@
+{
+  "name": "ClutterFreeSpaces - Weekly Social Media Automation",
+  "flow": [
+    {
+      "id": 1,
+      "module": "webhook:webhook",
+      "version": 1,
+      "parameters": {
+        "hook": 12345,
+        "maxResults": 1
+      },
+      "mapper": {},
+      "metadata": {
+        "designer": {
+          "x": 0,
+          "y": 0
+        },
+        "restore": {},
+        "parameters": [
+          {
+            "name": "hook",
+            "type": "hook",
+            "label": "Webhook"
+          }
+        ],
+        "interface": [
+          {
+            "name": "trigger",
+            "type": "text"
+          },
+          {
+            "name": "timestamp",
+            "type": "text"
+          },
+          {
+            "name": "theme",
+            "type": "text"
+          },
+          {
+            "name": "source",
+            "type": "text"
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "module": "builtin:BasicFeeder",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "array": [
+          {
+            "theme": "RV Organization Tips",
+            "week": 1,
+            "post": "🚐 RV STORAGE HACK: Use over-the-door shoe organizers on cabinet doors for toiletries, cleaning supplies, and small items. Maximizes vertical space without adding weight! \\n\\n✨ What's your biggest RV organization challenge? Take our 2-minute quiz to get personalized tips! 👇",
+            "hashtags": "#RVLife #RVOrganization #RVTips #ClutterFree #RVHacks #Montana #RVTravel",
+            "cta": "Take the Organization Style Quiz",
+            "link": "https://clutterfreespaces.com/organization-style-quiz.html",
+            "link_calendly": "https://calendly.com/chanelnbasolo/30min"
+          },
+          {
+            "theme": "RV Organization Tips",
+            "week": 2,
+            "post": "💡 GENIUS RV HACK: Use tension rods inside cabinets to create instant dividers! Perfect for plates, cutting boards, or baking sheets. \\n\\n✨ Cost: Under $10\\n⏰ Time: 5 minutes\\n📈 Impact: HUGE space savings!",
+            "hashtags": "#RVHacks #RVStorage #OrganizationHacks #RVLife #BudgetFriendly",
+            "cta": "Book Free Consultation",
+            "link": "https://calendly.com/chanelnbasolo/30min",
+            "link_quiz": "https://clutterfreespaces.com/organization-style-quiz.html"
+          },
+          {
+            "theme": "Before & After Transformations",
+            "week": 3,
+            "post": "🔥 TRANSFORMATION TUESDAY: From chaotic RV kitchen to functional culinary space! \\n\\n✅ Grouped items by use\\n✅ Added drawer organizers\\n✅ Created a spice system\\n✅ Maximized counter space\\n\\nResult: Cooking became a joy instead of a struggle! 👨‍🍳",
+            "hashtags": "#TransformationTuesday #RVKitchen #BeforeAndAfter #OrganizationWorks #RVLife #ClutterFreeSpaces",
+            "cta": "See Your Transformation",
+            "link": "https://calendly.com/chanelnbasolo/30min",
+            "link_quiz": "https://clutterfreespaces.com/organization-style-quiz.html"
+          },
+          {
+            "theme": "Organization Psychology",
+            "week": 4,
+            "post": "🧠 ORGANIZATION PSYCHOLOGY: Your space affects your mood more than you think! \\n\\nCluttered spaces = Cluttered mind\\nOrganized spaces = Clear thinking\\n\\n🌟 When your RV is organized, you feel:\\n• More relaxed\\n• Less stressed\\n• Ready for adventure\\n\\nWhat mood does your current space create?",
+            "hashtags": "#OrganizationPsychology #Mindfulness #RVLife #MentalHealth #ClutterFree #Montana",
+            "cta": "Discover Your Style",
+            "link": "https://clutterfreespaces.com/organization-style-quiz.html",
+            "link_calendly": "https://calendly.com/chanelnbasolo/30min"
+          }
+        ]
+      },
+      "metadata": {
+        "designer": {
+          "x": 300,
+          "y": 0
+        }
+      }
+    },
+    {
+      "id": 3,
+      "module": "util:SetVariables",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "variables": [
+          {
+            "name": "weekNumber",
+            "value": "{{floor(divide(now; 604800000))}}"
+          },
+          {
+            "name": "selectedWeek",
+            "value": "{{mod(weekNumber; 4) + 1}}"
+          },
+          {
+            "name": "currentPost",
+            "value": "{{get(filter(2.array; theme = if(selectedWeek = 1; \"RV Organization Tips\"; if(selectedWeek = 2; \"RV Organization Tips\"; if(selectedWeek = 3; \"Before & After Transformations\"; \"Organization Psychology\")))); 1)}}"
+          }
+        ],
+        "scope": "roundtrip"
+      },
+      "metadata": {
+        "designer": {
+          "x": 600,
+          "y": 0
+        }
+      }
+    },
+    {
+      "id": 4,
+      "module": "facebook:createPagePost",
+      "version": 1,
+      "parameters": {
+        "page": "YOUR_FACEBOOK_PAGE_ID"
+      },
+      "mapper": {
+        "message": "{{3.currentPost.post}}\\n\\n{{3.currentPost.hashtags}}",
+        "link": "{{3.currentPost.link}}",
+        "published": true
+      },
+      "metadata": {
+        "designer": {
+          "x": 900,
+          "y": -100
+        },
+        "restore": {
+          "page": {
+            "label": "ClutterFreeSpaces Page"
+          }
+        }
+      }
+    },
+    {
+      "id": 5,
+      "module": "instagram-for-business:createPost",
+      "version": 1,
+      "parameters": {
+        "account": "YOUR_INSTAGRAM_BUSINESS_ID"
+      },
+      "mapper": {
+        "caption": "{{3.currentPost.post}}\\n\\n{{3.currentPost.hashtags}}\\n\\n🔗 Link in bio for quiz and consultation!",
+        "mediaType": "TEXT"
+      },
+      "metadata": {
+        "designer": {
+          "x": 900,
+          "y": 100
+        },
+        "restore": {
+          "account": {
+            "label": "ClutterFreeSpaces Instagram"
+          }
+        }
+      }
+    },
+    {
+      "id": 6,
+      "module": "airtable2:ActionCreateRecord",
+      "version": 3,
+      "parameters": {
+        "connection": "airtable2",
+        "base": "appctzgHffSFd4Nq7",
+        "table": "Analytics",
+        "useColumnId": false
+      },
+      "mapper": {
+        "Date": "{{formatDate(now; \"YYYY-MM-DD\")}}",
+        "Lead Sources": "Social Media Post: {{3.currentPost.theme}}",
+        "Notes": "Posted: {{truncate(3.currentPost.post; 100)}}... | FB Post ID: {{4.id}} | IG Post: {{5.id}}",
+        "New Leads": 0
+      },
+      "metadata": {
+        "designer": {
+          "x": 1200,
+          "y": 0
+        },
+        "restore": {
+          "base": {
+            "label": "ClutterFreeSpaces CRM"
+          },
+          "table": {
+            "label": "Analytics"
+          }
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": false,
+      "autoCommitTriggerLast": true,
+      "sequential": false,
+      "confidential": false,
+      "dataloss": false,
+      "dlq": false,
+      "freshVariables": false
+    },
+    "designer": {
+      "orphans": []
+    },
+    "zone": "eu1.make.com"
+  },
+  "notes": [
+    {
+      "id": 1,
+      "text": "Weekly Social Media Automation for ClutterFreeSpaces\\n\\n🎯 Purpose: Post rotating weekly content to Facebook & Instagram\\n📅 Trigger: Manual webhook trigger\\n🔄 Content: 4-week rotation (RV Tips, Transformations, Psychology, Quick Wins)\\n📊 Tracking: Logs activity to Airtable Analytics\\n\\n📋 Setup Required:\\n1. Connect Facebook Pages\\n2. Connect Instagram Business\\n3. Connect Airtable (Base ID: appctzgHffSFd4Nq7)\\n4. Update Facebook Page ID and Instagram Business ID\\n5. Test with webhook trigger\\n\\n🔗 Webhook URL: Use this in the social media trigger button",
+      "color": "blue",
+      "position": {
+        "x": 0,
+        "y": -200
+      }
+    }
+  ]
+}
