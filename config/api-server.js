@@ -1874,9 +1874,6 @@ async function checkExistingEmail(email) {
 // Send email with complete resource bundle
 async function sendResourceEmail(email, firstName, requestedResource) {
   try {
-    // Enhanced template that delivers complete bundle with personalized messaging
-    const templateId = "d-0304aa6076294dcfa063145f4e0130ec"; // Complete Resource Bundle 2024
-
     // Map resource selections to friendly names for email personalization
     const resourceDisplayNames = {
       "Kitchen Guide": "Kitchen Organization Essentials guide",
@@ -1894,17 +1891,85 @@ async function sendResourceEmail(email, firstName, requestedResource) {
     const friendlyResourceName =
       resourceDisplayNames[requestedResource] || requestedResource;
 
+    // Direct email without template for better deliverability
     const msg = {
       to: email,
       from: {
         email: "contact@clutter-free-spaces.com",
         name: "Chanel @ Clutter Free Spaces",
       },
-      templateId: templateId,
-      dynamicTemplateData: {
-        first_name: firstName,
-        requested_guide: friendlyResourceName,
-      },
+      subject: `Your ${friendlyResourceName} + Bonus Resources`,
+      text: `Hi ${firstName},
+
+Thanks for requesting the ${friendlyResourceName}! Here are your organization resources:
+
+🍳 KITCHEN ORGANIZATION ESSENTIALS
+Step-by-step guide to organizing your kitchen
+Download: https://clutterfreespaces-production.up.railway.app/downloads/kitchen-organization-essentials.html
+
+🏔️ MONTANA SEASONAL GEAR GUIDE  
+Organize ski equipment, camping gear, and seasonal items
+Download: https://clutterfreespaces-production.up.railway.app/downloads/montana-seasonal-gear-guide.html
+
+✅ DAILY MAINTENANCE ROUTINE
+Simple habits to keep your home organized
+Download: https://clutterfreespaces-production.up.railway.app/downloads/daily-maintenance-routine.html
+
+Questions about any of these strategies? Just reply to this email - I personally read and respond to every message.
+
+Best regards,
+Chanel Basolo
+Professional Organizer
+Clutter Free Spaces
+(406) 551-3364
+contact@clutter-free-spaces.com`,
+
+      html: `
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
+  <div style="background: #2D5A87; color: white; padding: 20px; text-align: center;">
+    <h1>Your Organization Resources</h1>
+  </div>
+  
+  <div style="padding: 30px 20px;">
+    <p>Hi ${firstName},</p>
+    
+    <p>Thanks for requesting the <strong>${friendlyResourceName}</strong>! Here are your organization resources:</p>
+    
+    <div style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 5px;">
+      <h3>🍳 Kitchen Organization Essentials</h3>
+      <p>Step-by-step guide to organizing your kitchen</p>
+      <a href="https://clutterfreespaces-production.up.railway.app/downloads/kitchen-organization-essentials.html" 
+         style="background: #2D5A87; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; display: inline-block;">Download PDF</a>
+    </div>
+    
+    <div style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 5px;">
+      <h3>🏔️ Montana Seasonal Gear Guide</h3>
+      <p>Organize ski equipment, camping gear, and seasonal items</p>
+      <a href="https://clutterfreespaces-production.up.railway.app/downloads/montana-seasonal-gear-guide.html" 
+         style="background: #2D5A87; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; display: inline-block;">Download PDF</a>
+    </div>
+    
+    <div style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 5px;">
+      <h3>✅ Daily Maintenance Routine</h3>
+      <p>Simple habits to keep your home organized</p>
+      <a href="https://clutterfreespaces-production.up.railway.app/downloads/daily-maintenance-routine.html" 
+         style="background: #2D5A87; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; display: inline-block;">Download PDF</a>
+    </div>
+    
+    <p>Questions about any of these strategies? Just reply to this email - I personally read and respond to every message.</p>
+    
+    <p>Best regards,<br>
+    <strong>Chanel Basolo</strong><br>
+    Professional Organizer<br>
+    Clutter Free Spaces<br>
+    (406) 551-3364<br>
+    contact@clutter-free-spaces.com</p>
+  </div>
+  
+  <div style="background: #f8f9fa; padding: 20px; text-align: center; color: #666; font-size: 14px;">
+    <p>Clutter Free Spaces | Professional Home Organization</p>
+  </div>
+</div>`,
       trackingSettings: {
         clickTracking: { enable: true },
         openTracking: { enable: true },
@@ -1913,7 +1978,7 @@ async function sendResourceEmail(email, firstName, requestedResource) {
 
     await sgMail.send(msg);
     console.log(
-      `📧 Complete resource bundle sent to ${email} (requested: ${requestedResource})`,
+      `📧 Direct resource email sent to ${email} (requested: ${requestedResource})`,
     );
   } catch (error) {
     console.error("❌ Error sending resource email:", error);
