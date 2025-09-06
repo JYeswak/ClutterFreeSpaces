@@ -1103,6 +1103,80 @@ app.get("/api/seo/complete-package", (req, res) => {
 });
 
 // ============================================================================
+// FIELD VALIDATION ENDPOINT
+// ============================================================================
+
+// Test incremental field addition
+app.post("/api/test-fields", async (req, res) => {
+  try {
+    const { fieldName, fieldValue } = req.body;
+
+    if (!fieldName || !fieldValue) {
+      return res.status(400).json({ error: "fieldName and fieldValue required" });
+    }
+
+    // Start with minimal record
+    const baseRecord = {
+      fields: {
+        Name: "Test User",
+        Email: "test@example.com"
+      }
+    };
+
+    console.log(`🔧 Testing field: ${fieldName} = ${fieldValue}`);
+
+    // Add the test field
+    baseRecord.fields[fieldName] = fieldValue;
+
+    const response = await axios.post(
+      `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/Leads`,
+      baseRecord,
+      {
+        headers: {
+          Authorization: `Bearer ${AIRTABLE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    // Clean up test record
+    await axios.delete(
+      `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/Leads/${response.data.id}`,
+      {
+        headers: { Authorization: `Bearer ${AIRTABLE_API_KEY}` },
+      }
+    );
+
+    console.log(`✅ Field ${fieldName} validated successfully`);
+    res.json({
+      success: true,
+      field: fieldName,
+      value: fieldValue,
+      message: "Field validated and test record cleaned up"
+    });
+
+  } catch (error) {
+    if (error.response?.status === 422) {
+      console.log(`❌ Field ${req.body.fieldName} validation failed:`, error.response?.data?.error?.message);
+      res.status(400).json({
+        success: false,
+        field: req.body.fieldName,
+        value: req.body.fieldValue,
+        error: error.response?.data?.error?.message,
+        message: "Field validation failed"
+      });
+    } else {
+      console.error("❌ Field test error:", error.response?.data);
+      res.status(500).json({
+        success: false,
+        error: error.message,
+        details: error.response?.data
+      });
+    }
+  }
+});
+
+// ============================================================================
 // RESOURCE REQUEST ENDPOINT - EMAIL-GATED LEAD MAGNET SYSTEM
 // ============================================================================
 
@@ -1190,6 +1264,50 @@ app.post("/api/request-resources", async (req, res) => {
 // ============================================================================
 // HELPER FUNCTIONS - RESOURCE REQUEST SYSTEM
 // ============================================================================
+
+// Diagnostic test endpoint for minimal record creation
+app.post("/api/test-airtable", async (req, res) => {
+  try {
+    const testData = {
+      fields: {
+        Name: req.body.name || "Test User",
+        Email: req.body.email || "test@example.com",
+      }
+    };
+
+    console.log("🔧 Testing minimal Airtable record creation...");
+    console.log("Payload:", JSON.stringify(testData, null, 2));
+
+    const response = await axios.post(
+      `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/Leads`,
+      testData,
+      {
+        headers: {
+          Authorization: `Bearer ${AIRTABLE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    console.log("✅ Test record created successfully:", response.data.id);
+    res.json({
+      success: true,
+      recordId: response.data.id,
+      message: "Minimal record created successfully"
+    });
+  } catch (error) {
+    console.error("❌ Airtable test failed:", {
+      status: error.response?.status,
+      message: error.response?.data?.error?.message,
+      details: error.response?.data
+    });
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      details: error.response?.data
+    });
+  }
+});
 
 // Check if email already exists in Airtable
 async function checkExistingEmail(email) {
@@ -1322,19 +1440,24 @@ async function createAirtableResourceLead({
   leadSource,
 }) {
   try {
+    // Try date format: YYYY-MM-DD (Airtable date format)
+    const downloadDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+
     const airtableData = {
       fields: {
         Name: firstName,
         Email: email,
         "Lead Source": "Website",
         "Downloaded Resource": requestedResource,
-        "Download Date": new Date().toISOString(),
+        "Download Date": downloadDate,
         Status: "New Lead",
         "Lead Score": calculateResourceLeadScore(requestedResource),
         Segment: "WARM", // Resource downloaders are warm leads
         "Follow Up Required": true,
       },
     };
+
+    console.log("🔧 Creating Airtable record with payload:", JSON.stringify(airtableData, null, 2));
 
     const response = await axios.post(
       `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/Leads`,
@@ -1352,26 +1475,117 @@ async function createAirtableResourceLead({
     );
     return response.data.id;
   } catch (error) {
-    console.error(
-      "❌ Error creating Airtable resource lead:",
-      error.response?.data || error,
-    );
+    console.error("❌ Error creating Airtable resource lead:", {
+      status: error.response?.status,
+      message: error.response?.data?.error?.message || error.message,
+      details: error.response?.data,
+      payload: error.config?.data  // Log the payload that was sent
+    });
+
+    // If it's a date format issue, try alternative format
+    if (error.response?.data?.error?.message?.includes('date')) {
+      console.log("🔧 Date format issue detected, trying alternative format...");
+      return await createAirtableResourceLeadFallback({
+        email,
+        firstName,
+        requestedResource,
+        leadSource,
+      });
+    }
+
     throw error;
+  }
+}
+
+// Fallback function with different date format
+async function createAirtableResourceLeadFallback({
+  email,
+  firstName,
+  requestedResource,
+  leadSource,
+}) {
+  try {
+    // Try date format: ISO string without milliseconds
+    const downloadDate = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
+
+    const airtableData = {
+      fields: {
+        Name: firstName,
+        Email: email,
+        "Lead Source": "Website",
+        "Downloaded Resource": requestedResource,
+        Status: "New Lead",
+        "Lead Score": calculateResourceLeadScore(requestedResource),
+        Segment: "WARM",
+        "Follow Up Required": true,
+        // Omit date field if it's causing issues
+        // "Download Date": downloadDate,
+      },
+    };
+
+    console.log("🔧 Fallback: Creating record without date field:", JSON.stringify(airtableData, null, 2));
+
+    const response = await axios.post(
+      `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/Leads`,
+      airtableData,
+      {
+        headers: {
+          Authorization: `Bearer ${AIRTABLE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    console.log(`📊 Fallback record created: ${response.data.id}`);
+
+    // Try updating with date separately if record was created
+    try {
+      const updateData = {
+        fields: {
+          "Download Date": downloadDate,
+        }
+      };
+
+      await axios.patch(
+        `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/Leads/${response.data.id}`,
+        updateData,
+        {
+          headers: {
+            Authorization: `Bearer ${AIRTABLE_API_KEY}`,
+            "Content-Type": "application/json",
+          },
+        },
+      );
+
+      console.log(`📝 Date field updated separately for record: ${response.data.id}`);
+    } catch (updateError) {
+      console.log(`⚠️ Could not update date field, but record created: ${response.data.id}`);
+    }
+
+    return response.data.id;
+  } catch (fallbackError) {
+    console.error("❌ Fallback also failed:", fallbackError.response?.data);
+    throw fallbackError;
   }
 }
 
 // Update existing Airtable record with resource download
 async function updateAirtableResourceDownload(recordId, requestedResource) {
   try {
+    // Use same date format as create function
+    const downloadDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+
     const airtableData = {
       fields: {
         "Downloaded Resource": requestedResource,
-        "Download Date": new Date().toISOString(),
+        "Download Date": downloadDate,
         Status: "Resource Downloaded",
         "Lead Score": calculateResourceLeadScore(requestedResource),
         "Follow Up Required": true,
       },
     };
+
+    console.log("🔧 Updating Airtable record with payload:", JSON.stringify(airtableData, null, 2));
 
     const response = await axios.patch(
       `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/Leads/${recordId}`,
@@ -1389,7 +1603,12 @@ async function updateAirtableResourceDownload(recordId, requestedResource) {
     );
     return response.data.id;
   } catch (error) {
-    console.error("❌ Error updating Airtable resource record:", error);
+    console.error("❌ Error updating Airtable resource record:", {
+      status: error.response?.status,
+      message: error.response?.data?.error?.message || error.message,
+      details: error.response?.data,
+      payload: error.config?.data  // Log the payload that was sent
+    });
     throw error;
   }
 }
