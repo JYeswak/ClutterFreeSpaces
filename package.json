@@ -1,0 +1,31 @@
+{
+  "name": "clutterfree-spaces-api",
+  "version": "1.0.0",
+  "description": "ClutterFree Spaces automation API with Google integrations",
+  "main": "config/api-server.js",
+  "scripts": {
+    "start": "node config/api-server.js",
+    "dev": "nodemon config/api-server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "@sendgrid/mail": "^7.7.0",
+    "twilio": "^4.18.0",
+    "axios": "^1.6.0",
+    "googleapis": "^128.0.0",
+    "qrcode": "^1.5.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "keywords": [
+    "automation",
+    "google",
+    "gmb",
+    "analytics"
+  ],
+  "author": "ClutterFree Spaces",
+  "license": "MIT"
+}
