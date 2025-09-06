@@ -159,6 +159,19 @@ app.get("/auth/status", async (req, res) => {
   }
 });
 
+// Debug endpoint to check environment variables
+app.get("/auth/debug", (req, res) => {
+  res.json({
+    oauth_service_loaded: !!oauthService,
+    environment_variables: {
+      GOOGLE_CLIENT_ID: !!process.env.GOOGLE_CLIENT_ID,
+      GOOGLE_CLIENT_SECRET: !!process.env.GOOGLE_CLIENT_SECRET,
+      RAILWAY_URL: process.env.RAILWAY_URL || "not set",
+    },
+    node_env: process.env.NODE_ENV,
+  });
+});
+
 // ============================================================================
 // GOOGLE CLOUD INTEGRATION ROUTES
 // ============================================================================
