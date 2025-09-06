@@ -232,6 +232,86 @@ class GMBService {
     }
   }
 
+  /**
+   * Create a Google My Business post
+   */
+  async createPost(postData) {
+    try {
+      if (!this.locationId) {
+        throw new Error("GMB_LOCATION_ID not configured");
+      }
+
+      // Check if we have GMB API access
+      const mybusiness = await authService.createAuthenticatedRequest(
+        "mybusinessbusinessinformation",
+        "v1",
+      );
+
+      // Prepare post data for GMB API
+      const postBody = {
+        languageCode: "en-US",
+        summary: postData.text || postData.content,
+        callToAction: {
+          actionType: "LEARN_MORE",
+          url: "https://www.clutterfreespaces.com",
+        },
+        media: postData.media || [],
+      };
+
+      // Create the post
+      const response = await mybusiness.locations.localPosts.create({
+        parent: `locations/${this.locationId}`,
+        requestBody: postBody,
+      });
+
+      return {
+        success: true,
+        postId: response.data.name,
+        postData: response.data,
+        message: "Post created successfully",
+      };
+    } catch (error) {
+      console.error("GMB post creation error:", error);
+
+      // Handle specific API errors
+      if (
+        error.message?.includes("quota") ||
+        error.message?.includes("Quota")
+      ) {
+        return {
+          success: false,
+          error: "GMB API quota exceeded - request pending approval",
+          needsApproval: true,
+          simulatedPost: postData,
+        };
+      }
+
+      return {
+        success: false,
+        error: error.message,
+        simulatedPost: postData,
+      };
+    }
+  }
+
+  /**
+   * Test post creation (simulation when API not available)
+   */
+  async simulatePost(postData) {
+    return {
+      success: true,
+      simulated: true,
+      message: "Post simulated - GMB API access pending",
+      postPreview: {
+        text: postData.text || postData.content,
+        callToAction: postData.callToAction || "Visit our website",
+        hashtags: postData.hashtags || [],
+        timestamp: new Date().toISOString(),
+        wouldPostTo: "ClutterFree Spaces GMB Profile",
+      },
+    };
+  }
+
   async getBusinessInsights(dateRange) {
     try {
       // Get business performance metrics

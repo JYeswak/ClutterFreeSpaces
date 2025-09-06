@@ -531,6 +531,41 @@ app.get("/api/google/gmb/content/weekly", async (req, res) => {
   }
 });
 
+// Post to GMB (create actual post)
+app.post("/api/google/gmb/post", async (req, res) => {
+  try {
+    const { content, autoGenerate } = req.body;
+
+    let postData;
+    if (autoGenerate) {
+      // Generate today's content automatically
+      const todayPost = await gmbEnhancementService.generateDailyPost();
+      postData = todayPost.post || todayPost;
+    } else {
+      postData = content;
+    }
+
+    // Try to create the actual GMB post
+    const result = await gmbService.createPost(postData);
+
+    // If API not available, simulate the post
+    if (!result.success && result.needsApproval) {
+      const simulation = await gmbService.simulatePost(postData);
+      res.json(simulation);
+    } else {
+      res.json(result);
+    }
+  } catch (error) {
+    console.error("GMB post creation error:", error);
+
+    // Fallback to simulation
+    const postData =
+      req.body.content || (await gmbEnhancementService.generateDailyPost());
+    const simulation = await gmbService.simulatePost(postData.post || postData);
+    res.json(simulation);
+  }
+});
+
 // ============================================================================
 // GOOGLE CLOUD INTEGRATIONS ROUTES
 // ============================================================================
