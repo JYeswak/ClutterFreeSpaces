@@ -890,7 +890,7 @@ app.get("/api/email-diagnostics", async (req, res) => {
           : "Not set",
       },
       template: {
-        id: "d-42661a0c34ba4cb08a1ae161bcd6f1ca",
+        id: "d-0304aa6076294dcfa063145f4e0130ec",
         variables_expected: ["first_name", "requested_guide"],
       },
       sender: {
@@ -1875,7 +1875,7 @@ async function checkExistingEmail(email) {
 async function sendResourceEmail(email, firstName, requestedResource) {
   try {
     // Enhanced template that delivers complete bundle with personalized messaging
-    const templateId = "d-42661a0c34ba4cb08a1ae161bcd6f1ca"; // Complete Resource Bundle 2024
+    const templateId = "d-0304aa6076294dcfa063145f4e0130ec"; // Complete Resource Bundle 2024
 
     // Map resource selections to friendly names for email personalization
     const resourceDisplayNames = {
