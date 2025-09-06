@@ -246,6 +246,82 @@ app.get("/api/sendgrid-config-check", async (req, res) => {
   }
 });
 
+// Create required SendGrid custom fields for resource downloads
+app.post("/api/create-sendgrid-fields", async (req, res) => {
+  try {
+    console.log("🔧 Creating required SendGrid custom fields...");
+
+    const requiredFields = [
+      {
+        name: "downloaded_resource",
+        field_type: "Text",
+      },
+      {
+        name: "download_date",
+        field_type: "Date",
+      },
+      {
+        name: "source",
+        field_type: "Text",
+      },
+    ];
+
+    const createdFields = [];
+
+    for (const field of requiredFields) {
+      try {
+        console.log(`Creating field: ${field.name} (${field.field_type})`);
+
+        const response = await axios.post(
+          "https://api.sendgrid.com/v3/marketing/field_definitions",
+          field,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.SendGrid_API_Key}`,
+              "Content-Type": "application/json",
+            },
+          },
+        );
+
+        createdFields.push({
+          name: field.name,
+          id: response.data.id,
+          success: true,
+        });
+
+        console.log(
+          `✅ Created field: ${field.name} (ID: ${response.data.id})`,
+        );
+      } catch (fieldError) {
+        console.error(
+          `❌ Failed to create field ${field.name}:`,
+          fieldError.response?.data,
+        );
+        createdFields.push({
+          name: field.name,
+          success: false,
+          error: fieldError.response?.data?.error || fieldError.message,
+        });
+      }
+    }
+
+    res.json({
+      success: true,
+      message: "SendGrid custom fields creation completed",
+      fields: createdFields,
+      totalCreated: createdFields.filter((f) => f.success).length,
+      totalFailed: createdFields.filter((f) => !f.success).length,
+    });
+  } catch (error) {
+    console.error("❌ SendGrid field creation failed:", error.response?.data);
+    res.status(error.response?.status || 500).json({
+      success: false,
+      error: error.response?.data?.error || error.message,
+      details: error.response?.data,
+    });
+  }
+});
+
 // Test individual SendGrid custom fields
 app.post("/api/test-sendgrid-fields", async (req, res) => {
   try {
