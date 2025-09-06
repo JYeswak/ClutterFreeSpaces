@@ -1945,7 +1945,7 @@ async function updateAirtableResourceDownload(recordId, requestedResource) {
       fields: {
         "Downloaded Resource": requestedResource,
         "Download Date": downloadDate,
-        Status: "Resource Downloaded",
+        Status: "Contacted", // Resource download counts as initial contact
         "Lead Score": calculateResourceLeadScore(requestedResource),
         "Follow Up Required": true,
       },
