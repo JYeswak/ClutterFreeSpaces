@@ -42,6 +42,10 @@ app.use(express.urlencoded({ extended: true }));
 // Initialize external services
 sgMail.setApiKey(process.env.SendGrid_API_Key);
 
+// Airtable Configuration
+const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID;
+const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
+
 // Initialize Twilio with proper error handling
 let twilioClient = null;
 try {
@@ -1243,7 +1247,11 @@ async function sendResourceEmail(email, firstName, requestedResource) {
 }
 
 // Add contact to SendGrid resource downloaders list
-async function addResourceDownloaderToSendGrid(email, firstName, requestedResource) {
+async function addResourceDownloaderToSendGrid(
+  email,
+  firstName,
+  requestedResource,
+) {
   try {
     const contactData = {
       list_ids: [CONTACT_LISTS.newsletter_subscribers],
