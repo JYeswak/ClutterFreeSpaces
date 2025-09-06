@@ -1297,13 +1297,16 @@ async function addResourceDownloaderToSendGrid(
       ],
     };
 
-    const request = {
-      url: "/v3/marketing/contacts",
-      method: "PUT",
-      body: contactData,
-    };
-
-    await sgMail.request(request);
+    await axios.put(
+      "https://api.sendgrid.com/v3/marketing/contacts",
+      contactData,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.SendGrid_API_Key}`,
+          "Content-Type": "application/json",
+        },
+      },
+    );
     console.log(`📝 Added ${email} to SendGrid resource downloaders list`);
   } catch (error) {
     console.error("❌ Error adding contact to SendGrid:", error);
