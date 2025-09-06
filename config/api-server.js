@@ -1122,32 +1122,51 @@ app.post("/api/request-resources", async (req, res) => {
       });
     }
 
-    // Check if email already exists in Airtable
-    const existingEmailCheck = await checkExistingEmail(email);
+    try {
+      // Check if email already exists in Airtable
+      const existingEmailCheck = await checkExistingEmail(email);
 
-    let recordId = null;
+      let recordId = null;
 
-    if (existingEmailCheck.exists) {
-      console.log(`📧 Existing contact found: ${email}`);
-      // Update existing record to track resource download
-      recordId = existingEmailCheck.recordId;
-      await updateAirtableResourceDownload(recordId, requestedResource);
-    } else {
-      console.log(`📧 New contact: ${email}`);
-      // Create new Airtable record
-      recordId = await createAirtableResourceLead({
+      if (existingEmailCheck.exists) {
+        console.log(`📧 Existing contact found: ${email}`);
+        // Update existing record to track resource download
+        recordId = existingEmailCheck.recordId;
+        await updateAirtableResourceDownload(recordId, requestedResource);
+      } else {
+        console.log(`📧 New contact: ${email}`);
+        // Create new Airtable record
+        recordId = await createAirtableResourceLead({
+          email,
+          firstName,
+          requestedResource,
+          leadSource: "Resource Download",
+        });
+      }
+    } catch (airtableError) {
+      console.error("❌ Airtable step failed:", airtableError);
+      throw new Error(`Airtable integration failed: ${airtableError.message}`);
+    }
+
+    try {
+      // Send email with download links
+      await sendResourceEmail(email, firstName, requestedResource);
+    } catch (emailError) {
+      console.error("❌ Email step failed:", emailError);
+      throw new Error(`Email sending failed: ${emailError.message}`);
+    }
+
+    try {
+      // Add to SendGrid list for resource downloaders
+      await addResourceDownloaderToSendGrid(
         email,
         firstName,
         requestedResource,
-        leadSource: "Resource Download",
-      });
+      );
+    } catch (sendgridError) {
+      console.error("❌ SendGrid step failed:", sendgridError);
+      throw new Error(`SendGrid integration failed: ${sendgridError.message}`);
     }
-
-    // Send email with download links
-    await sendResourceEmail(email, firstName, requestedResource);
-
-    // Add to SendGrid list for resource downloaders
-    await addResourceDownloaderToSendGrid(email, firstName, requestedResource);
 
     // Calculate lead score for resource download
     const leadScore = calculateResourceLeadScore(requestedResource);
