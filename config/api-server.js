@@ -431,6 +431,50 @@ app.get("/api/google/gmb/content/success-stories", (req, res) => {
   }
 });
 
+// Generate testimonial post
+app.get("/api/google/gmb/content/testimonial", async (req, res) => {
+  try {
+    const result = await gmbEnhancementService.generateTestimonialPost();
+    res.json(result);
+  } catch (error) {
+    console.error("GMB testimonial post error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Generate problem-solution post
+app.get("/api/google/gmb/content/problem-solution", async (req, res) => {
+  try {
+    const result = await gmbEnhancementService.generateProblemSolutionPost();
+    res.json(result);
+  } catch (error) {
+    console.error("GMB problem-solution post error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Generate FAQ educational post
+app.get("/api/google/gmb/content/faq", async (req, res) => {
+  try {
+    const result = await gmbEnhancementService.generateFAQPost();
+    res.json(result);
+  } catch (error) {
+    console.error("GMB FAQ post error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Generate transformation post
+app.get("/api/google/gmb/content/transformation", async (req, res) => {
+  try {
+    const result = await gmbEnhancementService.generateTransformationPost();
+    res.json(result);
+  } catch (error) {
+    console.error("GMB transformation post error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 // ============================================================================
 // GOOGLE CLOUD INTEGRATIONS ROUTES
 // ============================================================================
