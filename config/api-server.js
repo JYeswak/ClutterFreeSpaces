@@ -1879,31 +1879,53 @@ async function checkExistingEmail(email) {
 async function sendResourceEmail(email, firstName, requestedResource) {
   try {
     // Map resource selections to friendly names for email personalization
+    // This handles both frontend values (user-facing) and file names (backend)
     const resourceDisplayNames = {
-      "Kitchen Guide": "Kitchen Organization Essentials guide",
-      "kitchen-organization-essentials":
-        "Kitchen Organization Essentials guide",
-      "Seasonal Guide": "Montana Seasonal Gear Organization guide",
-      "montana-seasonal-gear-guide": "Montana Seasonal Gear Organization guide",
-      "Daily Routine": "Daily Maintenance Routine guide",
-      "daily-maintenance-routine": "Daily Maintenance Routine guide",
-      "Closet Guide": "Closet & Bedroom Organization guide",
-      "closet-bedroom-organization": "Closet & Bedroom Organization guide",
-      "Office Guide": "Home Office Setup guide",
-      "home-office-setup": "Home Office Setup guide",
-      "Mudroom Guide": "Mudroom & Entryway Solutions guide",
-      "mudroom-entryway-solutions": "Mudroom & Entryway Solutions guide",
-      "Labels & Templates": "Printable Labels & Templates",
-      "printable-labels-templates": "Printable Labels & Templates",
-      "Organization Checklists": "Organization Checklists",
-      "organization-checklists": "Organization Checklists",
-      "Planning Worksheets": "Planning Worksheets",
-      "planning-worksheets": "Planning Worksheets",
+      // Frontend values (sent from forms)
+      "Kitchen Guide": "Kitchen Organization Essentials Guide",
+      "Seasonal Guide": "Montana Seasonal Gear Organization Guide",
+      "Daily Routine": "Daily Maintenance Routine Guide",
+      "Closet Guide": "Closet & Bedroom Organization Guide",
+      "Office Guide": "Home Office Setup Guide",
+      "Mudroom Guide": "Mudroom & Entryway Solutions Guide",
       "All Guides": "Complete Organization Bundle",
+
+      // File-based identifiers (backend/download URLs)
+      "kitchen-organization-essentials":
+        "Kitchen Organization Essentials Guide",
+      "montana-seasonal-gear-guide": "Montana Seasonal Gear Organization Guide",
+      "daily-maintenance-routine": "Daily Maintenance Routine Guide",
+      "closet-bedroom-organization": "Closet & Bedroom Organization Guide",
+      "home-office-setup": "Home Office Setup Guide",
+      "mudroom-entryway-solutions": "Mudroom & Entryway Solutions Guide",
+      "printable-labels-templates": "Printable Labels & Templates",
+      "organization-checklists": "Organization Checklists",
+      "planning-worksheets": "Planning Worksheets",
+
+      // Legacy/alternative mappings for robustness
+      "Labels & Templates": "Printable Labels & Templates",
+      "Organization Checklists": "Organization Checklists",
+      "Planning Worksheets": "Planning Worksheets",
+      kitchen: "Kitchen Organization Essentials Guide",
+      seasonal: "Montana Seasonal Gear Organization Guide",
+      daily: "Daily Maintenance Routine Guide",
+      closet: "Closet & Bedroom Organization Guide",
+      office: "Home Office Setup Guide",
+      mudroom: "Mudroom & Entryway Solutions Guide",
     };
 
-    const friendlyResourceName =
-      resourceDisplayNames[requestedResource] || requestedResource;
+    // Handle null/undefined/empty cases gracefully
+    let friendlyResourceName;
+    if (
+      !requestedResource ||
+      requestedResource === "null" ||
+      requestedResource === "undefined"
+    ) {
+      friendlyResourceName = "Organization Resources";
+    } else {
+      friendlyResourceName =
+        resourceDisplayNames[requestedResource] || requestedResource;
+    }
 
     // Direct email without template for better deliverability
     const msg = {
@@ -2239,8 +2261,9 @@ async function updateAirtableResourceDownload(recordId, requestedResource) {
 function calculateResourceLeadScore(requestedResource) {
   let score = 40; // Base score for resource download (showing interest)
 
-  // Resource-specific scoring
+  // Resource-specific scoring - handles multiple identifiers for same resource
   const resourceScores = {
+    // Frontend form values
     "Kitchen Guide": 10, // Basic organization interest
     "Seasonal Guide": 15, // Montana-specific, outdoor lifestyle
     "Daily Routine": 20, // Ready for implementation
@@ -2251,6 +2274,25 @@ function calculateResourceLeadScore(requestedResource) {
     "Organization Checklists": 12, // Self-guided approach
     "Planning Worksheets": 15, // Planning-focused, higher intent
     "All Guides": 25, // Highest engagement - wants everything
+
+    // File-based identifiers
+    "kitchen-organization-essentials": 10,
+    "montana-seasonal-gear-guide": 15,
+    "daily-maintenance-routine": 20,
+    "closet-bedroom-organization": 12,
+    "home-office-setup": 18,
+    "mudroom-entryway-solutions": 16,
+    "printable-labels-templates": 8,
+    "organization-checklists": 12,
+    "planning-worksheets": 15,
+
+    // Short identifiers for robustness
+    kitchen: 10,
+    seasonal: 15,
+    daily: 20,
+    closet: 12,
+    office: 18,
+    mudroom: 16,
   };
 
   score += resourceScores[requestedResource] || 10;
