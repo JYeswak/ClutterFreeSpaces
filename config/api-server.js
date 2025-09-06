@@ -17,6 +17,7 @@ const axios = require("axios");
 const gmbService = require("./google-services/gmb-service");
 const ga4Service = require("./google-services/ga4-service");
 const leadScoringService = require("./google-services/lead-scoring");
+const gtmService = require("./google-services/gtm-service");
 
 // Import OAuth service (fallback if not available)
 let oauthService;
@@ -308,6 +309,54 @@ app.get("/api/google/analytics/report", async (req, res) => {
   }
 });
 
+// ============================================================================
+// GOOGLE TAG MANAGER ROUTES
+// ============================================================================
+
+// Get GTM container snippets for Squarespace
+app.get("/api/google/gtm/snippets", (req, res) => {
+  try {
+    const snippets = gtmService.getContainerSnippets();
+    res.json({ success: true, data: snippets });
+  } catch (error) {
+    console.error("GTM snippets error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Get dataLayer event templates
+app.get("/api/google/gtm/datalayer", (req, res) => {
+  try {
+    const events = gtmService.generateDataLayerEvents();
+    res.json({ success: true, data: events });
+  } catch (error) {
+    console.error("GTM dataLayer error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Get GTM tag configurations
+app.get("/api/google/gtm/tags", (req, res) => {
+  try {
+    const tags = gtmService.getTagConfigurations();
+    res.json({ success: true, data: tags });
+  } catch (error) {
+    console.error("GTM tags error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Get GTM trigger configurations
+app.get("/api/google/gtm/triggers", (req, res) => {
+  try {
+    const triggers = gtmService.getTriggerConfigurations();
+    res.json({ success: true, data: triggers });
+  } catch (error) {
+    console.error("GTM triggers error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 // Lead Scoring Routes
 app.post("/api/google/lead-score", async (req, res) => {
   try {
@@ -585,6 +634,7 @@ app.use("*", (req, res) => {
       "GET /health",
       "GET /api/google/gmb/*",
       "POST /api/google/analytics/*",
+      "GET /api/google/gtm/*",
       "POST /api/google/lead-score",
       "POST /api/workflow/*",
       "POST /api/webhook/*",
