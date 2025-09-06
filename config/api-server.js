@@ -21,6 +21,7 @@ const gtmService = require("./google-services/gtm-service");
 const gmbEnhancementService = require("./google-services/gmb-enhancement");
 const cloudIntegrations = require("./google-services/cloud-integrations");
 const reviewAutomation = require("./google-services/review-automation");
+const seoService = require("./google-services/seo-service");
 
 // Import OAuth service (fallback if not available)
 let oauthService;
@@ -1006,6 +1007,89 @@ app.post("/api/webhook/airtable", async (req, res) => {
 });
 
 // ============================================================================
+// SEO & SCHEMA MARKUP ROUTES
+// ============================================================================
+
+// Generate LocalBusiness schema markup for homepage
+app.get("/api/seo/schema/local-business", (req, res) => {
+  try {
+    const schema = seoService.generateLocalBusinessSchema();
+    res.json(schema);
+  } catch (error) {
+    console.error("LocalBusiness schema error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Generate Service schema markup for specific service
+app.get("/api/seo/schema/service/:serviceKey", (req, res) => {
+  try {
+    const { serviceKey } = req.params;
+    const schema = seoService.generateServiceSchema(serviceKey);
+    res.json(schema);
+  } catch (error) {
+    console.error("Service schema error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Generate FAQ schema markup
+app.get("/api/seo/schema/faq", (req, res) => {
+  try {
+    const schema = seoService.generateFAQSchema();
+    res.json(schema);
+  } catch (error) {
+    console.error("FAQ schema error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Generate optimized page titles
+app.get("/api/seo/titles", (req, res) => {
+  try {
+    const titles = seoService.generatePageTitles();
+    res.json(titles);
+  } catch (error) {
+    console.error("Page titles error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Generate optimized meta descriptions
+app.get("/api/seo/meta-descriptions", (req, res) => {
+  try {
+    const descriptions = seoService.generateMetaDescriptions();
+    res.json(descriptions);
+  } catch (error) {
+    console.error("Meta descriptions error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Generate service page content
+app.get("/api/seo/content/service/:serviceKey", (req, res) => {
+  try {
+    const { serviceKey } = req.params;
+    const content = seoService.generateServicePageContent(serviceKey);
+    res.json(content);
+  } catch (error) {
+    console.error("Service content error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Generate complete SEO package for all pages
+app.get("/api/seo/complete-package", (req, res) => {
+  try {
+    const package = seoService.generateCompleteSEOPackage();
+    res.json(package);
+  } catch (error) {
+    console.error("Complete SEO package error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// ============================================================================
 // ERROR HANDLING
 // ============================================================================
 
@@ -1036,6 +1120,7 @@ app.use("*", (req, res) => {
       "POST /api/google/lead-score",
       "POST /api/workflow/*",
       "POST /api/webhook/*",
+      "GET /api/seo/*",
     ],
   });
 });

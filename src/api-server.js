@@ -805,6 +805,67 @@ function startReviewAutomation() {
   console.log("⏰ Review automation scheduled every 4 hours");
 }
 
+// Resource download endpoint - email-gated lead magnet system
+app.post("/api/request-resources", async (req, res) => {
+  try {
+    const { email, firstName, requestedResource } = req.body;
+
+    console.log(
+      `📥 Resource request: ${requestedResource} for ${firstName} (${email})`,
+    );
+
+    // Validate required fields
+    if (!email || !firstName) {
+      return res.status(400).json({
+        error: "Email and first name are required",
+      });
+    }
+
+    // Check if email already exists in Airtable
+    const existingEmailCheck = await checkExistingEmail(email);
+
+    let recordId = null;
+
+    if (existingEmailCheck.exists) {
+      console.log(`📧 Existing contact found: ${email}`);
+      // Update existing record to track resource download
+      recordId = existingEmailCheck.recordId;
+      await updateAirtableResourceDownload(recordId, requestedResource);
+    } else {
+      console.log(`📧 New contact: ${email}`);
+      // Create new Airtable record
+      recordId = await createAirtableResourceLead({
+        email,
+        firstName,
+        requestedResource,
+        leadSource: "Resource Download",
+      });
+    }
+
+    // Send email with download links
+    await sendResourceEmail(email, firstName, requestedResource);
+
+    // Add to SendGrid list for resource downloaders
+    await addResourceDownloaderToSendGrid(email, firstName, requestedResource);
+
+    // Calculate lead score for resource download
+    const leadScore = calculateResourceLeadScore(requestedResource);
+
+    console.log(`✅ Resource request processed: Score ${leadScore}`);
+
+    res.json({
+      success: true,
+      message: "Resources sent successfully! Check your email.",
+      leadScore: leadScore,
+    });
+  } catch (error) {
+    console.error("❌ Error processing resource request:", error);
+    res.status(500).json({
+      error: "Failed to process resource request. Please try again.",
+    });
+  }
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 Guide delivery server running on http://localhost:${PORT}`);
@@ -1185,6 +1246,177 @@ async function updateAirtableLead(
     }
     throw error;
   }
+}
+
+// Resource download helper functions
+
+// Send email with resource links
+async function sendResourceEmail(email, firstName, requestedResource) {
+  try {
+    const templateId = "d-e57a6dd9503b40aa93bef76fd1c2c5bf"; // Resource delivery template
+
+    const msg = {
+      to: email,
+      from: {
+        email: "chanel@clutter-free-spaces.com",
+        name: "Chanel @ Clutter Free Spaces",
+      },
+      templateId: templateId,
+      dynamicTemplateData: {
+        name: firstName,
+        requestedResource: requestedResource,
+        downloadLinks: {
+          kitchenGuide: `${process.env.RAILWAY_URL || "http://localhost:3001"}/downloads/kitchen-organization-essentials.pdf`,
+          seasonalGuide: `${process.env.RAILWAY_URL || "http://localhost:3001"}/downloads/montana-seasonal-gear-guide.pdf`,
+          dailyRoutine: `${process.env.RAILWAY_URL || "http://localhost:3001"}/downloads/daily-maintenance-routine.pdf`,
+        },
+      },
+      trackingSettings: {
+        clickTracking: { enable: true },
+        openTracking: { enable: true },
+      },
+    };
+
+    await sgMail.send(msg);
+    console.log(`📧 Resource email sent to ${email}`);
+  } catch (error) {
+    console.error("❌ Error sending resource email:", error);
+    throw error;
+  }
+}
+
+// Add contact to SendGrid resource downloaders list
+async function addResourceDownloaderToSendGrid(
+  email,
+  firstName,
+  requestedResource,
+) {
+  try {
+    const contactData = {
+      list_ids: [CONTACT_LISTS.newsletter_subscribers],
+      contacts: [
+        {
+          email: email,
+          first_name: firstName,
+          custom_fields: {
+            downloaded_resource: requestedResource,
+            download_date: new Date().toISOString(),
+            source: "Resource Download",
+          },
+        },
+      ],
+    };
+
+    const request = {
+      url: "/v3/marketing/contacts",
+      method: "PUT",
+      body: contactData,
+    };
+
+    await sgClient.request(request);
+    console.log(`📝 Added ${email} to SendGrid resource downloaders list`);
+  } catch (error) {
+    console.error("❌ Error adding contact to SendGrid:", error);
+    throw error;
+  }
+}
+
+// Create Airtable record for resource download lead
+async function createAirtableResourceLead({
+  email,
+  firstName,
+  requestedResource,
+  leadSource,
+}) {
+  try {
+    const airtableData = {
+      fields: {
+        Name: firstName,
+        Email: email,
+        "Lead Source": leadSource,
+        "Downloaded Resource": requestedResource,
+        "Download Date": new Date().toISOString(),
+        Status: "New Lead",
+        "Lead Score": calculateResourceLeadScore(requestedResource),
+        Segment: "WARM", // Resource downloaders are warm leads
+        "Follow Up Required": true,
+      },
+    };
+
+    const response = await axios.post(
+      `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/Leads`,
+      airtableData,
+      {
+        headers: {
+          Authorization: `Bearer ${AIRTABLE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    console.log(
+      `📊 Created Airtable resource lead record: ${response.data.id}`,
+    );
+    return response.data.id;
+  } catch (error) {
+    console.error(
+      "❌ Error creating Airtable resource lead:",
+      error.response?.data || error,
+    );
+    throw error;
+  }
+}
+
+// Update existing Airtable record with resource download
+async function updateAirtableResourceDownload(recordId, requestedResource) {
+  try {
+    const airtableData = {
+      fields: {
+        "Downloaded Resource": requestedResource,
+        "Download Date": new Date().toISOString(),
+        Status: "Resource Downloaded",
+        "Lead Score": calculateResourceLeadScore(requestedResource),
+        "Follow Up Required": true,
+      },
+    };
+
+    const response = await axios.patch(
+      `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/Leads/${recordId}`,
+      airtableData,
+      {
+        headers: {
+          Authorization: `Bearer ${AIRTABLE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    console.log(
+      `📝 Updated Airtable record ${recordId} with resource download`,
+    );
+    return response.data.id;
+  } catch (error) {
+    console.error("❌ Error updating Airtable resource record:", error);
+    throw error;
+  }
+}
+
+// Calculate lead score for resource downloads
+function calculateResourceLeadScore(requestedResource) {
+  let score = 40; // Base score for resource download (showing interest)
+
+  // Resource-specific scoring
+  const resourceScores = {
+    "kitchen-guide": 10, // Basic organization interest
+    "seasonal-guide": 15, // Montana-specific, outdoor lifestyle
+    "daily-routine": 20, // Ready for implementation
+    "all-guides": 25, // Highest engagement
+  };
+
+  score += resourceScores[requestedResource] || 10;
+
+  console.log(`📊 Resource lead score: ${score} for ${requestedResource}`);
+  return score;
 }
 
 module.exports = app;
