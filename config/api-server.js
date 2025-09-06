@@ -18,6 +18,9 @@ const gmbService = require("./google-services/gmb-service");
 const ga4Service = require("./google-services/ga4-service");
 const leadScoringService = require("./google-services/lead-scoring");
 const gtmService = require("./google-services/gtm-service");
+const gmbEnhancementService = require("./google-services/gmb-enhancement");
+const cloudIntegrations = require("./google-services/cloud-integrations");
+const reviewAutomation = require("./google-services/review-automation");
 
 // Import OAuth service (fallback if not available)
 let oauthService;
@@ -357,6 +360,221 @@ app.get("/api/google/gtm/triggers", (req, res) => {
   }
 });
 
+// ============================================================================
+// GMB ENHANCEMENT ROUTES
+// ============================================================================
+
+// Generate seasonal GMB post content
+app.get("/api/google/gmb/content/seasonal", async (req, res) => {
+  try {
+    const post = await gmbEnhancementService.generateSeasonalPost();
+    res.json({ success: true, data: post });
+  } catch (error) {
+    console.error("GMB seasonal content error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Generate service-focused post content
+app.post("/api/google/gmb/content/service", async (req, res) => {
+  try {
+    const { serviceType } = req.body;
+    const post = await gmbEnhancementService.generateServicePost(serviceType);
+    res.json({ success: true, data: post });
+  } catch (error) {
+    console.error("GMB service content error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Get Q&A content for GMB
+app.get("/api/google/gmb/content/qas", (req, res) => {
+  try {
+    const qas = gmbEnhancementService.getCommonQAs();
+    res.json({ success: true, data: qas });
+  } catch (error) {
+    console.error("GMB Q&A error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Get review response templates
+app.get("/api/google/gmb/content/review-templates", (req, res) => {
+  try {
+    const templates = gmbEnhancementService.getReviewResponseTemplates();
+    res.json({ success: true, data: templates });
+  } catch (error) {
+    console.error("GMB review templates error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Get photo upload strategies
+app.get("/api/google/gmb/content/photo-strategies", (req, res) => {
+  try {
+    const strategies = gmbEnhancementService.getPhotoStrategies();
+    res.json({ success: true, data: strategies });
+  } catch (error) {
+    console.error("GMB photo strategies error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Get success stories for content
+app.get("/api/google/gmb/content/success-stories", (req, res) => {
+  try {
+    const stories = gmbEnhancementService.generateSuccessStories();
+    res.json({ success: true, data: stories });
+  } catch (error) {
+    console.error("GMB success stories error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// ============================================================================
+// GOOGLE CLOUD INTEGRATIONS ROUTES
+// ============================================================================
+
+// Get Search Console data
+app.get("/api/google/cloud/search-console", async (req, res) => {
+  try {
+    const data = await cloudIntegrations.getSearchConsoleData();
+    res.json(data);
+  } catch (error) {
+    console.error("Search Console error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Setup complete project (Drive + Sheets + Email + Calendar)
+app.post("/api/google/cloud/setup-project", async (req, res) => {
+  try {
+    const result = await cloudIntegrations.setupCompleteProject(req.body);
+
+    // Track project setup in GA4
+    await ga4Service.trackEvent({
+      event_name: "project_setup",
+      client_id: ga4Service.generateClientId(),
+      parameters: {
+        client_name: req.body.name,
+        service_type: req.body.serviceType,
+        project_value: req.body.projectValue || 0,
+        setup_success: result.success,
+      },
+    });
+
+    res.json(result);
+  } catch (error) {
+    console.error("Project setup error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Send project update emails
+app.post("/api/google/cloud/send-update", async (req, res) => {
+  try {
+    const { clientData, updateType } = req.body;
+    const result = await cloudIntegrations.sendProjectUpdateEmail(
+      clientData,
+      updateType,
+    );
+
+    // Track email sent in GA4
+    await ga4Service.trackEvent({
+      event_name: "email_sent",
+      client_id: ga4Service.generateClientId(),
+      parameters: {
+        email_type: updateType,
+        client_name: clientData.name,
+        success: result.success,
+      },
+    });
+
+    res.json(result);
+  } catch (error) {
+    console.error("Email update error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Create client folder in Drive
+app.post("/api/google/cloud/create-folder", async (req, res) => {
+  try {
+    const { clientName, clientEmail } = req.body;
+    const result = await cloudIntegrations.setupClientFolder(
+      clientName,
+      clientEmail,
+    );
+    res.json(result);
+  } catch (error) {
+    console.error("Drive folder error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Schedule follow-up reminders
+app.post("/api/google/cloud/schedule-followup", async (req, res) => {
+  try {
+    const { clientData, followUpType } = req.body;
+    const result = await cloudIntegrations.scheduleFollowUp(
+      clientData,
+      followUpType,
+    );
+    res.json(result);
+  } catch (error) {
+    console.error("Calendar scheduling error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// ============================================================================
+// REVIEW AUTOMATION ROUTES
+// ============================================================================
+
+// Send review request email
+app.post("/api/reviews/send-request", async (req, res) => {
+  try {
+    const result = await reviewAutomation.sendReviewRequest(req.body);
+    res.json(result);
+  } catch (error) {
+    console.error("Review request error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Send follow-up review request
+app.post("/api/reviews/send-followup", async (req, res) => {
+  try {
+    const result = await reviewAutomation.sendFollowUpReviewRequest(req.body);
+    res.json(result);
+  } catch (error) {
+    console.error("Review follow-up error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Generate review QR code
+app.post("/api/reviews/generate-qr", async (req, res) => {
+  try {
+    const result = await reviewAutomation.generateReviewQR(req.body);
+    res.json(result);
+  } catch (error) {
+    console.error("Review QR generation error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Complete review workflow (email + QR + schedule follow-up)
+app.post("/api/reviews/initiate-workflow", async (req, res) => {
+  try {
+    const result = await reviewAutomation.initiateReviewWorkflow(req.body);
+    res.json(result);
+  } catch (error) {
+    console.error("Review workflow error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 // Lead Scoring Routes
 app.post("/api/google/lead-score", async (req, res) => {
   try {
@@ -635,6 +853,11 @@ app.use("*", (req, res) => {
       "GET /api/google/gmb/*",
       "POST /api/google/analytics/*",
       "GET /api/google/gtm/*",
+      "GET /api/google/gmb/content/*",
+      "POST /api/google/gmb/content/*",
+      "GET /api/google/cloud/*",
+      "POST /api/google/cloud/*",
+      "POST /api/reviews/*",
       "POST /api/google/lead-score",
       "POST /api/workflow/*",
       "POST /api/webhook/*",
