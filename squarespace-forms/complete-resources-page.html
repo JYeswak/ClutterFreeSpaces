@@ -793,7 +793,7 @@
 </div>
 
 <script>
-// Modal functionality
+// Modal functionality - with safety checks
 const modal = document.getElementById('resourceModal');
 const closeBtn = document.querySelector('.close-btn');
 const form = document.getElementById('resourceForm');
@@ -803,18 +803,29 @@ const spinner = document.querySelector('.loading-spinner');
 const successMsg = document.getElementById('successMessage');
 const errorMsg = document.getElementById('errorMessage');
 
+// Verify all required elements are found
+if (!modal || !form || !submitBtn || !btnText || !spinner || !successMsg || !errorMsg) {
+  console.error('Required DOM elements not found for form functionality');
+}
+
 // Open modal function
 function openResourceModal(resourceType = '') {
+  if (!modal || !form || !submitBtn || !btnText || !spinner || !successMsg || !errorMsg) {
+    console.error('Modal elements not available');
+    return;
+  }
+  
   modal.style.display = 'block';
   document.body.style.overflow = 'hidden';
   
-  if (resourceType) {
-    document.getElementById('resourceType').value = resourceType;
+  const resourceSelect = document.getElementById('resourceType');
+  if (resourceType && resourceSelect) {
+    resourceSelect.value = resourceType;
   }
   
   form.reset();
-  if (resourceType) {
-    document.getElementById('resourceType').value = resourceType;
+  if (resourceType && resourceSelect) {
+    resourceSelect.value = resourceType;
   }
   successMsg.style.display = 'none';
   errorMsg.style.display = 'none';
@@ -825,11 +836,15 @@ function openResourceModal(resourceType = '') {
 
 // Close modal
 function closeModal() {
-  modal.style.display = 'none';
+  if (modal) {
+    modal.style.display = 'none';
+  }
   document.body.style.overflow = 'auto';
 }
 
-closeBtn.onclick = closeModal;
+if (closeBtn) {
+  closeBtn.onclick = closeModal;
+}
 
 window.onclick = function(event) {
   if (event.target == modal) {
@@ -838,7 +853,8 @@ window.onclick = function(event) {
 }
 
 // Form submission
-form.addEventListener('submit', async function(e) {
+if (form) {
+  form.addEventListener('submit', async function(e) {
   e.preventDefault();
   
   submitBtn.disabled = true;
@@ -847,11 +863,25 @@ form.addEventListener('submit', async function(e) {
   successMsg.style.display = 'none';
   errorMsg.style.display = 'none';
   
+  // Validate form elements exist
+  const firstNameEl = document.getElementById('firstName');
+  const emailEl = document.getElementById('email');
+  const resourceTypeEl = document.getElementById('resourceType');
+  
+  if (!firstNameEl || !emailEl || !resourceTypeEl) {
+    throw new Error('Form elements not found');
+  }
+  
   const formData = {
-    firstName: document.getElementById('firstName').value.trim(),
-    email: document.getElementById('email').value.trim(),
-    requestedResource: document.getElementById('resourceType').value
+    firstName: firstNameEl.value.trim(),
+    email: emailEl.value.trim(),
+    selectedResource: resourceTypeEl.value
   };
+  
+  // Validate required fields
+  if (!formData.firstName || !formData.email || !formData.selectedResource) {
+    throw new Error('All fields are required');
+  }
   
   try {
     const response = await fetch('https://clutterfreespaces-production.up.railway.app/api/request-resources', {
@@ -862,7 +892,9 @@ form.addEventListener('submit', async function(e) {
       body: JSON.stringify(formData)
     });
     
-    if (response.ok) {
+    const result = await response.json();
+    
+    if (response.ok && result.success) {
       successMsg.style.display = 'block';
       form.style.display = 'none';
       
@@ -872,7 +904,7 @@ form.addEventListener('submit', async function(e) {
       }, 3000);
       
     } else {
-      throw new Error('Server error');
+      throw new Error(result.error || result.message || 'Server error');
     }
     
   } catch (error) {
@@ -882,7 +914,8 @@ form.addEventListener('submit', async function(e) {
     btnText.textContent = 'Get My Free Guide';
     spinner.style.display = 'none';
   }
-});
+  });
+}
 
 // Make function globally available
 window.openResourceModal = openResourceModal;
