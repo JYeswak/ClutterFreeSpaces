@@ -1303,7 +1303,7 @@ async function addResourceDownloaderToSendGrid(
       body: contactData,
     };
 
-    await sgClient.request(request);
+    await sgMail.request(request);
     console.log(`📝 Added ${email} to SendGrid resource downloaders list`);
   } catch (error) {
     console.error("❌ Error adding contact to SendGrid:", error);
