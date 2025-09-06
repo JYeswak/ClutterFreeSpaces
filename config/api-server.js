@@ -846,7 +846,7 @@ app.post("/api/test-email", async (req, res) => {
     const testMessage = {
       to: email,
       from: {
-        email: "chanel@clutter-free-spaces.com",
+        email: "contact@clutter-free-spaces.com",
         name: "Chanel @ Clutter Free Spaces",
       },
       subject: "Test Email - SendGrid Verification",
@@ -875,6 +875,36 @@ app.post("/api/test-email", async (req, res) => {
       error: error.message,
       details: error.response?.body,
     });
+  }
+});
+
+// Comprehensive email diagnostics
+app.get("/api/email-diagnostics", async (req, res) => {
+  try {
+    const diagnostics = {
+      timestamp: new Date().toISOString(),
+      sendgrid: {
+        api_key_configured: !!process.env.SendGrid_API_Key,
+        api_key_prefix: process.env.SendGrid_API_Key
+          ? process.env.SendGrid_API_Key.substring(0, 8) + "..."
+          : "Not set",
+      },
+      template: {
+        id: "d-42661a0c34ba4cb08a1ae161bcd6f1ca",
+        variables_expected: ["first_name", "requested_guide"],
+      },
+      sender: {
+        email: "contact@clutter-free-spaces.com",
+        name: "Chanel @ Clutter Free Spaces",
+      },
+      recent_attempts: {
+        message: "Check Railway logs for recent email send attempts",
+      },
+    };
+
+    res.json({ success: true, diagnostics });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 
@@ -1297,7 +1327,7 @@ app.post("/api/workflow/review-request", async (req, res) => {
     // 2. Send email via SendGrid
     const emailData = {
       to: clientEmail,
-      from: "chanel@clutter-free-spaces.com",
+      from: "contact@clutter-free-spaces.com",
       subject: `Thank you ${clientName}! Please share your ClutterFreeSpaces experience`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -1386,7 +1416,7 @@ app.post("/api/workflow/qualify-lead", async (req, res) => {
       // Send priority email
       await sgMail.send({
         to: leadData.email,
-        from: "chanel@clutter-free-spaces.com",
+        from: "contact@clutter-free-spaces.com",
         subject: "Let's Create Your Dream Space! - ClutterFreeSpaces",
         html: `
           <h2>Hi ${leadData.name || "there"}! 🌟</h2>
@@ -1400,7 +1430,7 @@ app.post("/api/workflow/qualify-lead", async (req, res) => {
       // Send detailed information email
       await sgMail.send({
         to: leadData.email,
-        from: "chanel@clutter-free-spaces.com",
+        from: "contact@clutter-free-spaces.com",
         subject: "Your Organized Space Awaits! - ClutterFreeSpaces",
         html: `
           <h2>Hi ${leadData.name || "there"}!</h2>
@@ -1845,7 +1875,7 @@ async function checkExistingEmail(email) {
 async function sendResourceEmail(email, firstName, requestedResource) {
   try {
     // Enhanced template that delivers complete bundle with personalized messaging
-    const templateId = "d-af8832644a1f4517a9f6c9cd344b5eed"; // Complete Resource Bundle 2024
+    const templateId = "d-42661a0c34ba4cb08a1ae161bcd6f1ca"; // Complete Resource Bundle 2024
 
     // Map resource selections to friendly names for email personalization
     const resourceDisplayNames = {
@@ -1867,7 +1897,7 @@ async function sendResourceEmail(email, firstName, requestedResource) {
     const msg = {
       to: email,
       from: {
-        email: "chanel@clutter-free-spaces.com",
+        email: "contact@clutter-free-spaces.com",
         name: "Chanel @ Clutter Free Spaces",
       },
       templateId: templateId,
