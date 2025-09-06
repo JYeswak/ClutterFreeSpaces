@@ -8,6 +8,7 @@ console.log("GOOGLE_CLIENT_ID exists:", !!process.env.GOOGLE_CLIENT_ID);
 console.log("GOOGLE_CLIENT_SECRET exists:", !!process.env.GOOGLE_CLIENT_SECRET);
 console.log("RAILWAY_URL:", process.env.RAILWAY_URL);
 const express = require("express");
+const path = require("path");
 const cors = require("cors");
 const sgMail = require("@sendgrid/mail");
 const twilio = require("twilio");
@@ -38,6 +39,9 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Serve static files from downloads directory
+app.use("/downloads", express.static(path.join(__dirname, "../downloads")));
 
 // Initialize external services
 sgMail.setApiKey(process.env.SendGrid_API_Key);
@@ -1877,14 +1881,24 @@ async function sendResourceEmail(email, firstName, requestedResource) {
     // Map resource selections to friendly names for email personalization
     const resourceDisplayNames = {
       "Kitchen Guide": "Kitchen Organization Essentials guide",
+      "kitchen-organization-essentials":
+        "Kitchen Organization Essentials guide",
       "Seasonal Guide": "Montana Seasonal Gear Organization guide",
+      "montana-seasonal-gear-guide": "Montana Seasonal Gear Organization guide",
       "Daily Routine": "Daily Maintenance Routine guide",
+      "daily-maintenance-routine": "Daily Maintenance Routine guide",
       "Closet Guide": "Closet & Bedroom Organization guide",
+      "closet-bedroom-organization": "Closet & Bedroom Organization guide",
       "Office Guide": "Home Office Setup guide",
+      "home-office-setup": "Home Office Setup guide",
       "Mudroom Guide": "Mudroom & Entryway Solutions guide",
+      "mudroom-entryway-solutions": "Mudroom & Entryway Solutions guide",
       "Labels & Templates": "Printable Labels & Templates",
+      "printable-labels-templates": "Printable Labels & Templates",
       "Organization Checklists": "Organization Checklists",
+      "organization-checklists": "Organization Checklists",
       "Planning Worksheets": "Planning Worksheets",
+      "planning-worksheets": "Planning Worksheets",
       "All Guides": "Complete Organization Bundle",
     };
 
