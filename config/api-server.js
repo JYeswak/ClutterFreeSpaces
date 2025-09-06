@@ -68,42 +68,51 @@ app.post("/api/diagnose-sendgrid", async (req, res) => {
       return res.status(400).json({ error: "Email is required for testing" });
     }
 
-    console.log(`🔍 Testing SendGrid with: ${email}, type: ${testType || 'minimal'}`);
+    console.log(
+      `🔍 Testing SendGrid with: ${email}, type: ${testType || "minimal"}`,
+    );
 
     let contactData;
 
     // Test minimal contact addition first
-    if (testType === 'minimal' || !testType) {
+    if (testType === "minimal" || !testType) {
       contactData = {
         list_ids: [CONTACT_LISTS.newsletter_subscribers],
-        contacts: [{
-          email: email,
-        }],
+        contacts: [
+          {
+            email: email,
+          },
+        ],
       };
     }
     // Test with name only
-    else if (testType === 'with-name') {
+    else if (testType === "with-name") {
       contactData = {
         list_ids: [CONTACT_LISTS.newsletter_subscribers],
-        contacts: [{
-          email: email,
-          first_name: firstName || "Test User",
-        }],
+        contacts: [
+          {
+            email: email,
+            first_name: firstName || "Test User",
+          },
+        ],
       };
     }
     // Test resource download format
-    else if (testType === 'resource-download') {
+    else if (testType === "resource-download") {
       contactData = {
         list_ids: [CONTACT_LISTS.newsletter_subscribers],
-        contacts: [{
-          email: email,
-          first_name: firstName || "Test User",
-          custom_fields: {
-            downloaded_resource: req.body.requestedResource || "Kitchen Guide",
-            download_date: new Date().toISOString(),
-            source: "Resource Download",
+        contacts: [
+          {
+            email: email,
+            first_name: firstName || "Test User",
+            custom_fields: {
+              downloaded_resource:
+                req.body.requestedResource || "Kitchen Guide",
+              download_date: new Date().toISOString(),
+              source: "Resource Download",
+            },
           },
-        }],
+        ],
       };
     }
 
@@ -124,28 +133,63 @@ app.post("/api/diagnose-sendgrid", async (req, res) => {
     res.json({
       success: true,
       message: "SendGrid contact added successfully",
-      testType: testType || 'minimal',
+      testType: testType || "minimal",
       contact: { email, firstName },
-      response: response.data
+      response: response.data,
     });
-
   } catch (error) {
     console.error("❌ SendGrid test failed:", {
       status: error.response?.status,
       message: error.response?.data?.errors || error.response?.data?.error,
       details: error.response?.data,
-      testType: req.body.testType
+      testType: req.body.testType,
     });
 
     res.status(error.response?.status || 500).json({
       success: false,
-      error: error.response?.data?.errors || error.response?.data?.error || error.message,
+      error:
+        error.response?.data?.errors ||
+        error.response?.data?.error ||
+        error.message,
       details: error.response?.data,
-      testType: req.body.testType || 'minimal',
+      testType: req.body.testType || "minimal",
       debug: {
         listId: CONTACT_LISTS.newsletter_subscribers,
-        email: req.body.email
-      }
+        email: req.body.email,
+      },
+    });
+  }
+});
+
+// Check SendGrid custom field definitions
+app.get("/api/sendgrid-fields", async (req, res) => {
+  try {
+    console.log("🔍 Checking SendGrid custom field definitions...");
+
+    const response = await axios.get(
+      "https://api.sendgrid.com/v3/marketing/field_definitions",
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.SendGrid_API_Key}`,
+        },
+      },
+    );
+
+    const fields = response.data.custom_fields || [];
+
+    console.log("📋 Available custom fields:", fields);
+
+    res.json({
+      success: true,
+      custom_fields: fields,
+      count: fields.length,
+    });
+  } catch (error) {
+    console.error("❌ SendGrid fields check failed:", error.response?.data);
+    res.status(error.response?.status || 500).json({
+      success: false,
+      error: error.response?.data?.error || error.message,
+      details: error.response?.data,
     });
   }
 });
@@ -165,16 +209,22 @@ app.get("/api/sendgrid-config-check", async (req, res) => {
     );
 
     const lists = response.data.result || [];
-    const configuredLists = ['quiz_takers', 'cold_leads', 'newsletter_subscribers', 'hot_leads', 'warm_leads'];
+    const configuredLists = [
+      "quiz_takers",
+      "cold_leads",
+      "newsletter_subscribers",
+      "hot_leads",
+      "warm_leads",
+    ];
 
-    const validation = configuredLists.map(listKey => {
+    const validation = configuredLists.map((listKey) => {
       const listId = CONTACT_LISTS[listKey];
-      const foundList = lists.find(list => list.id === listId);
+      const foundList = lists.find((list) => list.id === listId);
       return {
         key: listKey,
         id: listId,
         valid: !!foundList,
-        name: foundList ? foundList.name : 'Not Found'
+        name: foundList ? foundList.name : "Not Found",
       };
     });
 
@@ -184,15 +234,14 @@ app.get("/api/sendgrid-config-check", async (req, res) => {
       success: true,
       lists: lists,
       validation: validation,
-      configured: CONTACT_LISTS
+      configured: CONTACT_LISTS,
     });
-
   } catch (error) {
     console.error("❌ SendGrid config check failed:", error.response?.data);
     res.status(error.response?.status || 500).json({
       success: false,
       error: error.response?.data?.error || error.message,
-      details: error.response?.data
+      details: error.response?.data,
     });
   }
 });
@@ -204,21 +253,25 @@ app.post("/api/test-sendgrid-fields", async (req, res) => {
 
     if (!fieldName || !fieldValue || !email) {
       return res.status(400).json({
-        error: "fieldName, fieldValue, and email are required"
+        error: "fieldName, fieldValue, and email are required",
       });
     }
 
-    console.log(`🔍 Testing SendGrid custom field: ${fieldName} = ${fieldValue}`);
+    console.log(
+      `🔍 Testing SendGrid custom field: ${fieldName} = ${fieldValue}`,
+    );
 
     const contactData = {
       list_ids: [CONTACT_LISTS.newsletter_subscribers],
-      contacts: [{
-        email: email,
-        first_name: "Field Test",
-        custom_fields: {
-          [fieldName]: fieldValue,
+      contacts: [
+        {
+          email: email,
+          first_name: "Field Test",
+          custom_fields: {
+            [fieldName]: fieldValue,
+          },
         },
-      }],
+      ],
     };
 
     const response = await axios.put(
@@ -240,7 +293,7 @@ app.post("/api/test-sendgrid-fields", async (req, res) => {
         `https://api.sendgrid.com/v3/marketing/contacts?emails=${encodeURIComponent(email)}`,
         {
           headers: { Authorization: `Bearer ${process.env.SendGrid_API_Key}` },
-        }
+        },
       );
       console.log(`🧹 Test contact cleaned up: ${email}`);
     } catch (cleanupError) {
@@ -251,22 +304,27 @@ app.post("/api/test-sendgrid-fields", async (req, res) => {
       success: true,
       field: fieldName,
       value: fieldValue,
-      message: "Custom field validated and test contact cleaned up"
+      message: "Custom field validated and test contact cleaned up",
     });
-
   } catch (error) {
-    console.error(`❌ SendGrid field ${req.body.fieldName} validation failed:`, {
-      status: error.response?.status,
-      message: error.response?.data?.errors || error.response?.data?.error,
-      details: error.response?.data
-    });
+    console.error(
+      `❌ SendGrid field ${req.body.fieldName} validation failed:`,
+      {
+        status: error.response?.status,
+        message: error.response?.data?.errors || error.response?.data?.error,
+        details: error.response?.data,
+      },
+    );
 
     res.status(error.response?.status || 500).json({
       success: false,
       field: req.body.fieldName,
       value: req.body.fieldValue,
-      error: error.response?.data?.errors || error.response?.data?.error || error.message,
-      details: error.response?.data
+      error:
+        error.response?.data?.errors ||
+        error.response?.data?.error ||
+        error.message,
+      details: error.response?.data,
     });
   }
 });
@@ -1328,15 +1386,17 @@ app.post("/api/test-fields", async (req, res) => {
     const { fieldName, fieldValue } = req.body;
 
     if (!fieldName || !fieldValue) {
-      return res.status(400).json({ error: "fieldName and fieldValue required" });
+      return res
+        .status(400)
+        .json({ error: "fieldName and fieldValue required" });
     }
 
     // Start with minimal record
     const baseRecord = {
       fields: {
         Name: "Test User",
-        Email: "test@example.com"
-      }
+        Email: "test@example.com",
+      },
     };
 
     console.log(`🔧 Testing field: ${fieldName} = ${fieldValue}`);
@@ -1360,7 +1420,7 @@ app.post("/api/test-fields", async (req, res) => {
       `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/Leads/${response.data.id}`,
       {
         headers: { Authorization: `Bearer ${AIRTABLE_API_KEY}` },
-      }
+      },
     );
 
     console.log(`✅ Field ${fieldName} validated successfully`);
@@ -1368,25 +1428,27 @@ app.post("/api/test-fields", async (req, res) => {
       success: true,
       field: fieldName,
       value: fieldValue,
-      message: "Field validated and test record cleaned up"
+      message: "Field validated and test record cleaned up",
     });
-
   } catch (error) {
     if (error.response?.status === 422) {
-      console.log(`❌ Field ${req.body.fieldName} validation failed:`, error.response?.data?.error?.message);
+      console.log(
+        `❌ Field ${req.body.fieldName} validation failed:`,
+        error.response?.data?.error?.message,
+      );
       res.status(400).json({
         success: false,
         field: req.body.fieldName,
         value: req.body.fieldValue,
         error: error.response?.data?.error?.message,
-        message: "Field validation failed"
+        message: "Field validation failed",
       });
     } else {
       console.error("❌ Field test error:", error.response?.data);
       res.status(500).json({
         success: false,
         error: error.message,
-        details: error.response?.data
+        details: error.response?.data,
       });
     }
   }
@@ -1488,7 +1550,7 @@ app.post("/api/test-airtable", async (req, res) => {
       fields: {
         Name: req.body.name || "Test User",
         Email: req.body.email || "test@example.com",
-      }
+      },
     };
 
     console.log("🔧 Testing minimal Airtable record creation...");
@@ -1509,18 +1571,18 @@ app.post("/api/test-airtable", async (req, res) => {
     res.json({
       success: true,
       recordId: response.data.id,
-      message: "Minimal record created successfully"
+      message: "Minimal record created successfully",
     });
   } catch (error) {
     console.error("❌ Airtable test failed:", {
       status: error.response?.status,
       message: error.response?.data?.error?.message,
-      details: error.response?.data
+      details: error.response?.data,
     });
     res.status(500).json({
       success: false,
       error: error.message,
-      details: error.response?.data
+      details: error.response?.data,
     });
   }
 });
@@ -1657,7 +1719,7 @@ async function createAirtableResourceLead({
 }) {
   try {
     // Try date format: YYYY-MM-DD (Airtable date format)
-    const downloadDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+    const downloadDate = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
 
     const airtableData = {
       fields: {
@@ -1673,7 +1735,10 @@ async function createAirtableResourceLead({
       },
     };
 
-    console.log("🔧 Creating Airtable record with payload:", JSON.stringify(airtableData, null, 2));
+    console.log(
+      "🔧 Creating Airtable record with payload:",
+      JSON.stringify(airtableData, null, 2),
+    );
 
     const response = await axios.post(
       `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/Leads`,
@@ -1695,12 +1760,14 @@ async function createAirtableResourceLead({
       status: error.response?.status,
       message: error.response?.data?.error?.message || error.message,
       details: error.response?.data,
-      payload: error.config?.data  // Log the payload that was sent
+      payload: error.config?.data, // Log the payload that was sent
     });
 
     // If it's a date format issue, try alternative format
-    if (error.response?.data?.error?.message?.includes('date')) {
-      console.log("🔧 Date format issue detected, trying alternative format...");
+    if (error.response?.data?.error?.message?.includes("date")) {
+      console.log(
+        "🔧 Date format issue detected, trying alternative format...",
+      );
       return await createAirtableResourceLeadFallback({
         email,
         firstName,
@@ -1722,7 +1789,7 @@ async function createAirtableResourceLeadFallback({
 }) {
   try {
     // Try date format: ISO string without milliseconds
-    const downloadDate = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
+    const downloadDate = new Date().toISOString().replace(/\.\d{3}Z$/, "Z");
 
     const airtableData = {
       fields: {
@@ -1739,7 +1806,10 @@ async function createAirtableResourceLeadFallback({
       },
     };
 
-    console.log("🔧 Fallback: Creating record without date field:", JSON.stringify(airtableData, null, 2));
+    console.log(
+      "🔧 Fallback: Creating record without date field:",
+      JSON.stringify(airtableData, null, 2),
+    );
 
     const response = await axios.post(
       `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/Leads`,
@@ -1759,7 +1829,7 @@ async function createAirtableResourceLeadFallback({
       const updateData = {
         fields: {
           "Download Date": downloadDate,
-        }
+        },
       };
 
       await axios.patch(
@@ -1773,9 +1843,13 @@ async function createAirtableResourceLeadFallback({
         },
       );
 
-      console.log(`📝 Date field updated separately for record: ${response.data.id}`);
+      console.log(
+        `📝 Date field updated separately for record: ${response.data.id}`,
+      );
     } catch (updateError) {
-      console.log(`⚠️ Could not update date field, but record created: ${response.data.id}`);
+      console.log(
+        `⚠️ Could not update date field, but record created: ${response.data.id}`,
+      );
     }
 
     return response.data.id;
@@ -1789,7 +1863,7 @@ async function createAirtableResourceLeadFallback({
 async function updateAirtableResourceDownload(recordId, requestedResource) {
   try {
     // Use same date format as create function
-    const downloadDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+    const downloadDate = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
 
     const airtableData = {
       fields: {
@@ -1801,7 +1875,10 @@ async function updateAirtableResourceDownload(recordId, requestedResource) {
       },
     };
 
-    console.log("🔧 Updating Airtable record with payload:", JSON.stringify(airtableData, null, 2));
+    console.log(
+      "🔧 Updating Airtable record with payload:",
+      JSON.stringify(airtableData, null, 2),
+    );
 
     const response = await axios.patch(
       `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/Leads/${recordId}`,
@@ -1823,7 +1900,7 @@ async function updateAirtableResourceDownload(recordId, requestedResource) {
       status: error.response?.status,
       message: error.response?.data?.error?.message || error.message,
       details: error.response?.data,
-      payload: error.config?.data  // Log the payload that was sent
+      payload: error.config?.data, // Log the payload that was sent
     });
     throw error;
   }
