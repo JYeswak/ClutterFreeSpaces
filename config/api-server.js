@@ -1934,10 +1934,12 @@ async function sendResourceEmail(email, firstName, requestedResource) {
         email: "contact@clutter-free-spaces.com",
         name: "Chanel @ Clutter Free Spaces",
       },
-      subject: `Your ${friendlyResourceName} + Bonus Resources`,
+      subject: `Your Complete Organization Bundle (9 Resources!) 🏠✨`,
       text: `Hi ${firstName},
 
-Thanks for requesting the ${friendlyResourceName}! Here are your organization resources:
+Thanks for requesting the ${friendlyResourceName}! Here are ALL your organization resources:
+
+MAIN ORGANIZATION GUIDES:
 
 🍳 KITCHEN ORGANIZATION ESSENTIALS
 Step-by-step guide to organizing your kitchen
@@ -1951,6 +1953,32 @@ Download: https://clutterfreespaces-production.up.railway.app/downloads/montana-
 Simple habits to keep your home organized
 Download: https://clutterfreespaces-production.up.railway.app/downloads/daily-maintenance-routine.html
 
+👗 CLOSET & BEDROOM ORGANIZATION
+Transform your bedroom into a peaceful retreat
+Download: https://clutterfreespaces-production.up.railway.app/downloads/closet-bedroom-organization.html
+
+🏢 HOME OFFICE SETUP
+Create a productive workspace at home
+Download: https://clutterfreespaces-production.up.railway.app/downloads/home-office-setup.html
+
+🚪 MUDROOM & ENTRYWAY SOLUTIONS
+Organize your home's entry points
+Download: https://clutterfreespaces-production.up.railway.app/downloads/mudroom-entryway-solutions.html
+
+BONUS DIGITAL TOOLS:
+
+🏷️ PRINTABLE LABELS & TEMPLATES
+Ready-to-use labels and organization templates
+Download: https://clutterfreespaces-production.up.railway.app/downloads/printable-labels-templates.html
+
+📋 ORGANIZATION CHECKLISTS
+Room-by-room organization checklists
+Download: https://clutterfreespaces-production.up.railway.app/downloads/organization-checklists.html
+
+📝 PLANNING WORKSHEETS
+Strategic planning tools for your organization projects
+Download: https://clutterfreespaces-production.up.railway.app/downloads/planning-worksheets.html
+
 Questions about any of these strategies? Just reply to this email - I personally read and respond to every message.
 
 Best regards,
@@ -1963,13 +1991,15 @@ contact@clutter-free-spaces.com`,
       html: `
 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
   <div style="background: #2D5A87; color: white; padding: 20px; text-align: center;">
-    <h1>Your Organization Resources</h1>
+    <h1>Your Complete Organization Bundle</h1>
   </div>
   
   <div style="padding: 30px 20px;">
     <p>Hi ${firstName},</p>
     
-    <p>Thanks for requesting the <strong>${friendlyResourceName}</strong>! Here are your organization resources:</p>
+    <p>Thanks for requesting the <strong>${friendlyResourceName}</strong>! Here are <strong>ALL</strong> your organization resources:</p>
+    
+    <h2 style="color: #2D5A87; border-bottom: 2px solid #2D5A87; padding-bottom: 10px;">Main Organization Guides</h2>
     
     <div style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 5px;">
       <h3>🍳 Kitchen Organization Essentials</h3>
@@ -1990,6 +2020,55 @@ contact@clutter-free-spaces.com`,
       <p>Simple habits to keep your home organized</p>
       <a href="https://clutterfreespaces-production.up.railway.app/downloads/daily-maintenance-routine.html" 
          style="background: #2D5A87; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; display: inline-block;">Download PDF</a>
+    </div>
+    
+    <div style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 5px;">
+      <h3>👗 Closet & Bedroom Organization</h3>
+      <p>Transform your bedroom into a peaceful retreat</p>
+      <a href="https://clutterfreespaces-production.up.railway.app/downloads/closet-bedroom-organization.html" 
+         style="background: #2D5A87; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; display: inline-block;">Download PDF</a>
+    </div>
+    
+    <div style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 5px;">
+      <h3>🏢 Home Office Setup</h3>
+      <p>Create a productive workspace at home</p>
+      <a href="https://clutterfreespaces-production.up.railway.app/downloads/home-office-setup.html" 
+         style="background: #2D5A87; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; display: inline-block;">Download PDF</a>
+    </div>
+    
+    <div style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 5px;">
+      <h3>🚪 Mudroom & Entryway Solutions</h3>
+      <p>Organize your home's entry points</p>
+      <a href="https://clutterfreespaces-production.up.railway.app/downloads/mudroom-entryway-solutions.html" 
+         style="background: #2D5A87; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; display: inline-block;">Download PDF</a>
+    </div>
+    
+    <h2 style="color: #2D5A87; border-bottom: 2px solid #2D5A87; padding-bottom: 10px; margin-top: 40px;">Bonus Digital Tools</h2>
+    
+    <div style="margin: 20px 0; padding: 15px; background: #e8f4fd; border-radius: 5px; border-left: 4px solid #2D5A87;">
+      <h3>🏷️ Printable Labels & Templates</h3>
+      <p>Ready-to-use labels and organization templates</p>
+      <a href="https://clutterfreespaces-production.up.railway.app/downloads/printable-labels-templates.html" 
+         style="background: #2D5A87; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; display: inline-block;">Download PDF</a>
+    </div>
+    
+    <div style="margin: 20px 0; padding: 15px; background: #e8f4fd; border-radius: 5px; border-left: 4px solid #2D5A87;">
+      <h3>📋 Organization Checklists</h3>
+      <p>Room-by-room organization checklists</p>
+      <a href="https://clutterfreespaces-production.up.railway.app/downloads/organization-checklists.html" 
+         style="background: #2D5A87; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; display: inline-block;">Download PDF</a>
+    </div>
+    
+    <div style="margin: 20px 0; padding: 15px; background: #e8f4fd; border-radius: 5px; border-left: 4px solid #2D5A87;">
+      <h3>📝 Planning Worksheets</h3>
+      <p>Strategic planning tools for your organization projects</p>
+      <a href="https://clutterfreespaces-production.up.railway.app/downloads/planning-worksheets.html" 
+         style="background: #2D5A87; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; display: inline-block;">Download PDF</a>
+    </div>
+    
+    <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 5px; padding: 20px; margin: 30px 0;">
+      <h3 style="color: #856404; margin: 0 0 10px 0;">💎 Your Complete Organization Bundle</h3>
+      <p style="color: #856404; margin: 0;">You now have access to 6 comprehensive guides plus 3 bonus digital tools - everything you need to transform your entire home!</p>
     </div>
     
     <p>Questions about any of these strategies? Just reply to this email - I personally read and respond to every message.</p>
