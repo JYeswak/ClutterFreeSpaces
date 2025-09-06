@@ -1323,8 +1323,13 @@ async function createAirtableResourceLead({
       fields: {
         Name: firstName,
         Email: email,
-        "Lead Source": "Resource Download",
+        "Lead Source": "Website",
+        "Downloaded Resource": requestedResource,
+        "Download Date": new Date().toISOString(),
         Status: "New Lead",
+        "Lead Score": calculateResourceLeadScore(requestedResource),
+        Segment: "WARM", // Resource downloaders are warm leads
+        "Follow Up Required": true,
       },
     };
 
