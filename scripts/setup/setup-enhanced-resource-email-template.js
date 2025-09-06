@@ -9,10 +9,10 @@
 const axios = require("axios");
 require("dotenv").config();
 
-const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
+const SENDGRID_API_KEY = process.env.SendGrid_API_Key;
 
 if (!SENDGRID_API_KEY) {
-  console.error("❌ SENDGRID_API_KEY environment variable is required");
+  console.error("❌ SendGrid_API_Key environment variable is required");
   process.exit(1);
 }
 

@@ -1253,8 +1253,8 @@ async function updateAirtableLead(
 // Send email with complete resource bundle
 async function sendResourceEmail(email, firstName, requestedResource) {
   try {
-    // Use the new enhanced template (you'll need to update this ID after creating the template)
-    const templateId = "d-e57a6dd9503b40aa93bef76fd1c2c5bf"; // Will be updated to new template
+    // Enhanced template that delivers complete bundle with personalized messaging
+    const templateId = "d-af8832644a1f4517a9f6c9cd344b5eed"; // Complete Resource Bundle 2024
 
     // Map resource selections to friendly names for email personalization
     const resourceDisplayNames = {
