@@ -475,6 +475,62 @@ app.get("/api/google/gmb/content/transformation", async (req, res) => {
   }
 });
 
+// Generate daily themed post
+app.get("/api/google/gmb/content/daily", async (req, res) => {
+  try {
+    const dayOfWeek = req.query.day ? parseInt(req.query.day) : null;
+    const result = await gmbEnhancementService.generateDailyPost(dayOfWeek);
+    res.json(result);
+  } catch (error) {
+    console.error("GMB daily post error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Get weekly posting schedule
+app.get("/api/google/gmb/schedule/weekly", (req, res) => {
+  try {
+    const schedule = gmbEnhancementService.weeklySchedule;
+    res.json({ success: true, data: { schedule } });
+  } catch (error) {
+    console.error("GMB schedule error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Generate week's worth of posts
+app.get("/api/google/gmb/content/weekly", async (req, res) => {
+  try {
+    const weeklyPosts = {};
+    const dayNames = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+
+    for (let day = 0; day < 7; day++) {
+      const result = await gmbEnhancementService.generateDailyPost(day);
+      if (result.success) {
+        weeklyPosts[dayNames[day]] = {
+          dayOfWeek: day,
+          theme: result.post.scheduledTheme,
+          focus: result.post.themeFocus,
+          post: result.post,
+        };
+      }
+    }
+
+    res.json({ success: true, data: { weeklyPosts } });
+  } catch (error) {
+    console.error("GMB weekly posts error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 // ============================================================================
 // GOOGLE CLOUD INTEGRATIONS ROUTES
 // ============================================================================

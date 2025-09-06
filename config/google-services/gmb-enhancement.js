@@ -431,6 +431,70 @@ class GMBEnhancementService {
         tip: "Most clients are amazed how little disruption our process creates!",
       },
     ];
+
+    // Daily themed posting schedule
+    this.weeklySchedule = {
+      0: {
+        // Sunday - Motivation Monday Prep
+        theme: "sunday_prep",
+        postType: "motivation",
+        focus: "Week preparation and goal setting",
+      },
+      1: {
+        // Monday - Motivation Monday
+        theme: "motivation_monday",
+        postType: "motivation",
+        focus: "Inspirational organizing content to start the week",
+      },
+      2: {
+        // Tuesday - Tip Tuesday
+        theme: "tip_tuesday",
+        postType: "tip",
+        focus: "Practical organizing tips and hacks",
+      },
+      3: {
+        // Wednesday - Wisdom Wednesday
+        theme: "wisdom_wednesday",
+        postType: "faq",
+        focus: "Educational content and expert advice",
+      },
+      4: {
+        // Thursday - Transformation Thursday
+        theme: "transformation_thursday",
+        postType: "transformation",
+        focus: "Before/after stories and dramatic changes",
+      },
+      5: {
+        // Friday - Feature Friday
+        theme: "feature_friday",
+        postType: "testimonial",
+        focus: "Client success stories and reviews",
+      },
+      6: {
+        // Saturday - Solutions Saturday
+        theme: "solutions_saturday",
+        postType: "problemSolution",
+        focus: "Problem-focused content addressing pain points",
+      },
+    };
+
+    // Daily motivational content for Sundays and Mondays
+    this.motivationalDaily = {
+      sunday: [
+        "Sunday Reset: Take 15 minutes today to prepare your spaces for a successful week ahead! 🌟",
+        "Sunday Planning: An organized week starts with Sunday preparation. What's your organizing goal this week? 📋",
+        "Weekend Wrap-Up: Spend Sunday evening resetting your home for Monday morning success! ✨",
+        "Sunday Reflection: Look at the organized spaces you've created this week. Feel proud of your progress! 💪",
+        "Preparation Day: Use Sunday to set yourself up for an organized, stress-free week ahead 🎯",
+      ],
+      monday: [
+        "Monday Motivation: You've got this! Start your week with one organized space and watch the momentum build 🚀",
+        "Fresh Start Monday: New week, new opportunities to create the organized home you deserve! 💜",
+        "Monday Mindset: Organization isn't about perfection - it's about creating systems that work for YOUR life 🏡",
+        "Week Ahead: This Monday, choose one space to focus on. Small steps lead to big transformations! ⭐",
+        "Monday Magic: The most organized homes started with one small step on a Monday morning ✨",
+      ],
+    };
   }
 
   /**
@@ -949,6 +1013,228 @@ Ready for your transformation? Let's make it happen! 💪
         outcome: "Functional workspace, increased productivity",
       },
     ];
+
+    // Daily themed posting schedule
+    this.weeklySchedule = {
+      0: {
+        // Sunday - Motivation Monday Prep
+        theme: "sunday_prep",
+        postType: "motivation",
+        focus: "Week preparation and goal setting",
+      },
+      1: {
+        // Monday - Motivation Monday
+        theme: "motivation_monday",
+        postType: "motivation",
+        focus: "Inspirational organizing content to start the week",
+      },
+      2: {
+        // Tuesday - Tip Tuesday
+        theme: "tip_tuesday",
+        postType: "tip",
+        focus: "Practical organizing tips and hacks",
+      },
+      3: {
+        // Wednesday - Wisdom Wednesday
+        theme: "wisdom_wednesday",
+        postType: "faq",
+        focus: "Educational content and expert advice",
+      },
+      4: {
+        // Thursday - Transformation Thursday
+        theme: "transformation_thursday",
+        postType: "transformation",
+        focus: "Before/after stories and dramatic changes",
+      },
+      5: {
+        // Friday - Feature Friday
+        theme: "feature_friday",
+        postType: "testimonial",
+        focus: "Client success stories and reviews",
+      },
+      6: {
+        // Saturday - Solutions Saturday
+        theme: "solutions_saturday",
+        postType: "problemSolution",
+        focus: "Problem-focused content addressing pain points",
+      },
+    };
+
+    // Daily motivational content for Sundays and Mondays
+    this.motivationalDaily = {
+      sunday: [
+        "Sunday Reset: Take 15 minutes today to prepare your spaces for a successful week ahead! 🌟",
+        "Sunday Planning: An organized week starts with Sunday preparation. What's your organizing goal this week? 📋",
+        "Weekend Wrap-Up: Spend Sunday evening resetting your home for Monday morning success! ✨",
+        "Sunday Reflection: Look at the organized spaces you've created this week. Feel proud of your progress! 💪",
+        "Preparation Day: Use Sunday to set yourself up for an organized, stress-free week ahead 🎯",
+      ],
+      monday: [
+        "Monday Motivation: You've got this! Start your week with one organized space and watch the momentum build 🚀",
+        "Fresh Start Monday: New week, new opportunities to create the organized home you deserve! 💜",
+        "Monday Mindset: Organization isn't about perfection - it's about creating systems that work for YOUR life 🏡",
+        "Week Ahead: This Monday, choose one space to focus on. Small steps lead to big transformations! ⭐",
+        "Monday Magic: The most organized homes started with one small step on a Monday morning ✨",
+      ],
+    };
+  }
+
+  /**
+   * Generate daily themed post based on day of week
+   */
+  async generateDailyPost(dayOfWeek = null) {
+    try {
+      // Use provided day or current day
+      const today = dayOfWeek !== null ? dayOfWeek : new Date().getDay();
+      const schedule = this.weeklySchedule[today];
+
+      let post;
+
+      // Generate post based on scheduled theme
+      switch (schedule.postType) {
+        case "motivation":
+          if (today === 0) {
+            // Sunday
+            post = await this.generateSundayPrep();
+          } else {
+            // Monday
+            post = await this.generateMondayMotivation();
+          }
+          break;
+        case "tip":
+          post = await this.generateTipPost();
+          break;
+        case "faq":
+          post = await this.generateFAQPost();
+          break;
+        case "transformation":
+          post = await this.generateTransformationPost();
+          break;
+        case "testimonial":
+          post = await this.generateTestimonialPost();
+          break;
+        case "problemSolution":
+          post = await this.generateProblemSolutionPost();
+          break;
+        default:
+          post = await this.generateSeasonalPost();
+      }
+
+      if (post.success) {
+        post.post.scheduledTheme = schedule.theme;
+        post.post.dayOfWeek = today;
+        post.post.themeFocus = schedule.focus;
+      }
+
+      return post;
+    } catch (error) {
+      console.error("Daily post generation error:", error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  /**
+   * Generate Sunday preparation motivation post
+   */
+  async generateSundayPrep() {
+    try {
+      const sundayContent = this.motivationalDaily.sunday;
+      const randomContent =
+        sundayContent[Math.floor(Math.random() * sundayContent.length)];
+
+      const season = this.getCurrentSeason();
+      const seasonalHashtags = this.seasonalContent[season].hashtags.slice(
+        0,
+        3,
+      );
+
+      const postText = `🗓️ SUNDAY RESET
+
+${randomContent}
+
+This ${season} season is perfect for creating organized systems that last! What organizing goal will you tackle this week?
+
+Ready to make real progress? We're here to help! 💜
+
+#SundayReset #OrganizingGoals #MontanaOrganizing #ClutterFreeSpaces ${seasonalHashtags.join(" ")}`;
+
+      return {
+        success: true,
+        post: {
+          text: postText,
+          type: "sunday_prep",
+          hashtags: [
+            "#SundayReset",
+            "#OrganizingGoals",
+            "#MontanaOrganizing",
+            "#ClutterFreeSpaces",
+            ...seasonalHashtags,
+          ],
+          callToAction: "Ready to make real progress?",
+          photos: [
+            {
+              suggestion: "Text-based graphic with weekly planning theme",
+              alt_text: "Sunday preparation and weekly planning motivation",
+            },
+          ],
+        },
+      };
+    } catch (error) {
+      console.error("Sunday prep post generation error:", error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  /**
+   * Generate Monday motivation post
+   */
+  async generateMondayMotivation() {
+    try {
+      const mondayContent = this.motivationalDaily.monday;
+      const randomContent =
+        mondayContent[Math.floor(Math.random() * mondayContent.length)];
+
+      const season = this.getCurrentSeason();
+      const seasonalHashtags = this.seasonalContent[season].hashtags.slice(
+        0,
+        3,
+      );
+
+      const postText = `💪 MOTIVATION MONDAY
+
+${randomContent}
+
+This week in Montana, let's create spaces that support your goals and make daily life easier!
+
+Start with just 10 minutes today - you'll be amazed what you can accomplish! 
+
+#MotivationMonday #OrganizedLife #MontanaOrganizing #ClutterFreeSpaces ${seasonalHashtags.join(" ")}`;
+
+      return {
+        success: true,
+        post: {
+          text: postText,
+          type: "monday_motivation",
+          hashtags: [
+            "#MotivationMonday",
+            "#OrganizedLife",
+            "#MontanaOrganizing",
+            "#ClutterFreeSpaces",
+            ...seasonalHashtags,
+          ],
+          callToAction: "Start with just 10 minutes today",
+          photos: [
+            {
+              suggestion: "Motivational text-based graphic with Monday theme",
+              alt_text: "Monday motivation for organizing and productivity",
+            },
+          ],
+        },
+      };
+    } catch (error) {
+      console.error("Monday motivation post generation error:", error);
+      return { success: false, error: error.message };
+    }
   }
 
   /**
