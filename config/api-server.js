@@ -46,6 +46,15 @@ sgMail.setApiKey(process.env.SendGrid_API_Key);
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID;
 const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
 
+// SendGrid Contact Lists
+const CONTACT_LISTS = {
+  quiz_takers: "e4cf8d8d-b5bd-4c0a-a5c4-f1222e2a3462",
+  cold_leads: "04a543ea-7191-458c-a2dc-460b2a729ebd",
+  newsletter_subscribers: "e4cf8d8d-b5bd-4c0a-a5c4-f1222e2a3462", // Use quiz_takers for now
+  hot_leads: "e4cf8d8d-b5bd-4c0a-a5c4-f1222e2a3462", // Use quiz_takers for now
+  warm_leads: "04a543ea-7191-458c-a2dc-460b2a729ebd", // Use cold_leads for now
+};
+
 // Initialize Twilio with proper error handling
 let twilioClient = null;
 try {
