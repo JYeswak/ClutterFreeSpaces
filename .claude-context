@@ -33,6 +33,13 @@ Business development and strategic planning for Chanel's professional organizing
 
 ## Commands
 - `ruff check .` - Python linting (if applicable)
+- `/checkin` - Daily business dashboard with SEO, booking, and CRM metrics
+- `/checkin --init` - Initialize dashboard database and API setup
+- `/checkin --setup-apis` - Show detailed API configuration instructions
+- `/checkin --health` - Test all API connections and show status
+- `/checkin --history` - View last 7 days of business metrics
+- `/checkin --goals` - Manage and track business goals
+- `/checkin --export-json` - Export metrics data as JSON
 - Standard project documentation and analysis files
 
 ## Notes

@@ -1155,10 +1155,43 @@ app.post("/api/google/gmb/post", async (req, res) => {
 // Get Search Console data
 app.get("/api/google/cloud/search-console", async (req, res) => {
   try {
-    const data = await cloudIntegrations.getSearchConsoleData();
+    const data = await cloudIntegrations.getSearchConsoleData(req.query);
     res.json(data);
   } catch (error) {
     console.error("Search Console error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Get Search Console analytics for specific date range
+app.post("/api/google/cloud/search-console/analytics", async (req, res) => {
+  try {
+    const data = await cloudIntegrations.getSearchAnalytics(req.body);
+    res.json(data);
+  } catch (error) {
+    console.error("Search Console Analytics error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Get Search Console sitemaps
+app.get("/api/google/cloud/search-console/sitemaps", async (req, res) => {
+  try {
+    const data = await cloudIntegrations.getSitemaps();
+    res.json(data);
+  } catch (error) {
+    console.error("Search Console Sitemaps error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Get Search Console indexing status
+app.get("/api/google/cloud/search-console/indexing", async (req, res) => {
+  try {
+    const data = await cloudIntegrations.getIndexingStatus();
+    res.json(data);
+  } catch (error) {
+    console.error("Search Console Indexing error:", error);
     res.status(500).json({ success: false, error: error.message });
   }
 });
