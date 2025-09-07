@@ -118,3 +118,28 @@ build/
 # Documentation generation
 *.html !*.md.html
 *.pdf
+
+# API Keys and Credentials (CRITICAL - Never commit these)
+**/google-search-console-key.json
+**/search-console-service-account-key.json
+**/*-service-account-key.json
+**/*-credentials.json
+config/google-services/*-key.json
+config/google-services/*-credentials.json
+
+# Database backups with potential sensitive data
+.claude/data/backups/*.sql
+.claude/data/backups/*.db
+.claude/data/exports/*.json
+
+# Custom application specific
+config/local-*
+config/test-*
+.claude/data/test-*
+content-pipeline/drafts/personal-*
+content-pipeline/published/archived-*
+
+# AI and automation generated files that shouldn't be committed
+scripts/generated-*
+downloads/auto-*
+docs/generated-*

@@ -1,0 +1,320 @@
+<!-- Service Page Resource CTAs -->
+<!-- Add these contextual blocks to relevant service pages -->
+
+<style>
+/* Service Page Resource CTA Styles */
+.cfs-service-resource-cta {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border: 2px solid #bae6fd;
+  border-radius: 16px;
+  padding: 30px;
+  margin: 40px 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cfs-service-resource-cta::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(45, 90, 135, 0.05) 0%, transparent 70%);
+  animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.cfs-service-resource-content {
+  position: relative;
+  z-index: 1;
+}
+
+.cfs-service-resource-icon {
+  font-size: 40px;
+  margin-bottom: 15px;
+  display: block;
+}
+
+.cfs-service-resource-cta h3 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 10px;
+}
+
+.cfs-service-resource-cta .cta-subtitle {
+  font-size: 16px;
+  color: #6b7280;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.cfs-service-resource-cta p {
+  font-size: 14px;
+  color: #4b5563;
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+.cfs-service-cta-btn {
+  background: linear-gradient(135deg, #2D5A87 0%, #1e3a5f 100%);
+  color: white;
+  text-decoration: none;
+  padding: 15px 30px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  display: inline-block;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(45, 90, 135, 0.2);
+}
+
+.cfs-service-cta-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(45, 90, 135, 0.3);
+  color: white;
+  text-decoration: none;
+}
+
+/* Alternate style for variety */
+.cfs-service-resource-cta.alt-style {
+  background: linear-gradient(135deg, #fef7ff 0%, #f3e8ff 100%);
+  border-color: #e9d5ff;
+}
+
+.cfs-service-resource-cta.alt-style .cfs-service-cta-btn {
+  background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
+}
+
+.cfs-service-resource-cta.alt-style .cfs-service-cta-btn:hover {
+  box-shadow: 0 8px 25px rgba(168, 85, 247, 0.3);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .cfs-service-resource-cta {
+    padding: 20px;
+    margin: 20px 0;
+  }
+  
+  .cfs-service-resource-cta h3 {
+    font-size: 20px;
+  }
+  
+  .cfs-service-cta-btn {
+    padding: 12px 24px;
+    font-size: 14px;
+  }
+}
+</style>
+
+<!-- HOME ORGANIZATION SERVICE PAGE CTA -->
+<div class="cfs-service-resource-cta">
+  <div class="cfs-service-resource-content">
+    <span class="cfs-service-resource-icon">🍳</span>
+    <h3>Free Guide: Kitchen Organization Essentials</h3>
+    <p class="cta-subtitle">Perfect starting point for home organization</p>
+    <p>Get our professional kitchen organization system - the foundation of every organized home. Includes our proven 4-step pantry method, cabinet optimization strategies, and counter clutter solutions.</p>
+    <button class="cfs-service-cta-btn" onclick="openResourceModal('kitchen-organization-essentials')">
+      Download Free Kitchen Guide
+    </button>
+  </div>
+</div>
+
+<!-- RV ORGANIZATION SERVICE PAGE CTA -->
+<div class="cfs-service-resource-cta alt-style">
+  <div class="cfs-service-resource-content">
+    <span class="cfs-service-resource-icon">🏔️</span>
+    <h3>Free Guide: Montana Seasonal Gear Organization</h3>
+    <p class="cta-subtitle">Perfect for RV owners with outdoor equipment</p>
+    <p>Master the storage of ski equipment, camping gear, fishing supplies, and hunting equipment. Designed specifically for Montana lifestyles and space constraints.</p>
+    <button class="cfs-service-cta-btn" onclick="openResourceModal('montana-seasonal-gear-guide')">
+      Download Free Seasonal Guide
+    </button>
+  </div>
+</div>
+
+<!-- CONSULTATION SERVICE PAGE CTA -->
+<div class="cfs-service-resource-cta">
+  <div class="cfs-service-resource-content">
+    <span class="cfs-service-resource-icon">📝</span>
+    <h3>Free Tools: Planning Worksheets & Checklists</h3>
+    <p class="cta-subtitle">Prepare for your consultation session</p>
+    <p>Get our professional planning worksheets and room-by-room checklists to help you prepare for your consultation and maximize your organizing success.</p>
+    <button class="cfs-service-cta-btn" onclick="openResourceModal('planning-worksheets')">
+      Download Free Planning Tools
+    </button>
+  </div>
+</div>
+
+<!-- QUICK FIX PACKAGE PAGE CTA -->
+<div class="cfs-service-resource-cta alt-style">
+  <div class="cfs-service-resource-content">
+    <span class="cfs-service-resource-icon">✅</span>
+    <h3>Free Guide: Daily Maintenance Routines</h3>
+    <p class="cta-subtitle">Keep your organized spaces functioning perfectly</p>
+    <p>Learn the simple 15-minute daily habits that maintain your organized home effortlessly. Perfect complement to any organizing package.</p>
+    <button class="cfs-service-cta-btn" onclick="openResourceModal('daily-maintenance-routine')">
+      Download Free Maintenance Guide
+    </button>
+  </div>
+</div>
+
+<!-- FAMILY FLOW PACKAGE PAGE CTA -->
+<div class="cfs-service-resource-cta">
+  <div class="cfs-service-resource-content">
+    <span class="cfs-service-resource-icon">🚪</span>
+    <h3>Free Guide: Mudroom & Entryway Solutions</h3>
+    <p class="cta-subtitle">Create smooth family transitions</p>
+    <p>Design functional entryway systems that help your family stay organized from the moment they walk in the door. Includes coat storage, shoe organization, and family command centers.</p>
+    <button class="cfs-service-cta-btn" onclick="openResourceModal('mudroom-entryway-solutions')">
+      Download Free Entryway Guide
+    </button>
+  </div>
+</div>
+
+<!-- ALL-IN FAMILY RESET PAGE CTA -->
+<div class="cfs-service-resource-cta alt-style">
+  <div class="cfs-service-resource-content">
+    <span class="cfs-service-resource-icon">📚</span>
+    <h3>Free Complete Resource Library</h3>
+    <p class="cta-subtitle">Everything you need for whole-home organization</p>
+    <p>Get instant access to all 9 professional guides and tools - kitchen, bedroom, office, seasonal storage, daily routines, labels, checklists, and planning worksheets.</p>
+    <a href="/resources" class="cfs-service-cta-btn">
+      Get All 9 Free Resources
+    </a>
+  </div>
+</div>
+
+<!-- GENERIC SERVICE PAGE CTA (use on any page) -->
+<div class="cfs-service-resource-cta">
+  <div class="cfs-service-resource-content">
+    <span class="cfs-service-resource-icon">🎁</span>
+    <h3>Start With Our Free Resources</h3>
+    <p class="cta-subtitle">Professional organization guides at no cost</p>
+    <p>Before scheduling services, explore our complete library of professional organization guides. Get started today with proven strategies developed through years of hands-on experience.</p>
+    <a href="/resources" class="cfs-service-cta-btn">
+      Browse Free Resource Library
+    </a>
+  </div>
+</div>
+
+<script>
+// Service page CTA functionality
+(function() {
+  'use strict';
+  
+  // Ensure modal functionality is available
+  if (typeof openResourceModal !== 'function') {
+    window.openResourceModal = function(resourceType) {
+      // Fallback: redirect to resources page
+      window.location.href = '/resources';
+    };
+  }
+  
+  // Track service page resource clicks
+  document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('cfs-service-cta-btn')) {
+      const ctaTitle = e.target.closest('.cfs-service-resource-cta').querySelector('h3').textContent;
+      
+      // Google Analytics tracking
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'click', {
+          'event_category': 'Service Page Resources',
+          'event_label': ctaTitle,
+          'value': 1
+        });
+      }
+      
+      // Custom event tracking for API
+      try {
+        fetch('https://clutterfreespaces-production.up.railway.app/api/track-event', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            event: 'service_page_resource_click',
+            resource: ctaTitle,
+            page: window.location.pathname,
+            timestamp: new Date().toISOString(),
+            source: 'service_page_cta'
+          }),
+          mode: 'cors'
+        }).catch(() => {}); // Silent fail
+      } catch (e) {}
+    }
+  });
+  
+  // Add entrance animation to CTAs
+  if ('IntersectionObserver' in window) {
+    const ctaObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animation = 'slideInUp 0.6s ease-out forwards';
+          ctaObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    
+    const ctaElements = document.querySelectorAll('.cfs-service-resource-cta');
+    ctaElements.forEach(cta => {
+      cta.style.opacity = '0';
+      cta.style.transform = 'translateY(20px)';
+      ctaObserver.observe(cta);
+    });
+  }
+})();
+
+// Add entrance animation CSS
+const animationStyle = document.createElement('style');
+animationStyle.textContent = `
+  @keyframes slideInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+`;
+document.head.appendChild(animationStyle);
+</script>
+
+<!-- IMPLEMENTATION INSTRUCTIONS -->
+<!-- 
+Add the appropriate CTA blocks to these pages:
+
+1. HOME ORGANIZATION SERVICE PAGE:
+   - Use the "Kitchen Organization Essentials" CTA
+
+2. RV ORGANIZATION SERVICE PAGE:  
+   - Use the "Montana Seasonal Gear Organization" CTA
+
+3. CONSULTATION PAGE:
+   - Use the "Planning Worksheets & Checklists" CTA
+
+4. QUICK FIX PACKAGE PAGE:
+   - Use the "Daily Maintenance Routines" CTA
+
+5. FAMILY FLOW PACKAGE PAGE:
+   - Use the "Mudroom & Entryway Solutions" CTA
+
+6. ALL-IN FAMILY RESET PAGE:
+   - Use the "Complete Resource Library" CTA
+
+7. ANY OTHER SERVICE PAGES:
+   - Use the generic "Start With Our Free Resources" CTA
+
+Position these CTAs:
+- After service description but before pricing
+- In sidebar if using two-column layout
+- Between service packages as separators
+- At the end of service pages as final CTA
+-->

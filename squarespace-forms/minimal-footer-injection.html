@@ -1,0 +1,124 @@
+<!-- Minimal Footer Resources Section - Replace RV Newsletter -->
+<!-- Add to Squarespace Code Injection (Footer) -->
+
+<style>
+/* Minimal Footer Resources */
+.cfs-footer-resources {
+  background: #f8fafc;
+  padding: 30px 20px;
+  text-align: center;
+  border-top: 1px solid #e2e8f0;
+  margin-top: 20px;
+}
+
+.cfs-footer-resources h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #2D5A87;
+  margin-bottom: 15px;
+}
+
+.cfs-footer-resources p {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+.cfs-footer-resource-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.cfs-footer-resource-btn {
+  background: #2D5A87;
+  color: white;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.cfs-footer-resource-btn:hover {
+  background: #1e3a5f;
+  color: white;
+  text-decoration: none;
+}
+
+.cfs-footer-all-btn {
+  background: #ea580c;
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.cfs-footer-all-btn:hover {
+  background: #dc2626;
+  color: white;
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .cfs-footer-resource-buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .cfs-footer-resource-btn {
+    width: 200px;
+  }
+}
+</style>
+
+<div class="cfs-footer-resources">
+  <h3>📚 Free Organization Guides</h3>
+  <p>Get instant access to our professional organization resources</p>
+  
+  <div class="cfs-footer-resource-buttons">
+    <button class="cfs-footer-resource-btn" onclick="openResourceModal('kitchen-organization-essentials')">
+      🍳 Kitchen Guide
+    </button>
+    <button class="cfs-footer-resource-btn" onclick="openResourceModal('montana-seasonal-gear-guide')">
+      🏔️ Seasonal Storage
+    </button>
+    <button class="cfs-footer-resource-btn" onclick="openResourceModal('daily-maintenance-routine')">
+      ✅ Daily Routines
+    </button>
+  </div>
+  
+  <a href="/resources" class="cfs-footer-all-btn">
+    View All 9 Free Guides →
+  </a>
+</div>
+
+<script>
+// Minimal footer tracking
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('cfs-footer-resource-btn')) {
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'click', {
+        'event_category': 'Footer Resources',
+        'event_label': e.target.textContent.trim()
+      });
+    }
+  }
+});
+
+// Ensure modal function exists
+if (typeof openResourceModal !== 'function') {
+  window.openResourceModal = function(resourceType) {
+    window.location.href = '/resources';
+  };
+}
+</script>

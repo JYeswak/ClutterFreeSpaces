@@ -1,0 +1,367 @@
+<!-- Homepage Resource Banner -->
+<!-- Add this HTML block to your homepage (after hero section) -->
+
+<style>
+/* Homepage Resource Banner Styles */
+.cfs-home-resources {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  padding: 60px 20px;
+  text-align: center;
+  border: 1px solid #f1f5f9;
+  border-radius: 20px;
+  margin: 40px auto;
+  max-width: 1200px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.cfs-home-resources-badge {
+  background: linear-gradient(135deg, #2D5A87 0%, #1e3a5f 100%);
+  color: white;
+  padding: 8px 20px;
+  border-radius: 25px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 20px;
+  display: inline-block;
+}
+
+.cfs-home-resources h2 {
+  font-size: 32px;
+  font-weight: 800;
+  color: #1f2937;
+  margin-bottom: 15px;
+  line-height: 1.2;
+}
+
+.cfs-home-resources-subtitle {
+  font-size: 18px;
+  color: #6b7280;
+  margin-bottom: 40px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+}
+
+.cfs-home-resources-featured {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cfs-home-featured-card {
+  background: white;
+  border-radius: 16px;
+  padding: 25px 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  border: 2px solid #f8fafc;
+  position: relative;
+  overflow: hidden;
+}
+
+.cfs-home-featured-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #2D5A87, #1e3a5f);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.cfs-home-featured-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(45, 90, 135, 0.15);
+  border-color: #2D5A87;
+}
+
+.cfs-home-featured-card:hover::before {
+  transform: scaleX(1);
+}
+
+.cfs-home-featured-icon {
+  font-size: 32px;
+  margin-bottom: 15px;
+  display: block;
+}
+
+.cfs-home-featured-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #2D5A87;
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.cfs-home-featured-card p {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+.cfs-home-featured-btn {
+  background: #2D5A87;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.cfs-home-featured-btn:hover {
+  background: #1e3a5f;
+  transform: translateY(-2px);
+}
+
+.cfs-home-resources-main-cta {
+  margin-top: 20px;
+}
+
+.cfs-home-resources-main-btn {
+  background: linear-gradient(135deg, #ea580c 0%, #dc2626 100%);
+  color: white;
+  text-decoration: none;
+  padding: 18px 35px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  display: inline-block;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(234, 88, 12, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.cfs-home-resources-main-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.cfs-home-resources-main-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(234, 88, 12, 0.4);
+  color: white;
+  text-decoration: none;
+}
+
+.cfs-home-resources-main-btn:hover::before {
+  left: 100%;
+}
+
+.cfs-home-resources-stats {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.cfs-home-stat {
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.cfs-home-stat-number {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  color: #2D5A87;
+  margin-bottom: 4px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .cfs-home-resources {
+    padding: 40px 15px;
+    margin: 20px 15px;
+    border-radius: 15px;
+  }
+  
+  .cfs-home-resources h2 {
+    font-size: 26px;
+  }
+  
+  .cfs-home-resources-subtitle {
+    font-size: 16px;
+  }
+  
+  .cfs-home-resources-featured {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .cfs-home-featured-card {
+    padding: 20px 15px;
+  }
+  
+  .cfs-home-resources-main-btn {
+    padding: 15px 28px;
+    font-size: 16px;
+  }
+  
+  .cfs-home-resources-stats {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cfs-home-resources-stats {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+</style>
+
+<div class="cfs-home-resources">
+  <div class="cfs-home-resources-badge">📚 FREE RESOURCE LIBRARY</div>
+  
+  <h2>Start Your Organization Journey Today</h2>
+  <p class="cfs-home-resources-subtitle">
+    Get instant access to our most popular professional guides - developed through years of hands-on organizing experience in Montana homes.
+  </p>
+  
+  <div class="cfs-home-resources-featured">
+    <div class="cfs-home-featured-card">
+      <span class="cfs-home-featured-icon">🍳</span>
+      <h3>Kitchen Organization Essentials</h3>
+      <p>Transform your kitchen with our proven 4-step pantry system and cabinet optimization strategies.</p>
+      <button class="cfs-home-featured-btn" onclick="openResourceModal('kitchen-organization-essentials')">
+        Get Free Guide
+      </button>
+    </div>
+    
+    <div class="cfs-home-featured-card">
+      <span class="cfs-home-featured-icon">🏔️</span>
+      <h3>Montana Seasonal Gear Storage</h3>
+      <p>Master year-round outdoor equipment organization with rotation systems designed for Montana lifestyles.</p>
+      <button class="cfs-home-featured-btn" onclick="openResourceModal('montana-seasonal-gear-guide')">
+        Get Free Guide
+      </button>
+    </div>
+    
+    <div class="cfs-home-featured-card">
+      <span class="cfs-home-featured-icon">✅</span>
+      <h3>Daily Maintenance Routines</h3>
+      <p>Simple 15-minute daily habits that keep your organized home functioning perfectly without stress.</p>
+      <button class="cfs-home-featured-btn" onclick="openResourceModal('daily-maintenance-routine')">
+        Get Free Guide
+      </button>
+    </div>
+  </div>
+  
+  <div class="cfs-home-resources-main-cta">
+    <a href="/resources" class="cfs-home-resources-main-btn">
+      Browse All 9 Free Resources →
+    </a>
+  </div>
+  
+  <div class="cfs-home-resources-stats">
+    <div class="cfs-home-stat">
+      <span class="cfs-home-stat-number">1,200+</span>
+      Happy Downloads
+    </div>
+    <div class="cfs-home-stat">
+      <span class="cfs-home-stat-number">9</span>
+      Professional Guides
+    </div>
+    <div class="cfs-home-stat">
+      <span class="cfs-home-stat-number">100%</span>
+      Free Forever
+    </div>
+  </div>
+</div>
+
+<script>
+// Homepage resource banner functionality
+(function() {
+  'use strict';
+  
+  // Ensure modal functionality is available (from main resources page)
+  if (typeof openResourceModal !== 'function') {
+    window.openResourceModal = function(resourceType) {
+      // Fallback: redirect to resources page with anchor
+      const resourceMap = {
+        'kitchen-organization-essentials': 'kitchen',
+        'montana-seasonal-gear-guide': 'seasonal',
+        'daily-maintenance-routine': 'daily'
+      };
+      
+      const anchor = resourceMap[resourceType] || '';
+      window.location.href = '/resources' + (anchor ? '#' + anchor : '');
+    };
+  }
+  
+  // Track homepage resource engagement
+  document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('cfs-home-featured-btn')) {
+      // Google Analytics tracking
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'click', {
+          'event_category': 'Homepage Resources',
+          'event_label': e.target.closest('.cfs-home-featured-card').querySelector('h3').textContent,
+          'value': 1
+        });
+      }
+    }
+    
+    if (e.target.classList.contains('cfs-home-resources-main-btn')) {
+      // Track "Browse All" click
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'click', {
+          'event_category': 'Homepage Resources',
+          'event_label': 'Browse All Resources',
+          'value': 1
+        });
+      }
+    }
+  });
+  
+  // Animate stats counter on scroll (optional enhancement)
+  if ('IntersectionObserver' in window) {
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Add subtle animation or highlight effect
+          entry.target.style.animation = 'pulse 0.6s ease-in-out';
+          statsObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.8 });
+    
+    const statElements = document.querySelectorAll('.cfs-home-stat-number');
+    statElements.forEach(stat => statsObserver.observe(stat));
+  }
+})();
+
+// Add CSS animation for stats
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+`;
+document.head.appendChild(style);
+</script>

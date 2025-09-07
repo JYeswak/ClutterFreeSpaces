@@ -1,0 +1,148 @@
+<!-- Compact Service Page Resource CTAs -->
+<!-- Add these small contextual blocks to relevant service pages -->
+
+<style>
+/* Compact Service CTA Styles */
+.cfs-compact-cta {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border: 1px solid #bae6fd;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 30px 0;
+  text-align: center;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cfs-compact-cta h4 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2D5A87;
+  margin-bottom: 8px;
+}
+
+.cfs-compact-cta p {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+.cfs-compact-btn {
+  background: #2D5A87;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.cfs-compact-btn:hover {
+  background: #1e3a5f;
+}
+
+.cfs-compact-cta.purple {
+  background: linear-gradient(135deg, #fef7ff 0%, #f3e8ff 100%);
+  border-color: #e9d5ff;
+}
+
+.cfs-compact-cta.purple h4 {
+  color: #a855f7;
+}
+
+.cfs-compact-cta.purple .cfs-compact-btn {
+  background: #a855f7;
+}
+
+.cfs-compact-cta.purple .cfs-compact-btn:hover {
+  background: #9333ea;
+}
+
+@media (max-width: 768px) {
+  .cfs-compact-cta {
+    padding: 15px;
+    margin: 20px 0;
+  }
+}
+</style>
+
+<!-- HOME ORGANIZATION SERVICE PAGE -->
+<div class="cfs-compact-cta">
+  <h4>🍳 Free Kitchen Organization Guide</h4>
+  <p>Get our proven 4-step pantry system and cabinet optimization strategies.</p>
+  <button class="cfs-compact-btn" onclick="openResourceModal('kitchen-organization-essentials')">
+    Download Free Guide
+  </button>
+</div>
+
+<!-- RV ORGANIZATION SERVICE PAGE -->
+<div class="cfs-compact-cta purple">
+  <h4>🏔️ Free Seasonal Gear Guide</h4>
+  <p>Master storage of ski equipment, camping gear, and outdoor equipment.</p>
+  <button class="cfs-compact-btn" onclick="openResourceModal('montana-seasonal-gear-guide')">
+    Download Free Guide
+  </button>
+</div>
+
+<!-- CONSULTATION SERVICE PAGE -->
+<div class="cfs-compact-cta">
+  <h4>📝 Free Planning Worksheets</h4>
+  <p>Prepare for your consultation with professional planning tools.</p>
+  <button class="cfs-compact-btn" onclick="openResourceModal('planning-worksheets')">
+    Download Free Tools
+  </button>
+</div>
+
+<!-- QUICK FIX PACKAGE PAGE -->
+<div class="cfs-compact-cta purple">
+  <h4>✅ Free Daily Maintenance Guide</h4>
+  <p>Simple 15-minute habits that maintain your organized spaces.</p>
+  <button class="cfs-compact-btn" onclick="openResourceModal('daily-maintenance-routine')">
+    Download Free Guide
+  </button>
+</div>
+
+<!-- FAMILY FLOW PACKAGE PAGE -->
+<div class="cfs-compact-cta">
+  <h4>🚪 Free Entryway Solutions Guide</h4>
+  <p>Create smooth family transitions with organized entry points.</p>
+  <button class="cfs-compact-btn" onclick="openResourceModal('mudroom-entryway-solutions')">
+    Download Free Guide
+  </button>
+</div>
+
+<!-- ALL-IN FAMILY RESET PAGE -->
+<div class="cfs-compact-cta purple">
+  <h4>📚 Complete Resource Library</h4>
+  <p>Get all 9 professional guides and tools for whole-home organization.</p>
+  <button class="cfs-compact-btn" onclick="window.location.href='/resources'">
+    Get All 9 Free Resources
+  </button>
+</div>
+
+<script>
+// Compact CTA functionality
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('cfs-compact-btn')) {
+    if (typeof gtag !== 'undefined') {
+      const title = e.target.closest('.cfs-compact-cta').querySelector('h4').textContent;
+      gtag('event', 'click', {
+        'event_category': 'Service Page CTA',
+        'event_label': title
+      });
+    }
+  }
+});
+
+// Ensure modal function exists
+if (typeof openResourceModal !== 'function') {
+  window.openResourceModal = function(resourceType) {
+    window.location.href = '/resources';
+  };
+}
+</script>

@@ -1,0 +1,434 @@
+<!-- Enhanced Comprehensive Navigation Footer - ClutterFreeSpaces -->
+<!-- Replaces: comprehensive-navigation-strategy.html -->
+<!-- Optimized after viewing live implementation -->
+
+<style>
+/* Enhanced Footer Navigation - Matches Existing Theme */
+.cfs-enhanced-footer {
+  background: #f4e5d3; /* Match existing site background */
+  color: #4a4a4a;
+  padding: 40px 20px 30px;
+  margin-top: 0;
+  position: relative;
+  border-top: 1px solid #e8d5c2;
+}
+
+/* Subtle texture overlay to match site theme */
+.cfs-enhanced-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 25% 25%, rgba(139, 69, 19, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(160, 82, 45, 0.02) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.cfs-footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 30px;
+  margin-bottom: 25px;
+  position: relative;
+  z-index: 1;
+}
+
+.cfs-footer-section h4 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #2D5A87; /* Match existing blue theme */
+  margin-bottom: 18px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #2D5A87;
+  display: inline-block;
+  position: relative;
+  font-family: inherit;
+}
+
+/* Subtle accent line */
+.cfs-footer-section h4::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 30px;
+  height: 2px;
+  background: #ea580c; /* Match existing orange accent */
+  border-radius: 2px;
+}
+
+.cfs-footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cfs-footer-links li {
+  margin-bottom: 8px;
+}
+
+.cfs-footer-links a {
+  color: #6b7280; /* Match existing text color */
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 0;
+  border-radius: 4px;
+  position: relative;
+}
+
+.cfs-footer-links a:hover {
+  color: #2D5A87; /* Match existing blue hover */
+  text-decoration: none;
+  transform: translateX(5px);
+}
+
+.cfs-footer-icon {
+  font-size: 14px;
+  width: 18px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* Enhanced Free Resources Section */
+.cfs-footer-resources-mini {
+  background: linear-gradient(135deg, rgba(45, 90, 135, 0.2) 0%, rgba(45, 90, 135, 0.1) 100%);
+  border: 1px solid rgba(45, 90, 135, 0.3);
+  border-radius: 12px;
+  padding: 25px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cfs-footer-resources-mini::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(96, 165, 250, 0.1) 0%, transparent 70%);
+  animation: subtle-pulse 6s ease-in-out infinite;
+}
+
+@keyframes subtle-pulse {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.5; }
+  50% { transform: scale(1.05) rotate(180deg); opacity: 0.8; }
+}
+
+.cfs-footer-resources-mini h4 {
+  color: #60a5fa;
+  border-bottom: none;
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+.cfs-footer-resources-mini h4::after {
+  display: none;
+}
+
+.cfs-footer-resource-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 15px;
+  position: relative;
+  z-index: 1;
+}
+
+.cfs-footer-resource-btn-mini {
+  background: linear-gradient(135deg, #2D5A87 0%, #1e3a5f 100%);
+  color: white;
+  text-decoration: none;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(45, 90, 135, 0.2);
+}
+
+.cfs-footer-resource-btn-mini:hover {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2D5A87 100%);
+  color: white;
+  text-decoration: none;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(45, 90, 135, 0.3);
+}
+
+.cfs-footer-all-resources {
+  background: linear-gradient(135deg, #ea580c 0%, #dc2626 100%);
+  color: white;
+  text-decoration: none;
+  padding: 12px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  display: inline-block;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 12px rgba(234, 88, 12, 0.3);
+  position: relative;
+  z-index: 1;
+}
+
+.cfs-footer-all-resources:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #ea580c 100%);
+  color: white;
+  text-decoration: none;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(234, 88, 12, 0.4);
+}
+
+/* Enhanced Footer Bottom */
+.cfs-footer-bottom {
+  border-top: 1px solid rgba(75, 85, 99, 0.5);
+  padding-top: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #9ca3af;
+  position: relative;
+  z-index: 1;
+}
+
+.cfs-footer-bottom p {
+  margin: 5px 0;
+}
+
+.cfs-footer-bottom a {
+  color: #9ca3af;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.cfs-footer-bottom a:hover {
+  color: #60a5fa;
+  text-decoration: none;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 968px) {
+  .cfs-footer-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  .cfs-footer-container {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+  
+  .cfs-enhanced-footer {
+    padding: 30px 15px 20px;
+  }
+  
+  .cfs-footer-resources-mini {
+    padding: 20px;
+  }
+}
+
+/* Hide any redundant sections that might appear after this footer */
+.cfs-enhanced-footer ~ .sqs-block-summary-v2,
+.cfs-enhanced-footer ~ .sqs-block-html {
+  display: none !important;
+}
+
+/* Ensure this footer is the definitive footer */
+.cfs-enhanced-footer {
+  z-index: 100;
+  position: relative;
+}
+</style>
+
+<!-- ENHANCED FOOTER WITH ORGANIZED NAVIGATION -->
+<div class="cfs-enhanced-footer">
+  <div class="cfs-footer-container">
+    
+    <!-- Services Column -->
+    <div class="cfs-footer-section">
+      <h4>Our Services</h4>
+      <ul class="cfs-footer-links">
+        <li><a href="/services"><span class="cfs-footer-icon">🏠</span>Home Organization</a></li>
+        <li><a href="/rv-organization-montana"><span class="cfs-footer-icon">🚐</span>RV Organization</a></li>
+        <li><a href="/whole-house-organization"><span class="cfs-footer-icon">🏡</span>Whole House Projects</a></li>
+        <li><a href="/single-room-organization"><span class="cfs-footer-icon">🛏️</span>Single Room Organization</a></li>
+        <li><a href="/garage-organization"><span class="cfs-footer-icon">🚗</span>Garage Organization</a></li>
+        <li><a href="/virtual-visits"><span class="cfs-footer-icon">💻</span>Virtual Consultations</a></li>
+      </ul>
+    </div>
+
+    <!-- Service Areas Column -->
+    <div class="cfs-footer-section">
+      <h4>Service Areas</h4>
+      <ul class="cfs-footer-links">
+        <li><a href="/areas-served"><span class="cfs-footer-icon">📍</span>Areas Served</a></li>
+        <li><a href="/missoula"><span class="cfs-footer-icon">🏔️</span>Missoula Organization</a></li>
+        <li><a href="/hamilton"><span class="cfs-footer-icon">🌲</span>Hamilton Organization</a></li>
+        <li><a href="/western-montana"><span class="cfs-footer-icon">⛰️</span>Western Montana</a></li>
+        <li><a href="/montana"><span class="cfs-footer-icon">🏞️</span>Statewide Services</a></li>
+      </ul>
+    </div>
+
+    <!-- Resources & Tips Column -->
+    <div class="cfs-footer-section">
+      <h4>Resources & Tips</h4>
+      <ul class="cfs-footer-links">
+        <li><a href="/organizing-tips"><span class="cfs-footer-icon">💡</span>Organization Tips</a></li>
+        <li><a href="/blog"><span class="cfs-footer-icon">📝</span>Organization Blog</a></li>
+        <li><a href="/gallery"><span class="cfs-footer-icon">📸</span>Before & After Gallery</a></li>
+        <li><a href="/before-after"><span class="cfs-footer-icon">✨</span>Transformations</a></li>
+        <li><a href="/organization-style-quiz"><span class="cfs-footer-icon">❓</span>Organization Style Quiz</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact & Connect Column -->
+    <div class="cfs-footer-section">
+      <h4>Contact & Connect</h4>
+      <ul class="cfs-footer-links">
+        <li><a href="tel:+14065551234"><span class="cfs-footer-icon">📞</span>(406) 555-1234</a></li>
+        <li><a href="mailto:contact@clutter-free-spaces.com"><span class="cfs-footer-icon">✉️</span>contact@clutter-free-spaces.com</a></li>
+        <li><a href="/contact-faq"><span class="cfs-footer-icon">❓</span>Contact & FAQ</a></li>
+        <li><a href="/about"><span class="cfs-footer-icon">👋</span>About Chanel</a></li>
+        <li><a href="/leave-review"><span class="cfs-footer-icon">⭐</span>Leave a Review</a></li>
+      </ul>
+      
+      <!-- Social Media Links -->
+      <div style="margin-top: 15px;">
+        <h5 style="color: #2D5A87; font-size: 14px; font-weight: 600; margin-bottom: 10px;">Follow Us</h5>
+        <div style="display: flex; gap: 12px;">
+          <a href="https://www.facebook.com/profile.php?id=61577939680794" target="_blank" style="color: #6b7280; font-size: 20px; transition: color 0.2s ease;" onmouseover="this.style.color='#3b82f6'" onmouseout="this.style.color='#6b7280'">📘</a>
+          <a href="https://www.instagram.com/clutterfreechanel/" target="_blank" style="color: #6b7280; font-size: 20px; transition: color 0.2s ease;" onmouseover="this.style.color='#e1306c'" onmouseout="this.style.color='#6b7280'">📷</a>
+          <a href="mailto:contact@clutter-free-spaces.com" style="color: #6b7280; font-size: 20px; transition: color 0.2s ease;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#6b7280'">✉️</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Enhanced Free Resources Mini Section -->
+    <div class="cfs-footer-section">
+      <div class="cfs-footer-resources-mini">
+        <h4>📚 Free Professional Guides</h4>
+        <div class="cfs-footer-resource-links">
+          <button class="cfs-footer-resource-btn-mini" onclick="openResourceModal('kitchen-organization-essentials')">
+            🍳 Kitchen Organization Guide
+          </button>
+          <button class="cfs-footer-resource-btn-mini" onclick="openResourceModal('montana-seasonal-gear-guide')">
+            🏔️ Seasonal Storage Guide
+          </button>
+          <button class="cfs-footer-resource-btn-mini" onclick="openResourceModal('daily-maintenance-routine')">
+            ✅ Daily Maintenance Guide
+          </button>
+        </div>
+        <a href="/resources" class="cfs-footer-all-resources">
+          View All 9 Free Resources →
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer Bottom - Match Existing Style -->
+  <div class="cfs-footer-bottom">
+    <p>&copy; 2024 Clutter Free Spaces. Professional Organization Services in Montana.</p>
+  </div>
+</div>
+
+<script>
+// Enhanced footer functionality with performance optimizations
+(function() {
+  'use strict';
+  
+  // Debounce function for performance
+  function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+  
+  // Track footer navigation clicks with debouncing
+  const trackClick = debounce(function(eventCategory, eventLabel) {
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'click', {
+        'event_category': eventCategory,
+        'event_label': eventLabel,
+        'transport_type': 'beacon'
+      });
+    }
+  }, 300);
+  
+  document.addEventListener('click', function(e) {
+    // Track footer navigation links
+    if (e.target.closest('.cfs-footer-links a')) {
+      const linkText = e.target.textContent.trim();
+      trackClick('Enhanced Footer Navigation', linkText);
+    }
+    
+    // Track resource clicks
+    if (e.target.classList.contains('cfs-footer-resource-btn-mini') || 
+        e.target.classList.contains('cfs-footer-all-resources')) {
+      const buttonText = e.target.textContent.trim();
+      trackClick('Enhanced Footer Resources', buttonText);
+    }
+  });
+  
+  // Ensure modal function exists with fallback
+  if (typeof openResourceModal !== 'function') {
+    window.openResourceModal = function(resourceType) {
+      // Graceful fallback to resources page
+      window.location.href = '/resources';
+    };
+  }
+  
+  // Hide any duplicate footer sections that might conflict
+  document.addEventListener('DOMContentLoaded', function() {
+    // Look for and hide redundant "Our Services" sections
+    const redundantSections = document.querySelectorAll('.sqs-block-summary-v2, .sqs-block-html');
+    redundantSections.forEach(section => {
+      const text = section.textContent.toLowerCase();
+      if (text.includes('our services') && text.includes('whole house') && section !== document.querySelector('.cfs-enhanced-footer')) {
+        section.style.display = 'none';
+      }
+    });
+  });
+  
+  // Add smooth scrolling to footer links
+  document.querySelectorAll('.cfs-footer-links a[href^="/"]').forEach(link => {
+    link.addEventListener('click', function(e) {
+      // Add subtle loading indication
+      this.style.opacity = '0.7';
+      setTimeout(() => {
+        if (this.style) this.style.opacity = '1';
+      }, 200);
+    });
+  });
+})();
+</script>
+
+<!-- 
+IMPLEMENTATION NOTES:
+1. This enhanced version replaces the comprehensive-navigation-strategy.html
+2. Optimized based on live site viewing - eliminates need for redundant sections
+3. Includes CSS to hide conflicting elements automatically  
+4. Enhanced visual design with subtle animations and better spacing
+5. Improved mobile responsiveness
+6. Better performance with debounced analytics tracking
+7. Automatic cleanup of duplicate footer elements
+-->

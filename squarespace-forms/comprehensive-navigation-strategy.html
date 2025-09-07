@@ -1,0 +1,354 @@
+<!-- Comprehensive Navigation Strategy for ClutterFreeSpaces -->
+<!-- Solution: Enhanced Footer with Organized Link Sections -->
+
+<style>
+/* Enhanced Footer Navigation */
+.cfs-enhanced-footer {
+  background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+  color: white;
+  padding: 50px 20px 30px;
+  margin-top: 40px;
+}
+
+.cfs-footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+  margin-bottom: 30px;
+}
+
+.cfs-footer-section h4 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #f9fafb;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #2D5A87;
+  display: inline-block;
+}
+
+.cfs-footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cfs-footer-links li {
+  margin-bottom: 10px;
+}
+
+.cfs-footer-links a {
+  color: #d1d5db;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cfs-footer-links a:hover {
+  color: #60a5fa;
+  text-decoration: none;
+}
+
+.cfs-footer-icon {
+  font-size: 12px;
+  width: 16px;
+}
+
+/* Free Resources Section in Footer */
+.cfs-footer-resources-mini {
+  background: rgba(45, 90, 135, 0.2);
+  border: 1px solid #2D5A87;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+}
+
+.cfs-footer-resources-mini h4 {
+  color: #60a5fa;
+  border-bottom: none;
+  margin-bottom: 15px;
+}
+
+.cfs-footer-resource-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.cfs-footer-resource-btn-mini {
+  background: #2D5A87;
+  color: white;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.cfs-footer-resource-btn-mini:hover {
+  background: #1e3a5f;
+  color: white;
+  text-decoration: none;
+}
+
+.cfs-footer-all-resources {
+  background: #ea580c;
+  color: white;
+  text-decoration: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  display: inline-block;
+  margin-top: 10px;
+  transition: all 0.2s ease;
+}
+
+.cfs-footer-all-resources:hover {
+  background: #dc2626;
+  color: white;
+  text-decoration: none;
+}
+
+/* Footer Bottom */
+.cfs-footer-bottom {
+  border-top: 1px solid #4b5563;
+  padding-top: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #9ca3af;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .cfs-footer-container {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .cfs-enhanced-footer {
+    padding: 30px 15px 20px;
+  }
+}
+</style>
+
+<!-- ENHANCED FOOTER WITH ORGANIZED NAVIGATION -->
+<div class="cfs-enhanced-footer">
+  <div class="cfs-footer-container">
+    
+    <!-- Services Column -->
+    <div class="cfs-footer-section">
+      <h4>Our Services</h4>
+      <ul class="cfs-footer-links">
+        <li><a href="/services"><span class="cfs-footer-icon">🏠</span>Home Organization</a></li>
+        <li><a href="/rv-organization-montana"><span class="cfs-footer-icon">🚐</span>RV Organization</a></li>
+        <li><a href="/whole-house-organization"><span class="cfs-footer-icon">🏡</span>Whole House Projects</a></li>
+        <li><a href="/single-room-organization"><span class="cfs-footer-icon">🛏️</span>Single Room Organization</a></li>
+        <li><a href="/garage-organization"><span class="cfs-footer-icon">🚗</span>Garage Organization</a></li>
+        <li><a href="/virtual-visits"><span class="cfs-footer-icon">💻</span>Virtual Consultations</a></li>
+      </ul>
+    </div>
+
+    <!-- Service Areas Column -->
+    <div class="cfs-footer-section">
+      <h4>Service Areas</h4>
+      <ul class="cfs-footer-links">
+        <li><a href="/areas-served"><span class="cfs-footer-icon">📍</span>Areas Served</a></li>
+        <li><a href="/missoula"><span class="cfs-footer-icon">🏔️</span>Missoula Organization</a></li>
+        <li><a href="/hamilton"><span class="cfs-footer-icon">🌲</span>Hamilton Organization</a></li>
+        <li><a href="/western-montana"><span class="cfs-footer-icon">⛰️</span>Western Montana</a></li>
+        <li><a href="/montana"><span class="cfs-footer-icon">🏞️</span>Statewide Services</a></li>
+      </ul>
+    </div>
+
+    <!-- Resources & Tips Column -->
+    <div class="cfs-footer-section">
+      <h4>Resources & Tips</h4>
+      <ul class="cfs-footer-links">
+        <li><a href="/organizing-tips"><span class="cfs-footer-icon">💡</span>Organization Tips</a></li>
+        <li><a href="/blog"><span class="cfs-footer-icon">📝</span>Organization Blog</a></li>
+        <li><a href="/gallery"><span class="cfs-footer-icon">📸</span>Before & After Gallery</a></li>
+        <li><a href="/before-after"><span class="cfs-footer-icon">✨</span>Transformations</a></li>
+        <li><a href="/organization-style-quiz"><span class="cfs-footer-icon">❓</span>Organization Style Quiz</a></li>
+      </ul>
+    </div>
+
+    <!-- Free Resources Mini Section -->
+    <div class="cfs-footer-section">
+      <div class="cfs-footer-resources-mini">
+        <h4>📚 Free Guides</h4>
+        <div class="cfs-footer-resource-links">
+          <button class="cfs-footer-resource-btn-mini" onclick="openResourceModal('kitchen-organization-essentials')">
+            🍳 Kitchen Guide
+          </button>
+          <button class="cfs-footer-resource-btn-mini" onclick="openResourceModal('montana-seasonal-gear-guide')">
+            🏔️ Seasonal Storage
+          </button>
+          <button class="cfs-footer-resource-btn-mini" onclick="openResourceModal('daily-maintenance-routine')">
+            ✅ Daily Routines
+          </button>
+        </div>
+        <a href="/resources" class="cfs-footer-all-resources">
+          View All 9 Free Resources →
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer Bottom -->
+  <div class="cfs-footer-bottom">
+    <p>&copy; 2024 Clutter Free Spaces. Professional Organization Services in Montana.</p>
+    <p style="margin-top: 10px; font-size: 12px;">
+      <a href="/contact-faq" style="color: #9ca3af;">Contact & FAQ</a> | 
+      <a href="/about" style="color: #9ca3af;">About Chanel</a> | 
+      <a href="/leave-review" style="color: #9ca3af;">Leave a Review</a>
+    </p>
+  </div>
+</div>
+
+<script>
+// Enhanced footer functionality
+(function() {
+  'use strict';
+  
+  // Track footer navigation clicks
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('.cfs-footer-links a')) {
+      const linkText = e.target.textContent.trim();
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'click', {
+          'event_category': 'Footer Navigation',
+          'event_label': linkText
+        });
+      }
+    }
+    
+    // Track resource clicks
+    if (e.target.classList.contains('cfs-footer-resource-btn-mini') || 
+        e.target.classList.contains('cfs-footer-all-resources')) {
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'click', {
+          'event_category': 'Footer Resources',
+          'event_label': e.target.textContent.trim()
+        });
+      }
+    }
+  });
+  
+  // Ensure modal function exists
+  if (typeof openResourceModal !== 'function') {
+    window.openResourceModal = function(resourceType) {
+      window.location.href = '/resources';
+    };
+  }
+})();
+</script>
+
+<!-- ALTERNATIVE: Sidebar Navigation for Service Pages -->
+<!-- Add this to service pages that need sub-navigation -->
+
+<style>
+/* Service Page Sidebar Navigation */
+.cfs-service-sidebar {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+  max-width: 300px;
+}
+
+.cfs-service-sidebar h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #2D5A87;
+  margin-bottom: 15px;
+}
+
+.cfs-sidebar-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cfs-sidebar-links li {
+  margin-bottom: 8px;
+}
+
+.cfs-sidebar-links a {
+  color: #4b5563;
+  text-decoration: none;
+  font-size: 14px;
+  display: block;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.cfs-sidebar-links a:hover {
+  background: #2D5A87;
+  color: white;
+  text-decoration: none;
+}
+
+.cfs-sidebar-links a.active {
+  background: #2D5A87;
+  color: white;
+  font-weight: 600;
+}
+</style>
+
+<div class="cfs-service-sidebar">
+  <h3>Our Services</h3>
+  <ul class="cfs-sidebar-links">
+    <li><a href="/whole-house-organization">Whole House Organization</a></li>
+    <li><a href="/single-room-organization">Single Room Projects</a></li>
+    <li><a href="/garage-organization">Garage Organization</a></li>
+    <li><a href="/virtual-visits">Virtual Consultations</a></li>
+  </ul>
+</div>
+
+<!-- BREADCRUMB NAVIGATION -->
+<!-- Add this to the top of detail pages -->
+
+<style>
+.cfs-breadcrumbs {
+  background: #f8fafc;
+  padding: 10px 20px;
+  margin: 20px 0;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.cfs-breadcrumbs a {
+  color: #2D5A87;
+  text-decoration: none;
+}
+
+.cfs-breadcrumbs a:hover {
+  text-decoration: underline;
+}
+
+.cfs-breadcrumbs span {
+  color: #6b7280;
+  margin: 0 8px;
+}
+</style>
+
+<div class="cfs-breadcrumbs">
+  <a href="/">Home</a>
+  <span>›</span>
+  <a href="/services">Services</a>
+  <span>›</span>
+  <span>Current Page</span>
+</div>
