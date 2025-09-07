@@ -1477,7 +1477,44 @@ app.post("/api/workflow/qualify-lead", async (req, res) => {
 // WEBHOOK ENDPOINTS (External integrations)
 // ============================================================================
 
-// Calendly webhook
+// Enhanced Calendly webhook for V2 API
+app.post("/api/calendly-webhook", async (req, res) => {
+  try {
+    console.log("📅 Calendly webhook received:", req.body);
+
+    const event = req.body;
+
+    if (event.event === "invitee.created") {
+      console.log("🎉 New booking created:", {
+        event_uri: event.payload?.event?.uri,
+        invitee_email: event.payload?.invitee?.email,
+        event_name: event.payload?.event_type?.name,
+      });
+
+      // Track booking conversion in GA4
+      await ga4Service.trackBookingConversion({
+        client_id: ga4Service.generateClientId(),
+        booking_id: event.payload?.event?.uri,
+        email: event.payload?.invitee?.email,
+        service_value: 199, // Consultation value
+      });
+    }
+
+    if (event.event === "invitee.canceled") {
+      console.log("❌ Booking canceled:", {
+        event_uri: event.payload?.event?.uri,
+        invitee_email: event.payload?.invitee?.email,
+      });
+    }
+
+    res.status(200).json({ received: true });
+  } catch (error) {
+    console.error("Enhanced Calendly webhook error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Legacy Calendly webhook (keeping for compatibility)
 app.post("/api/webhook/calendly", async (req, res) => {
   try {
     const { event, payload } = req.body;
