@@ -49,3 +49,4 @@ test_*.py
 validate_*.py
 debug_*.py
 simple_*.py
+node_modules/
