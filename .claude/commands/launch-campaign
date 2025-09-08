@@ -1,0 +1,256 @@
+#!/bin/bash
+
+# ClutterFreeSpaces Email Campaign Launcher
+# Manage B2B outreach campaigns with SendGrid integration
+
+set -e
+
+PROJECT_ROOT="/Users/josh/Desktop/Projects/ClutterFreeSpaces"
+cd "$PROJECT_ROOT"
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+show_help() {
+    echo -e "${BLUE}📧 ClutterFreeSpaces Email Campaign Manager${NC}"
+    echo ""
+    echo "USAGE:"
+    echo "  /launch-campaign [COMMAND] [OPTIONS]"
+    echo ""
+    echo "COMMANDS:"
+    echo "  bretz          Launch Bretz RV warm connection campaign (highest priority)"
+    echo "  rv-dealers     Launch RV dealer cold outreach campaign"
+    echo "  senior-living  Launch senior living facility campaign"
+    echo "  moving         Launch moving company partnership campaign"
+    echo "  real-estate    Launch real estate agent campaign"
+    echo "  rv-parks       Launch RV park community campaign"
+    echo "  storage        Launch storage facility partnership campaign"
+    echo "  cleaning       Launch cleaning company synergy campaign"
+    echo "  government     Launch government facility campaign"
+    echo "  process        Process all scheduled follow-up emails"
+    echo "  stats          Show campaign performance statistics"
+    echo "  status         Show current campaign status"
+    echo ""
+    echo "OPTIONS:"
+    echo "  --test         Run in test mode (3 contacts only)"
+    echo "  --dry-run      Show what would be sent without actually sending"
+    echo "  --help         Show this help message"
+    echo ""
+    echo "EXAMPLES:"
+    echo "  /launch-campaign bretz                 # Launch Bretz warm campaign"
+    echo "  /launch-campaign rv-dealers --test     # Test RV dealer campaign"
+    echo "  /launch-campaign process               # Process scheduled follow-ups"
+    echo "  /launch-campaign stats                 # Show performance stats"
+    echo ""
+}
+
+check_prerequisites() {
+    echo -e "${BLUE}🔍 Checking prerequisites...${NC}"
+    
+    # Check if SendGrid API key exists
+    if [ -z "$SENDGRID_API_KEY" ]; then
+        echo -e "${RED}❌ SENDGRID_API_KEY not found in environment${NC}"
+        echo -e "${YELLOW}💡 Add your SendGrid API key to .env file${NC}"
+        exit 1
+    fi
+    
+    # Check if database exists
+    if [ ! -f "outreach/data/b2b_outreach.db" ]; then
+        echo -e "${RED}❌ B2B outreach database not found${NC}"
+        echo -e "${YELLOW}💡 Run email validation first to create database${NC}"
+        exit 1
+    fi
+    
+    # Check if email templates exist
+    if [ ! -d "outreach/campaigns/templates" ]; then
+        echo -e "${RED}❌ Email templates directory not found${NC}"
+        exit 1
+    fi
+    
+    echo -e "${GREEN}✅ Prerequisites met${NC}"
+}
+
+show_campaign_status() {
+    echo -e "${BLUE}📊 Current Campaign Status${NC}"
+    echo "=============================================="
+    
+    # Check validated email counts
+    local validated_count=$(sqlite3 outreach/data/b2b_outreach.db "
+        SELECT COUNT(*) FROM business_contacts 
+        WHERE status = 'active' 
+        AND hunter_validation_status IN ('deliverable', 'risky')
+    ")
+    
+    local warm_count=$(sqlite3 outreach/data/b2b_outreach.db "
+        SELECT COUNT(*) FROM business_contacts 
+        WHERE status = 'active' 
+        AND hunter_validation_status IN ('deliverable', 'risky')
+        AND is_warm = 1
+    ")
+    
+    echo -e "${GREEN}📧 Total validated emails: $validated_count${NC}"
+    echo -e "${YELLOW}🔥 Warm connections: $warm_count${NC}"
+    
+    # Check if campaigns are running
+    local active_campaigns=$(sqlite3 outreach/data/b2b_outreach.db "
+        SELECT COUNT(*) FROM campaign_sequences 
+        WHERE sequence_status = 'active'
+    " 2>/dev/null || echo "0")
+    
+    if [ "$active_campaigns" -gt 0 ]; then
+        echo -e "${GREEN}🚀 Active campaigns: $active_campaigns${NC}"
+    else
+        echo -e "${YELLOW}💤 No active campaigns running${NC}"
+    fi
+    
+    echo ""
+}
+
+launch_bretz_campaign() {
+    local test_mode=""
+    if [ "$1" == "--test" ]; then
+        test_mode="True"
+        echo -e "${YELLOW}🧪 Running in TEST MODE${NC}"
+    else
+        test_mode="False"
+    fi
+    
+    echo -e "${BLUE}🔥 LAUNCHING BRETZ WARM CONNECTION CAMPAIGN${NC}"
+    echo "=============================================="
+    
+    # Check Bretz contacts
+    local bretz_count=$(sqlite3 outreach/data/b2b_outreach.db "
+        SELECT COUNT(*) FROM business_contacts bc
+        JOIN businesses b ON bc.business_id = b.id
+        WHERE bc.status = 'active'
+        AND bc.hunter_validation_status IN ('deliverable', 'risky')
+        AND bc.is_warm = 1
+    ")
+    
+    echo -e "${GREEN}📊 Found $bretz_count Bretz warm connections${NC}"
+    
+    if [ "$bretz_count" -eq 0 ]; then
+        echo -e "${RED}❌ No Bretz warm connections found${NC}"
+        exit 1
+    fi
+    
+    # Launch campaign
+    python3 -c "
+import sys
+sys.path.append('outreach/campaigns')
+from email_campaign_manager import EmailCampaignManager
+
+try:
+    manager = EmailCampaignManager()
+    sent = manager.launch_campaign('bretz_warm', test_mode=$test_mode)
+    print(f'✅ Successfully launched Bretz campaign - {sent} emails sent')
+    manager.close()
+except Exception as e:
+    print(f'❌ Error: {e}')
+    sys.exit(1)
+"
+}
+
+process_scheduled_emails() {
+    echo -e "${BLUE}📨 PROCESSING SCHEDULED FOLLOW-UP EMAILS${NC}"
+    echo "=============================================="
+    
+    # Check scheduled emails
+    local scheduled_count=$(sqlite3 outreach/data/b2b_outreach.db "
+        SELECT COUNT(*) FROM campaign_sequences cs
+        JOIN business_contacts bc ON cs.contact_id = bc.id
+        WHERE cs.sequence_status = 'active'
+        AND cs.next_email_date <= datetime('now')
+        AND bc.status = 'active'
+    " 2>/dev/null || echo "0")
+    
+    echo -e "${GREEN}📧 Found $scheduled_count emails ready to send${NC}"
+    
+    if [ "$scheduled_count" -eq 0 ]; then
+        echo -e "${YELLOW}💤 No emails scheduled for sending${NC}"
+        return
+    fi
+    
+    # Process emails
+    python3 -c "
+import sys
+sys.path.append('outreach/campaigns')
+from email_campaign_manager import EmailCampaignManager
+
+try:
+    manager = EmailCampaignManager()
+    sent = manager.process_scheduled_emails()
+    print(f'✅ Processed {sent} scheduled emails')
+    manager.close()
+except Exception as e:
+    print(f'❌ Error: {e}')
+    sys.exit(1)
+"
+}
+
+show_campaign_stats() {
+    echo -e "${BLUE}📊 CAMPAIGN PERFORMANCE STATISTICS${NC}"
+    echo "=============================================="
+    
+    python3 -c "
+import sys
+sys.path.append('outreach/campaigns')
+from email_campaign_manager import EmailCampaignManager
+
+try:
+    manager = EmailCampaignManager()
+    stats = manager.get_campaign_stats()
+    
+    if not stats:
+        print('📭 No campaigns have been launched yet')
+    else:
+        for campaign, data in stats.items():
+            print(f'📧 {campaign.upper().replace(\"_\", \" \")}:')
+            print(f'   • Contacts: {data[\"total_contacts\"]}')
+            print(f'   • Emails sent: {data[\"total_emails_sent\"]}')
+            print(f'   • Active sequences: {data[\"active_sequences\"]}')
+            print(f'   • Completed sequences: {data[\"completed_sequences\"]}')
+            print()
+    
+    manager.close()
+except Exception as e:
+    print(f'❌ Error: {e}')
+    sys.exit(1)
+"
+}
+
+# Main execution
+case "${1:-}" in
+    bretz)
+        check_prerequisites
+        launch_bretz_campaign "$2"
+        ;;
+    process)
+        check_prerequisites
+        process_scheduled_emails
+        ;;
+    stats)
+        check_prerequisites
+        show_campaign_stats
+        ;;
+    status)
+        show_campaign_status
+        ;;
+    --help|help)
+        show_help
+        ;;
+    "")
+        show_campaign_status
+        echo ""
+        echo -e "${YELLOW}💡 Use '/launch-campaign --help' for usage instructions${NC}"
+        ;;
+    *)
+        echo -e "${RED}❌ Unknown command: $1${NC}"
+        echo -e "${YELLOW}💡 Use '/launch-campaign --help' for available commands${NC}"
+        exit 1
+        ;;
+esac

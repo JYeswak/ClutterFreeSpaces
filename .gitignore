@@ -1,87 +1,23 @@
-# Dependencies
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
 
-# Environment variables
-.env
-.env.local
-.env.production
-.env.development
-.env.test
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 
-# OAuth credentials and tokens
-oauth-credentials.json
-oauth-token.json
-
-# Logs
-*.log
-logs/
-
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
-
-# Coverage directory used by tools like istanbul
-coverage/
-*.lcov
-
-# nyc test coverage
-.nyc_output
-
-# Dependency directories
-jspm_packages/
-
-# Optional npm cache directory
-.npm
-
-# Optional eslint cache
-.eslintcache
-
-# Optional REPL history
-.node_repl_history
-
-# Output of 'npm pack'
-*.tgz
-
-# Yarn Integrity file
-.yarn-integrity
-
-# parcel-bundler cache (https://parceljs.org/)
-.cache
-.parcel-cache
-
-# next.js build output
-.next
-
-# nuxt.js build output
-.nuxt
-
-# vuepress build output
-.vuepress/dist
-
-# Serverless directories
-.serverless
-
-# FuseBox cache
-.fusebox/
-
-# DynamoDB Local files
-.dynamodb/
-
-# TernJS port file
-.tern-port
-
-# Stores VSCode versions used for testing VSCode extensions
-.vscode-test
-
-# Yarn
-yarn.lock
-
-# OS generated files
+# OS
 .DS_Store
 .DS_Store?
 ._*
@@ -90,56 +26,26 @@ yarn.lock
 ehthumbs.db
 Thumbs.db
 
-# Project specific ignores
-# Deployment artifacts
-sendgrid-deployment-results.json
-sendgrid-template-deployment-report.json
-pipeline-export-*.csv
-sales-report-*.csv
-deployment-summary.md
-
-# Test artifacts
-test-results/
-test-coverage/
-
-# Temporary files
+# Project specific
+.env
+*.log
+*.tmp
 temp/
 tmp/
-tmp-*/
 
-# Archive old files
-archive/
-old-*
+# Content pipeline temporary files
+content-pipeline/scheduled/
 
-# Build artifacts
-dist/
-build/
+# Data files
+data/
+*.csv
+*.json
+!schema.json
+!config.json
 
-# Documentation generation
-*.html !*.md.html
-*.pdf
-
-# API Keys and Credentials (CRITICAL - Never commit these)
-**/google-search-console-key.json
-**/search-console-service-account-key.json
-**/*-service-account-key.json
-**/*-credentials.json
-config/google-services/*-key.json
-config/google-services/*-credentials.json
-
-# Database backups with potential sensitive data
-.claude/data/backups/*.sql
-.claude/data/backups/*.db
-.claude/data/exports/*.json
-
-# Custom application specific
-config/local-*
-config/test-*
-.claude/data/test-*
-content-pipeline/drafts/personal-*
-content-pipeline/published/archived-*
-
-# AI and automation generated files that shouldn't be committed
-scripts/generated-*
-downloads/auto-*
-docs/generated-*
+# Test files
+test_*.py
+*_test.py
+validate_*.py
+debug_*.py
+simple_*.py
