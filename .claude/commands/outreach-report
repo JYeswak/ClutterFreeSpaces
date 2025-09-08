@@ -1,0 +1,478 @@
+#!/bin/bash
+# ClutterFreeSpaces B2B Outreach - Reporting & Analytics Command
+# Usage: /outreach-report --businesses --type=rv_dealer
+
+# Set up environment
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+OUTREACH_DIR="$PROJECT_ROOT/outreach"
+DB_PATH="$PROJECT_ROOT/.claude/data/metrics.db"
+
+# Default values
+REPORT_TYPE=""
+BUSINESS_TYPE=""
+CAMPAIGN_ID=""
+LIMIT=50
+FORMAT="table"
+EXPORT=""
+SHOW_CONTACTS=false
+
+# Color codes for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+PURPLE='\033[0;35m'
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --businesses)
+            REPORT_TYPE="businesses"
+            shift
+            ;;
+        --campaigns)
+            REPORT_TYPE="campaigns"
+            shift
+            ;;
+        --campaign)
+            REPORT_TYPE="campaign"
+            shift
+            ;;
+        --performance)
+            REPORT_TYPE="performance"
+            shift
+            ;;
+        --contacts)
+            REPORT_TYPE="contacts"
+            shift
+            ;;
+        --data-quality)
+            REPORT_TYPE="data_quality"
+            shift
+            ;;
+        --pipeline)
+            REPORT_TYPE="pipeline"
+            shift
+            ;;
+        --prospects)
+            REPORT_TYPE="prospects"
+            shift
+            ;;
+        --type=*)
+            BUSINESS_TYPE="${1#*=}"
+            shift
+            ;;
+        --id=*)
+            CAMPAIGN_ID="${1#*=}"
+            shift
+            ;;
+        --limit=*)
+            LIMIT="${1#*=}"
+            shift
+            ;;
+        --format=*)
+            FORMAT="${1#*=}"
+            shift
+            ;;
+        --export=*)
+            EXPORT="${1#*=}"
+            shift
+            ;;
+        --enriched)
+            SHOW_CONTACTS=true
+            shift
+            ;;
+        --help|-h)
+            echo "ClutterFreeSpaces B2B Outreach Reports"
+            echo ""
+            echo "Usage: /outreach-report [REPORT] [OPTIONS]"
+            echo ""
+            echo "Reports:"
+            echo "  --businesses        List discovered businesses"
+            echo "  --campaigns         List all campaigns and status"
+            echo "  --campaign          Show specific campaign details (requires --id)"
+            echo "  --performance       Campaign performance analytics"
+            echo "  --contacts          Show contact information status"
+            echo "  --data-quality      Data completeness and quality metrics"
+            echo "  --pipeline          Partnership pipeline overview"
+            echo "  --prospects         High-value prospects for follow-up"
+            echo ""
+            echo "Options:"
+            echo "  --type=TYPE         Filter by business type"
+            echo "                      Home Campaign: cleaning_company, real_estate_agent, moving_company, storage_facility"
+            echo "                      RV Campaign: rv_dealer, rv_park, rv_service, rv_rental"
+            echo "  --id=ID             Campaign ID (for --campaign report)"
+            echo "  --limit=NUMBER      Limit number of results (default: 50)"
+            echo "  --format=FORMAT     Output format: table, csv, json (default: table)"
+            echo "  --export=FILE       Export results to file"
+            echo "  --enriched          Show only enriched contacts (with --contacts)"
+            echo "  --help, -h          Show this help message"
+            echo ""
+            echo "Examples:"
+            echo "  /outreach-report --businesses --type=rv_dealer --limit=20"
+            echo "  /outreach-report --campaigns"
+            echo "  /outreach-report --campaign --id=3"
+            echo "  /outreach-report --performance --export=campaign_stats.csv"
+            echo "  /outreach-report --contacts --enriched --type=cleaning_company"
+            echo "  /outreach-report --data-quality"
+            exit 0
+            ;;
+        *)
+            echo -e "${RED}Unknown option: $1${NC}"
+            echo "Use --help for usage information"
+            exit 1
+            ;;
+    esac
+done
+
+# Validate required parameters
+if [[ -z "$REPORT_TYPE" ]]; then
+    echo -e "${RED}Error: Report type is required${NC}"
+    echo "Use --help to see available reports"
+    exit 1
+fi
+
+if [[ "$REPORT_TYPE" == "campaign" && -z "$CAMPAIGN_ID" ]]; then
+    echo -e "${RED}Error: --id is required for campaign report${NC}"
+    exit 1
+fi
+
+# Check if sqlite3 is available
+if ! command -v sqlite3 >/dev/null 2>&1; then
+    echo -e "${RED}Error: sqlite3 is not installed${NC}"
+    echo "Please install sqlite3 to use reporting features"
+    exit 1
+fi
+
+# Check if database exists
+if [[ ! -f "$DB_PATH" ]]; then
+    echo -e "${RED}Error: Database not found at $DB_PATH${NC}"
+    echo "Run /outreach-discover first to create the database"
+    exit 1
+fi
+
+# Header
+echo -e "${BLUE}📊 ClutterFreeSpaces Outreach Reports${NC}"
+echo "================================================"
+
+case $REPORT_TYPE in
+    "businesses")
+        echo -e "${YELLOW}Report:${NC} Business Directory"
+        ;;
+    "campaigns")
+        echo -e "${YELLOW}Report:${NC} Campaign Overview"
+        ;;
+    "campaign")
+        echo -e "${YELLOW}Report:${NC} Campaign Details"
+        echo -e "${YELLOW}Campaign ID:${NC} $CAMPAIGN_ID"
+        ;;
+    "performance")
+        echo -e "${YELLOW}Report:${NC} Campaign Performance"
+        ;;
+    "contacts")
+        echo -e "${YELLOW}Report:${NC} Contact Information Status"
+        ;;
+    "data_quality")
+        echo -e "${YELLOW}Report:${NC} Data Quality Metrics"
+        ;;
+    "pipeline")
+        echo -e "${YELLOW}Report:${NC} Partnership Pipeline"
+        ;;
+    "prospects")
+        echo -e "${YELLOW}Report:${NC} High-Value Prospects"
+        ;;
+esac
+
+if [[ -n "$BUSINESS_TYPE" ]]; then
+    echo -e "${YELLOW}Filter:${NC} $BUSINESS_TYPE"
+fi
+if [[ "$SHOW_CONTACTS" == "true" ]]; then
+    echo -e "${YELLOW}Scope:${NC} Enriched contacts only"
+fi
+echo -e "${YELLOW}Limit:${NC} $LIMIT results"
+echo -e "${YELLOW}Format:${NC} $FORMAT"
+echo ""
+
+# Function to format output based on format type
+format_output() {
+    local query="$1"
+    local headers="$2"
+    
+    if [[ "$FORMAT" == "csv" ]]; then
+        echo "$headers"
+        sqlite3 -csv "$DB_PATH" "$query"
+    elif [[ "$FORMAT" == "json" ]]; then
+        sqlite3 -json "$DB_PATH" "$query"
+    else
+        # Table format (default)
+        sqlite3 -header -column "$DB_PATH" "$query"
+    fi
+}
+
+# Execute reports based on type
+case $REPORT_TYPE in
+    "businesses")
+        echo -e "${BLUE}Business Directory Report${NC}"
+        echo "========================"
+        
+        QUERY="
+        SELECT 
+            bt.type_name as 'Type',
+            b.name as 'Business Name',
+            b.city as 'City',
+            CASE 
+                WHEN b.website IS NOT NULL AND b.website != '' THEN '✓' 
+                ELSE '✗' 
+            END as 'Website',
+            CASE 
+                WHEN bc.email IS NOT NULL AND bc.email != '' THEN '✓' 
+                ELSE '✗' 
+            END as 'Email',
+            CASE 
+                WHEN bc.phone IS NOT NULL AND bc.phone != '' THEN '✓' 
+                ELSE '✗' 
+            END as 'Phone',
+            datetime(b.created_at, 'localtime') as 'Discovered'
+        FROM businesses b
+        LEFT JOIN business_types bt ON b.business_type_id = bt.id
+        LEFT JOIN business_contacts bc ON b.id = bc.business_id
+        "
+        
+        if [[ -n "$BUSINESS_TYPE" ]]; then
+            QUERY="$QUERY WHERE bt.type_name = '$BUSINESS_TYPE'"
+        fi
+        
+        QUERY="$QUERY ORDER BY b.created_at DESC LIMIT $LIMIT;"
+        
+        HEADERS="Type,Business Name,City,Website,Email,Phone,Discovered"
+        format_output "$QUERY" "$HEADERS"
+        ;;
+        
+    "campaigns")
+        echo -e "${BLUE}Campaign Overview${NC}"
+        echo "=================="
+        
+        QUERY="
+        SELECT 
+            c.id as 'ID',
+            c.name as 'Campaign Name',
+            bt.type_name as 'Type',
+            c.status as 'Status',
+            COUNT(DISTINCT ca.business_id) as 'Targets',
+            COUNT(CASE WHEN ca.status = 'sent' THEN 1 END) as 'Sent',
+            COUNT(CASE WHEN ca.status = 'responded' THEN 1 END) as 'Responses',
+            ROUND(
+                CASE 
+                    WHEN COUNT(CASE WHEN ca.status = 'sent' THEN 1 END) > 0 
+                    THEN (COUNT(CASE WHEN ca.status = 'responded' THEN 1 END) * 100.0) / COUNT(CASE WHEN ca.status = 'sent' THEN 1 END)
+                    ELSE 0 
+                END, 1
+            ) || '%' as 'Response Rate',
+            datetime(c.created_at, 'localtime') as 'Created'
+        FROM outreach_campaigns c
+        LEFT JOIN business_types bt ON c.business_type_id = bt.id
+        LEFT JOIN outreach_activities ca ON c.id = ca.campaign_id
+        GROUP BY c.id, c.name, bt.type_name, c.status, c.created_at
+        ORDER BY c.created_at DESC;"
+        
+        HEADERS="ID,Campaign Name,Type,Status,Targets,Sent,Responses,Response Rate,Created"
+        format_output "$QUERY" "$HEADERS"
+        ;;
+        
+    "data_quality")
+        echo -e "${BLUE}Data Quality Assessment${NC}"
+        echo "======================="
+        
+        # Overall statistics
+        echo -e "${CYAN}📈 Overall Statistics${NC}"
+        STATS_QUERY="
+        SELECT 
+            COUNT(*) as 'Total Businesses',
+            COUNT(CASE WHEN website IS NOT NULL AND website != '' THEN 1 END) as 'With Websites',
+            COUNT(CASE WHEN phone IS NOT NULL AND phone != '' THEN 1 END) as 'With Phones',
+            ROUND(
+                (COUNT(CASE WHEN website IS NOT NULL AND website != '' THEN 1 END) * 100.0) / COUNT(*), 1
+            ) || '%' as 'Website %'
+        FROM businesses;"
+        
+        sqlite3 -header -column "$DB_PATH" "$STATS_QUERY"
+        
+        echo ""
+        echo -e "${CYAN}📧 Contact Information Status${NC}"
+        CONTACT_QUERY="
+        SELECT 
+            COUNT(*) as 'Total Contacts',
+            COUNT(CASE WHEN email IS NOT NULL AND email != '' THEN 1 END) as 'With Email',
+            COUNT(CASE WHEN phone IS NOT NULL AND phone != '' THEN 1 END) as 'With Phone',
+            COUNT(CASE WHEN social_media IS NOT NULL AND social_media != '' THEN 1 END) as 'With Social',
+            ROUND(
+                (COUNT(CASE WHEN email IS NOT NULL AND email != '' THEN 1 END) * 100.0) / COUNT(*), 1
+            ) || '%' as 'Email %'
+        FROM business_contacts;"
+        
+        sqlite3 -header -column "$DB_PATH" "$CONTACT_QUERY"
+        
+        echo ""
+        echo -e "${CYAN}🎯 By Business Type${NC}"
+        TYPE_QUERY="
+        SELECT 
+            bt.type_name as 'Business Type',
+            COUNT(b.id) as 'Total',
+            COUNT(CASE WHEN b.website IS NOT NULL AND b.website != '' THEN 1 END) as 'Websites',
+            COUNT(CASE WHEN bc.email IS NOT NULL AND bc.email != '' THEN 1 END) as 'Emails',
+            ROUND(
+                CASE 
+                    WHEN COUNT(b.id) > 0 
+                    THEN (COUNT(CASE WHEN bc.email IS NOT NULL AND bc.email != '' THEN 1 END) * 100.0) / COUNT(b.id)
+                    ELSE 0 
+                END, 1
+            ) || '%' as 'Contact %'
+        FROM business_types bt
+        LEFT JOIN businesses b ON bt.id = b.business_type_id
+        LEFT JOIN business_contacts bc ON b.id = bc.business_id
+        GROUP BY bt.type_name, bt.priority
+        ORDER BY bt.priority DESC;"
+        
+        sqlite3 -header -column "$DB_PATH" "$TYPE_QUERY"
+        ;;
+        
+    "contacts")
+        echo -e "${BLUE}Contact Information Report${NC}"
+        echo "========================="
+        
+        QUERY="
+        SELECT 
+            bt.type_name as 'Type',
+            b.name as 'Business',
+            COALESCE(bc.contact_name, 'Unknown') as 'Contact',
+            COALESCE(bc.email, 'No email') as 'Email',
+            COALESCE(bc.phone, 'No phone') as 'Phone',
+            CASE 
+                WHEN b.website IS NOT NULL AND b.website != '' THEN b.website 
+                ELSE 'No website' 
+            END as 'Website'
+        FROM businesses b
+        LEFT JOIN business_types bt ON b.business_type_id = bt.id
+        LEFT JOIN business_contacts bc ON b.id = bc.business_id
+        "
+        
+        WHERE_CONDITIONS=()
+        
+        if [[ -n "$BUSINESS_TYPE" ]]; then
+            WHERE_CONDITIONS+=("bt.type_name = '$BUSINESS_TYPE'")
+        fi
+        
+        if [[ "$SHOW_CONTACTS" == "true" ]]; then
+            WHERE_CONDITIONS+=("(bc.email IS NOT NULL AND bc.email != '')")
+        fi
+        
+        if [[ ${#WHERE_CONDITIONS[@]} -gt 0 ]]; then
+            IFS=' AND ' eval 'WHERE_CLAUSE="${WHERE_CONDITIONS[*]}"'
+            QUERY="$QUERY WHERE $WHERE_CLAUSE"
+        fi
+        
+        QUERY="$QUERY ORDER BY bt.priority DESC, b.name LIMIT $LIMIT;"
+        
+        HEADERS="Type,Business,Contact,Email,Phone,Website"
+        format_output "$QUERY" "$HEADERS"
+        ;;
+        
+    "prospects")
+        echo -e "${BLUE}High-Value Prospects${NC}"
+        echo "==================="
+        
+        QUERY="
+        SELECT 
+            bt.type_name as 'Type',
+            bt.priority as 'Priority',
+            b.name as 'Business',
+            b.city as 'City',
+            COALESCE(bc.email, 'Missing') as 'Email',
+            COALESCE(bc.phone, 'Missing') as 'Phone',
+            CASE 
+                WHEN bc.email IS NOT NULL AND bc.email != '' AND bc.phone IS NOT NULL AND bc.phone != '' THEN 'Ready'
+                WHEN bc.email IS NOT NULL AND bc.email != '' THEN 'Email only'
+                WHEN bc.phone IS NOT NULL AND bc.phone != '' THEN 'Phone only'
+                ELSE 'Needs enrichment'
+            END as 'Contact Status'
+        FROM businesses b
+        LEFT JOIN business_types bt ON b.business_type_id = bt.id
+        LEFT JOIN business_contacts bc ON b.id = bc.business_id
+        WHERE bt.priority >= 80
+        ORDER BY bt.priority DESC, 
+                CASE 
+                    WHEN bc.email IS NOT NULL AND bc.email != '' AND bc.phone IS NOT NULL AND bc.phone != '' THEN 1
+                    WHEN bc.email IS NOT NULL AND bc.email != '' THEN 2
+                    WHEN bc.phone IS NOT NULL AND bc.phone != '' THEN 3
+                    ELSE 4
+                END,
+                b.name
+        LIMIT $LIMIT;"
+        
+        HEADERS="Type,Priority,Business,City,Email,Phone,Contact Status"
+        format_output "$QUERY" "$HEADERS"
+        ;;
+        
+    *)
+        echo -e "${RED}Report type '$REPORT_TYPE' not implemented yet${NC}"
+        exit 1
+        ;;
+esac
+
+# Export to file if requested
+if [[ -n "$EXPORT" ]]; then
+    echo ""
+    echo -e "${BLUE}💾 Exporting to file...${NC}"
+    
+    # Re-run the same query but output to file
+    case $REPORT_TYPE in
+        "businesses"|"campaigns"|"contacts"|"prospects")
+            if [[ "$FORMAT" == "csv" ]]; then
+                echo "$HEADERS" > "$EXPORT"
+                sqlite3 -csv "$DB_PATH" "$QUERY" >> "$EXPORT"
+            elif [[ "$FORMAT" == "json" ]]; then
+                sqlite3 -json "$DB_PATH" "$QUERY" > "$EXPORT"
+            else
+                sqlite3 -header -column "$DB_PATH" "$QUERY" > "$EXPORT"
+            fi
+            echo -e "${GREEN}✅ Report exported to: $EXPORT${NC}"
+            ;;
+    esac
+fi
+
+# Show summary and next steps
+echo ""
+echo -e "${BLUE}📋 Report Complete${NC}"
+
+case $REPORT_TYPE in
+    "businesses")
+        echo ""
+        echo -e "${BLUE}Next Steps:${NC}"
+        echo "• Enrich contacts: /outreach-enrich --batch=25 --type=$BUSINESS_TYPE"
+        echo "• Check data quality: /outreach-report --data-quality"
+        echo "• View prospects: /outreach-report --prospects --type=$BUSINESS_TYPE"
+        ;;
+    "campaigns")
+        echo ""
+        echo -e "${BLUE}Next Steps:${NC}"
+        echo "• Create new campaign: /outreach-campaign --create --type=[type] --name=\"[name]\""
+        echo "• View campaign details: /outreach-report --campaign --id=[campaign_id]"
+        echo "• Send pending emails: /outreach-campaign --send --limit=10"
+        ;;
+    "contacts")
+        echo ""
+        echo -e "${BLUE}Next Steps:${NC}"
+        echo "• Enrich missing contacts: /outreach-enrich --batch=25"
+        echo "• Start outreach campaign: /outreach-campaign --create"
+        echo "• Check data quality: /outreach-report --data-quality"
+        ;;
+    "prospects")
+        echo ""
+        echo -e "${BLUE}Next Steps:${NC}"
+        echo "• Enrich missing contact info: /outreach-enrich --batch=10 --force"
+        echo "• Create targeted campaign: /outreach-campaign --create --type=[type]"
+        echo "• Prioritize 'Ready' prospects for immediate outreach"
+        ;;
+esac
