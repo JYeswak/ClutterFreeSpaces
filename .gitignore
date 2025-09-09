@@ -34,7 +34,7 @@ temp/
 tmp/
 
 # Content pipeline temporary files
-content-pipeline/scheduled/
+# content-pipeline/scheduled/ - Removed, contains useful content
 
 # Data files
 data/
