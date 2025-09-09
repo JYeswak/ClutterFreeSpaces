@@ -132,8 +132,10 @@ class Day2CampaignLauncher:
 
         return limited_contacts
 
-    def launch_batch(self, batch_name: str, batch_config: Dict) -> int:
-        """Launch a batch of campaigns"""
+    def launch_batch(
+        self, batch_name: str, batch_config: Dict, respect_limits: bool = True
+    ) -> int:
+        """Launch a batch of campaigns with optional limit enforcement"""
 
         print(f"\n🚀 LAUNCHING {batch_name.upper()} BATCH - {batch_config['time']}")
         print("=" * 70)
@@ -143,30 +145,39 @@ class Day2CampaignLauncher:
 
         for campaign in batch_config["campaigns"]:
             campaign_type = campaign["type"]
-            limit = campaign["limit"]
+            limit = campaign["limit"] if respect_limits else None
 
             print(
-                f"\n📧 {campaign_type.replace('_', ' ').title()} Campaign ({limit} emails)"
+                f"\n📧 {campaign_type.replace('_', ' ').title()} Campaign"
+                + (f" ({limit} emails)" if limit else " (no limit)")
             )
             print("-" * 50)
 
-            # Get filtered contacts
-            contacts = self.get_filtered_contacts(
-                campaign_type, limit, yesterday_recipients
-            )
+            if respect_limits:
+                # Get filtered contacts with limit
+                contacts = self.get_filtered_contacts(
+                    campaign_type, limit, yesterday_recipients
+                )
 
-            if not contacts:
-                print(f"⚠️ No contacts available for {campaign_type} after filtering")
-                continue
+                if not contacts:
+                    print(
+                        f"⚠️ No contacts available for {campaign_type} after filtering"
+                    )
+                    continue
 
-            # Start campaign sequences
-            for contact in contacts:
-                self.manager.start_campaign_sequence(contact, campaign_type)
+                # Start campaign sequences
+                for contact in contacts:
+                    self.manager.start_campaign_sequence(contact, campaign_type)
 
-            # Process emails for this campaign
-            batch_sent = self.manager.process_scheduled_emails()
+                # Process emails for this campaign
+                batch_sent = self.manager.process_scheduled_emails()
+            else:
+                # Launch full campaign (what we just did)
+                batch_sent = self.manager.launch_campaign(
+                    campaign_type, test_mode=False
+                )
+
             total_sent += batch_sent
-
             print(f"✅ {campaign_type}: {batch_sent} emails sent")
 
         return total_sent
