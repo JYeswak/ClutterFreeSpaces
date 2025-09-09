@@ -30,14 +30,14 @@ Serving Missoula, Hamilton, Stevensville, Lolo, Florence, Frenchtown, Clinton an
 
 📞 (406) 285-1525
 🌐 www.clutter-free-spaces.com
-📧 chanel@clutter-free-spaces.com
+📧 contact@clutter-free-spaces.com
 
 Free consultation available - call today!
 
 ### **Contact Information:**
 - **Phone**: (406) 285-1525
 - **Website**: https://www.clutter-free-spaces.com/
-- **Email**: chanel@clutter-free-spaces.com (if public)
+- **Email**: contact@clutter-free-spaces.com (if public)
 - **Service Area**: Missoula, Montana & surrounding areas
 
 ### **Business Hours:**

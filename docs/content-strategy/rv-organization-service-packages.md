@@ -288,7 +288,7 @@ RV living presents unique challenges that traditional home organizers don't unde
 
 ### **RV-Specific Contact Information:**
 - **Direct RV Line**: (406) 285-1525
-- **Email**: chanel@clutter-free-spaces.com
+- **Email**: contact@clutter-free-spaces.com
 - **RV Emergency**: Same-day service for pre-trip organization needs
 - **Virtual Consultations**: Available for out-of-area RVers
 

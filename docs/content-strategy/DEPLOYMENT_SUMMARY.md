@@ -32,7 +32,7 @@ All 15 email templates have been successfully deployed to SendGrid and the autom
 ## 🔧 SYSTEM CONFIGURATION
 
 ### Email Settings
-- **From Address**: `chanel@clutter-free-spaces.com` (for system emails)
+- **From Address**: `contact@clutter-free-spaces.com` (for system emails)
 - **From Name**: "Chanel @ ClutterFreeSpaces"
 - **Sequence From**: `sarah@clutter-free-spaces.com`
 - **Sequence From Name**: "Sarah Mitchell - Montana RV Organization"

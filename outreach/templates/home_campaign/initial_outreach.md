@@ -44,7 +44,7 @@ Best regards,
 Montana's Professional Organizing Specialists  
 📞 (406) 285-1525  
 🌐 www.clutter-free-spaces.com  
-📧 chanel@clutter-free-spaces.com
+📧 contact@clutter-free-spaces.com
 
 *P.S. - I'm happy to provide a complimentary organization consultation for your own home or office to show you exactly the transformation your clients would experience.*
 ```

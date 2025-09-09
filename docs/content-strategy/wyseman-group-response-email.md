@@ -1,7 +1,7 @@
 # Email Response to Wyseman Group Inquiry
 
 **To**: tperales@wisemangroup.com  
-**From**: chanel@clutter-free-spaces.com (or chanelnbasolo@outlook.com)  
+**From**: contact@clutter-free-spaces.com (or chanelnbasolo@outlook.com)  
 **Subject**: Re: Professional Organizing Services for Hamilton Client - December Move-in
 
 ---
@@ -71,7 +71,7 @@ Best regards,
 **ClutterFreeSpaces**  
 📞 (406) 285-1525  
 🌐 www.clutter-free-spaces.com  
-📧 chanel@clutter-free-spaces.com  
+📧 contact@clutter-free-spaces.com  
 
 *Professional Organizing Services for Montana Families*  
 *Serving Missoula, Hamilton, and Surrounding Areas*

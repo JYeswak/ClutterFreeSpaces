@@ -46,7 +46,7 @@ Welcome to the ClutterFreeSpaces documentation! This repository contains all bus
 - **Website**: https://www.clutter-free-spaces.com/
 - **Location**: Missoula, Montana
 - **Phone**: (406) 285-1525
-- **Email**: chanel@clutter-free-spaces.com
+- **Email**: contact@clutter-free-spaces.com
 
 ## 📋 Quick Start Checklist
 

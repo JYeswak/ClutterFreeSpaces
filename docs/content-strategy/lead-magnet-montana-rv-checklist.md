@@ -444,7 +444,7 @@ Check all that apply:
 
 📞 **Phone**: (406) 285-1525  
 🌐 **Website**: www.clutter-free-spaces.com  
-📧 **Email**: chanel@clutter-free-spaces.com  
+📧 **Email**: contact@clutter-free-spaces.com  
 📍 **Service Area**: Missoula and all of Montana (travel services available)  
 
 ##### **Connect on Social Media:**

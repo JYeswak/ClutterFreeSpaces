@@ -64,7 +64,7 @@ class EmailCampaignManager:
         self.templates = self._load_templates()
 
         # Campaign settings
-        self.from_email = "chanel@clutter-free-spaces.com"
+        self.from_email = "contact@clutter-free-spaces.com"
         self.from_name = "Chanel - Clutter Free Spaces"
         self.base_url = "https://www.clutter-free-spaces.com"
 
@@ -347,6 +347,11 @@ class EmailCampaignManager:
             )
 
             mail = Mail(from_email, to_email, subject, plain_text_content, html_content)
+
+            # Add unsubscribe group (required for API sends)
+            from sendgrid.helpers.mail import Asm
+
+            mail.asm = Asm(group_id=27918)  # User's unsubscribe group ID
 
             # Add custom args for tracking
             mail.custom_arg = {

@@ -159,6 +159,28 @@ Your primary command for daily business intelligence.
   AIRTABLE_BASE_ID=your_base_id_here
   ```
 
+#### **SendGrid Email API**
+- **Purpose**: B2B outreach campaigns, email automation
+- **Status**: ✅ Configured and working (Free Trial: 100 emails/day until Oct 27, 2025)
+- **Setup**: Full access API key with domain authentication
+- **Environment Variables**:
+  ```bash
+  SendGrid_API_Key=SG.xxx...xxx  # 69 characters, full access
+  ```
+
+**✅ Verified Configuration**:
+- **Sender Authentication**: `contact@clutter-free-spaces.com` (verified single sender)
+- **Domain Authentication**: `em8622.clutter-free-spaces.com` (verified)
+- **Link Branding**: `url1358.clutter-free-spaces.com` (verified)
+- **Account Type**: Free trial (98% reputation)
+- **Daily Quota**: 100 emails/day (resets at midnight UTC)
+
+**🚨 Critical Notes**:
+- **ONLY use `contact@clutter-free-spaces.com` as sender** - this is the verified single sender
+- Free trial expires October 27, 2025
+- API requires domain authentication for sending (already configured)
+- Working campaign system: `EmailCampaignManager` class in `outreach/campaigns/`
+
 ### **Optional Integrations**
 
 #### **Google Analytics 4**

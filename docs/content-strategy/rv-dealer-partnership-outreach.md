@@ -79,7 +79,7 @@ Best regards,
 Montana's RV Organization Specialists  
 📞 (406) 285-1525  
 🌐 www.clutter-free-spaces.com  
-📧 chanel@clutter-free-spaces.com
+📧 contact@clutter-free-spaces.com
 
 *P.S. - I'd be happy to provide a complimentary RV organization service for your personal RV or a demo unit to show you exactly what we offer your customers.*
 
