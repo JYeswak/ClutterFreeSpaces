@@ -127,7 +127,7 @@ class EmailCampaignManager:
                     plain_text="Hi {first_name}, I hope this email finds you well! You might remember me - I worked at Bretz for 6 years before starting ClutterFreeSpaces here in Missoula...",
                     campaign_type="bretz_warm",
                     sequence_order=1,
-                    delay_days=0,
+                    delay_days=15,
                 ),
             ],
             "rv_dealer": [
@@ -138,7 +138,7 @@ class EmailCampaignManager:
                     plain_text="Hi {first_name}, I'm Chanel from ClutterFreeSpaces here in Missoula. After 7+ years in the RV industry, I've noticed something that might interest you...",
                     campaign_type="rv_dealer",
                     sequence_order=1,
-                    delay_days=0,
+                    delay_days=15,
                 ),
             ],
             "real_estate": [
@@ -149,7 +149,7 @@ class EmailCampaignManager:
                     plain_text="Hi {first_name}, I'm Chanel Basolo, a professional organizer in Missoula helping Montana real estate agents sell listings faster...",
                     campaign_type="real_estate",
                     sequence_order=1,
-                    delay_days=0,
+                    delay_days=15,
                 ),
             ],
             "moving_company": [
@@ -160,7 +160,7 @@ class EmailCampaignManager:
                     plain_text="Hi {first_name}, I'm Chanel from ClutterFreeSpaces in Missoula. I work with Montana moving companies to solve a problem that's costing you time and money...",
                     campaign_type="moving_company",
                     sequence_order=1,
-                    delay_days=0,
+                    delay_days=15,
                 ),
             ],
             "senior_living": [
@@ -171,7 +171,7 @@ class EmailCampaignManager:
                     plain_text="Hi {first_name}, I'm Chanel Basolo, a professional organizer here in Missoula. I specialize in helping seniors maintain their independence through smart organization...",
                     campaign_type="senior_living",
                     sequence_order=1,
-                    delay_days=0,
+                    delay_days=15,
                 ),
             ],
             "rv_parks": [
@@ -182,7 +182,7 @@ class EmailCampaignManager:
                     plain_text="Hi {first_name}, I'm Chanel Basolo, a professional organizer here in Missoula with 7+ years RV experience. I help Montana RV parks increase guest satisfaction...",
                     campaign_type="rv_parks",
                     sequence_order=1,
-                    delay_days=0,
+                    delay_days=15,
                 ),
             ],
             "storage_facilities": [
@@ -193,7 +193,7 @@ class EmailCampaignManager:
                     plain_text="Hi {first_name}, I'm Chanel Basolo, a professional organizer in Missoula. I help Montana storage customers actually use their units effectively...",
                     campaign_type="storage_facilities",
                     sequence_order=1,
-                    delay_days=0,
+                    delay_days=15,
                 ),
             ],
             "cleaning_companies": [
@@ -204,7 +204,7 @@ class EmailCampaignManager:
                     plain_text="Hi {first_name}, I'm Chanel Basolo, a professional organizer in Missoula. I help Montana cleaning services work faster and earn more...",
                     campaign_type="cleaning_companies",
                     sequence_order=1,
-                    delay_days=0,
+                    delay_days=15,
                 ),
             ],
             "government": [
@@ -215,7 +215,51 @@ class EmailCampaignManager:
                     plain_text="Hi {first_name}, I'm Chanel Basolo, a professional organizer born and raised here in Missoula, Montana. I help government offices improve efficiency through strategic organization...",
                     campaign_type="government",
                     sequence_order=1,
-                    delay_days=0,
+                    delay_days=15,
+                ),
+            ],
+            "home_builder": [
+                EmailTemplate(
+                    name="home_builder_intro",
+                    subject="New Home Organization Support",
+                    html_file="home_builder_email1.html",
+                    plain_text="Hi {first_name}, I'm Chanel with ClutterFreeSpaces, serving Montana homebuyers and builders. I help new homeowners transition smoothly into their completed homes...",
+                    campaign_type="home_builder",
+                    sequence_order=1,
+                    delay_days=15,
+                ),
+            ],
+            "insurance_agent": [
+                EmailTemplate(
+                    name="insurance_agent_intro",
+                    subject="Risk Reduction Through Organization",
+                    html_file="insurance_agent_email1.html",
+                    plain_text="Hi {first_name}, I'm Chanel with ClutterFreeSpaces, serving Montana families and insurance professionals. Home organization directly impacts safety and risk factors...",
+                    campaign_type="insurance_agent",
+                    sequence_order=1,
+                    delay_days=15,
+                ),
+            ],
+            "estate_attorney": [
+                EmailTemplate(
+                    name="estate_attorney_intro",
+                    subject="Estate Planning & Organization",
+                    html_file="estate_attorney_email1.html",
+                    plain_text="Hi {first_name}, I'm Chanel with ClutterFreeSpaces, serving Montana families and estate planning professionals. Professional organization supports the estate planning process...",
+                    campaign_type="estate_attorney",
+                    sequence_order=1,
+                    delay_days=15,
+                ),
+            ],
+            "general": [
+                EmailTemplate(
+                    name="general_intro",
+                    subject="Professional Organization Services in Montana",
+                    html_file="general_email1.html",
+                    plain_text="Hi {first_name}, I'm Chanel with ClutterFreeSpaces, serving Montana families and businesses. Professional organization services can support your clients or operations...",
+                    campaign_type="general",
+                    sequence_order=1,
+                    delay_days=15,
                 ),
             ],
         }
@@ -320,10 +364,56 @@ class EmailCampaignManager:
 
         return personalized
 
+    def send_to_contact(
+        self, contact_id: int, email: str, campaign_type: str, context: dict
+    ) -> bool:
+        """Send email to a specific contact by ID and campaign type"""
+
+        # Create Contact object from provided data
+        contact = Contact(
+            id=contact_id,
+            email=email,
+            first_name=context.get("first_name", "there"),
+            last_name="",  # Not used in templates
+            title="",  # Not used in templates
+            business_name=context.get("business_name", ""),
+            business_type=context.get("business_type", ""),
+        )
+
+        # Get template for this campaign type
+        # Remove "_email1" suffix if present to match template keys
+        template_key = campaign_type.replace("_email1", "")
+        templates = self.templates.get(template_key, [])
+
+        if not templates:
+            print(f"⚠️ No template found for campaign type: {template_key}")
+            return False
+
+        template = templates[0]  # Use first template in sequence
+
+        # Send the email
+        # Send the email (send_email method handles campaign_sends recording)
+        success = self.send_email(contact, template)
+        return success
+
     def send_email(self, contact: Contact, template: EmailTemplate) -> bool:
         """Send individual email using SendGrid"""
 
         try:
+            # Check if we already sent this email today to prevent duplicates
+            self.cursor.execute(
+                """
+                SELECT id FROM campaign_sends 
+                WHERE contact_id = ? AND campaign_type = ? AND date(sent_date) = date('now')
+                """,
+                (contact.id, template.campaign_type),
+            )
+
+            if self.cursor.fetchone():
+                print(
+                    f"⚠️ DUPLICATE SKIP: Already sent {template.campaign_type} to {contact.email} today"
+                )
+                return False
             # Load and personalize template
             html_content = self.load_html_template(template.html_file)
             utm_params = {
@@ -449,6 +539,21 @@ class EmailCampaignManager:
 
         for row in scheduled_emails:
             contact_id, campaign_type, sequence_order = row[0], row[1], row[2]
+
+            # Check if we already sent this email today to prevent duplicates
+            self.cursor.execute(
+                """
+                SELECT id FROM campaign_sends 
+                WHERE contact_id = ? AND campaign_type = ? AND date(sent_date) = date('now')
+                """,
+                (contact_id, campaign_type),
+            )
+
+            if self.cursor.fetchone():
+                print(
+                    f"⚠️ DUPLICATE SKIP: Already sent {campaign_type} to contact {contact_id} today"
+                )
+                continue
 
             # Create contact object
             contact = Contact(
@@ -578,6 +683,48 @@ class EmailCampaignManager:
             }
 
         return stats
+
+    def check_duplicate_sends(self) -> Dict[str, int]:
+        """Check for and report any duplicate sends"""
+
+        # Find contacts that received multiple emails of same type on same day
+        self.cursor.execute(
+            """
+            SELECT 
+                bc.email,
+                cs.campaign_type,
+                DATE(cs.sent_date) as send_date,
+                COUNT(*) as duplicate_count
+            FROM campaign_sends cs
+            JOIN business_contacts bc ON cs.contact_id = bc.id
+            GROUP BY bc.email, cs.campaign_type, DATE(cs.sent_date)
+            HAVING COUNT(*) > 1
+            ORDER BY COUNT(*) DESC, bc.email
+            """
+        )
+
+        duplicates = self.cursor.fetchall()
+
+        if duplicates:
+            print("\n🚨 DUPLICATE EMAIL ALERT:")
+            print("=" * 50)
+            total_duplicates = 0
+
+            for email, campaign_type, send_date, count in duplicates:
+                print(f"⚠️ {email}: {count} emails ({campaign_type} on {send_date})")
+                total_duplicates += count - 1  # Count extras only
+
+            print(f"\n📊 Total duplicate emails sent: {total_duplicates}")
+            print("🔧 This indicates a system issue that needs attention!")
+
+            return {
+                "total_affected_contacts": len(duplicates),
+                "total_duplicate_emails": total_duplicates,
+                "details": duplicates,
+            }
+        else:
+            print("✅ No duplicate emails detected")
+            return {"total_affected_contacts": 0, "total_duplicate_emails": 0}
 
     def close(self):
         """Close database connection"""
