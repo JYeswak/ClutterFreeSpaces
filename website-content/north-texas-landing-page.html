@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional organizing services now available in Denton & Ponder, TX. Limited 6-week engagement through December 2025. Transform your space before the holidays.">
+    <title>Professional Organizing - North Texas | ClutterFreeSpaces</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #ffffff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: #ffffff;
+            color: #667eea;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Urgency Banner */
+        .urgency-banner {
+            background-color: #ff6b6b;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .urgency-banner span {
+            background-color: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin: 0 5px;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 60px 20px;
+        }
+
+        .section-alt {
+            background-color: #f8f9fa;
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        .section p {
+            font-size: 1.1rem;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #555;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .service-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+
+        .service-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .service-card li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .service-card li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        /* Why Choose Section */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .benefit-item {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .benefit-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .benefit-item h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        /* Service Area */
+        .service-area {
+            background-color: #f8f9fa;
+            padding: 40px;
+            border-radius: 10px;
+            margin-top: 40px;
+        }
+
+        .cities-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .city-tag {
+            background-color: #667eea;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 1rem;
+        }
+
+        /* Holiday Section */
+        .holiday-box {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .holiday-box h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .holiday-box ul {
+            list-style: none;
+            font-size: 1.2rem;
+            line-height: 2;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            text-align: center;
+            background-color: #2c3e50;
+            color: white;
+            padding: 60px 20px;
+        }
+
+        .contact-section h2 {
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .contact-methods {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .contact-method {
+            text-align: center;
+        }
+
+        .contact-method a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.3rem;
+            font-weight: 600;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .contact-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .section h2 {
+                font-size: 2rem;
+            }
+
+            .urgency-banner {
+                font-size: 1rem;
+                padding: 15px;
+            }
+
+            .urgency-banner span {
+                display: block;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Professional Organizing Services<br>Now in North Texas</h1>
+            <p>Montana's trusted organizing expert • Limited availability through December 2025</p>
+            <p><strong>Serving Denton, Ponder & Surrounding Communities</strong></p>
+            <a href="tel:406-285-1525" class="cta-button">📞 Book Your Free Consultation</a>
+        </div>
+    </section>
+
+    <!-- Urgency Banner -->
+    <div class="urgency-banner">
+        ⏰ <span>Limited Time Only</span> • <span>8 Spots Available</span><br> • <span>Book by Nov 15th for Holiday Readiness</span>
+    </div>
+
+    <!-- Introduction Section -->
+    <section class="section">
+        <div class="container">
+            <h2>Transform Your Space Before the Holidays</h2>
+            <p>ClutterFreeSpaces is bringing professional organizing expertise to North Texas for a limited 6-week engagement. Whether you're unpacking from a move, preparing for holiday guests, or finally tackling that overwhelming garage, we're here to help you create functional, beautiful spaces that work for your lifestyle.</p>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="section section-alt">
+        <div class="container">
+            <h2>Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3>🏡 Whole-Home Organization</h3>
+                    <ul>
+                        <li>Complete home transformation</li>
+                        <li>Room-by-room systematic approach</li>
+                        <li>Custom storage solutions</li>
+                        <li>Family-friendly systems</li>
+                    </ul>
+                </div>
+
+                <div class="service-card">
+                    <h3>📦 Moving & Unpacking</h3>
+                    <ul>
+                        <li>Efficient unpacking assistance</li>
+                        <li>Strategic placement planning</li>
+                        <li>Box removal & organization</li>
+                        <li>Move-in ready setup</li>
+                    </ul>
+                </div>
+
+                <div class="service-card">
+                    <h3>🎯 Single-Room Focus</h3>
+                    <ul>
+                        <li>Kitchens & pantries</li>
+                        <li>Closets & wardrobes</li>
+                        <li>Garages & storage areas</li>
+                        <li>Home offices</li>
+                    </ul>
+                </div>
+
+                <div class="service-card">
+                    <h3>✨ Decluttering Support</h3>
+                    <ul>
+                        <li>Zero-judgment guidance</li>
+                        <li>Decision-making support</li>
+                        <li>Donation coordination</li>
+                        <li>Sustainable systems</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Holiday Timing -->
+            <div class="holiday-box">
+                <h3>🎄 Perfect Timing for the Holidays</h3>
+                <ul>
+                    <li>✓ Get organized before Thanksgiving guests arrive</li>
+                    <li>✓ Create space for Christmas decorations</li>
+                    <li>✓ Start 2026 clutter-free and stress-free</li>
+                    <li>✓ Gift yourself peace of mind this season</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Section -->
+    <section class="section">
+        <div class="container">
+            <h2>Why ClutterFreeSpaces?</h2>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-icon">⭐</div>
+                    <h3>Proven Expertise</h3>
+                    <p>Established Montana business with systems that work for real families in real homes</p>
+                </div>
+
+                <div class="benefit-item">
+                    <div class="benefit-icon">💚</div>
+                    <h3>Zero Judgment</h3>
+                    <p>We're here to help, not criticize. Your space, your goals, our support.</p>
+                </div>
+
+                <div class="benefit-item">
+                    <div class="benefit-icon">🎨</div>
+                    <h3>Custom Solutions</h3>
+                    <p>No cookie-cutter approaches. We design systems around how you actually live.</p>
+                </div>
+
+                <div class="benefit-item">
+                    <div class="benefit-icon">⚡</div>
+                    <h3>Efficient & Professional</h3>
+                    <p>We work quickly without sacrificing quality. Respect for your time and budget.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Service Area Section -->
+    <section class="section section-alt">
+        <div class="container">
+            <h2>We Come to You</h2>
+            <p>Proudly serving homes within 1.5 hours of Denton/Ponder</p>
+            <div class="service-area">
+                <div class="cities-list">
+                    <span class="city-tag">Denton</span>
+                    <span class="city-tag">Ponder</span>
+                    <span class="city-tag">Lewisville</span>
+                    <span class="city-tag">Flower Mound</span>
+                    <span class="city-tag">Highland Village</span>
+                    <span class="city-tag">Argyle</span>
+                    <span class="city-tag">Northlake</span>
+                    <span class="city-tag">Krum</span>
+                    <span class="city-tag">Sanger</span>
+                    <span class="city-tag">Aubrey</span>
+                    <span class="city-tag">Pilot Point</span>
+                    <span class="city-tag">Little Elm</span>
+                    <span class="city-tag">The Colony</span>
+                    <span class="city-tag">Corinth</span>
+                    <span class="city-tag">Lake Dallas</span>
+                </div>
+                <p style="margin-top: 20px; font-style: italic;">Not sure if we serve your area? Text us!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact/CTA Section -->
+    <section class="contact-section">
+        <div class="container">
+            <h2>Ready to Get Organized?</h2>
+            <p style="color: white; font-size: 1.2rem;">Limited spots available through December 2025</p>
+            <p style="color: white;">Book your free 30-minute consultation today</p>
+
+            <div class="contact-methods">
+                <div class="contact-method">
+                    <div class="contact-icon">📱</div>
+                    <p>Text or Call</p>
+                    <a href="tel:406-285-1525">(406) 285-1525</a>
+                </div>
+
+                <div class="contact-method">
+                    <div class="contact-icon">✉️</div>
+                    <p>Email</p>
+                    <a href="mailto:contact@clutter-free-spaces.com">contact@clutter-free-spaces.com</a>
+                </div>
+            </div>
+
+            <p style="color: white; margin-top: 40px; font-size: 1.1rem;">
+                <strong>Rate:</strong> $75/hour • Flexible packages available • Free consultation
+            </p>
+
+            <a href="tel:406-285-1525" class="cta-button" style="margin-top: 30px; display: inline-block;">📞 Book Now - Limited Availability</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <div style="background-color: #1a252f; color: white; text-align: center; padding: 30px 20px;">
+        <p><strong>ClutterFreeSpaces</strong> | Montana's Professional Organizing Service</p>
+        <p style="margin-top: 10px; opacity: 0.8;">Visiting North Texas November - December 2025</p>
+        <p style="margin-top: 10px; opacity: 0.7; font-size: 0.9rem;">
+            <a href="https://www.clutter-free-spaces.com" style="color: #667eea; text-decoration: none;">www.clutter-free-spaces.com</a>
+        </p>
+    </div>
+
+</body>
+</html>
