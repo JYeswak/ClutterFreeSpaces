@@ -400,19 +400,17 @@ class EmailCampaignManager:
         """Send individual email using SendGrid"""
 
         try:
-            # Check if we already sent this email today to prevent duplicates
+            # Check if we already sent ANY email to this email address today
             self.cursor.execute(
                 """
-                SELECT id FROM campaign_sends 
-                WHERE contact_id = ? AND campaign_type = ? AND date(sent_date) = date('now')
+                SELECT id FROM campaign_sends
+                WHERE email_address = ? AND date(sent_date) = date('now')
                 """,
-                (contact.id, template.campaign_type),
+                (contact.email,),
             )
 
             if self.cursor.fetchone():
-                print(
-                    f"⚠️ DUPLICATE SKIP: Already sent {template.campaign_type} to {contact.email} today"
-                )
+                print(f"⚠️ DUPLICATE SKIP: Already sent email to {contact.email} today")
                 return False
             # Load and personalize template
             html_content = self.load_html_template(template.html_file)
@@ -457,9 +455,9 @@ class EmailCampaignManager:
                 # Record successful send
                 self.cursor.execute(
                     """
-                    INSERT INTO campaign_sends 
-                    (contact_id, campaign_type, sequence_order, email_subject, sent_date, status, sendgrid_message_id)
-                    VALUES (?, ?, ?, ?, datetime('now'), 'sent', ?)
+                    INSERT INTO campaign_sends
+                    (contact_id, campaign_type, sequence_order, email_subject, sent_date, status, sendgrid_message_id, email_address)
+                    VALUES (?, ?, ?, ?, datetime('now'), 'sent', ?, ?)
                 """,
                     (
                         contact.id,
@@ -467,6 +465,7 @@ class EmailCampaignManager:
                         template.sequence_order,
                         template.subject,
                         response.headers.get("X-Message-Id", ""),
+                        contact.email,
                     ),
                 )
 

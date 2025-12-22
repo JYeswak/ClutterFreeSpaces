@@ -140,6 +140,21 @@ class Day2CampaignLauncher:
         print(f"\n🚀 LAUNCHING {batch_name.upper()} BATCH - {batch_config['time']}")
         print("=" * 70)
 
+        # Check if this batch was already launched today to prevent re-runs
+        today = datetime.now().strftime("%Y-%m-%d")
+        execution_marker = f"/tmp/campaign_batch_{batch_name}_{today}.lock"
+
+        if os.path.exists(execution_marker):
+            print(f"⚠️ BATCH ALREADY LAUNCHED: {batch_name} was already executed today")
+            print(f"   Lock file: {execution_marker}")
+            return 0
+
+        # Create execution marker
+        with open(execution_marker, "w") as f:
+            f.write(f"Launched at {datetime.now().isoformat()}")
+
+        print(f"🔒 Created execution lock: {execution_marker}")
+
         yesterday_recipients = self.get_yesterday_recipients()
         total_sent = 0
 

@@ -1,486 +1,277 @@
-# ClutterFreeSpaces Business Intelligence & Automation Platform
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## 🎯 Project Overview
 
-ClutterFreeSpaces is a comprehensive business intelligence and automation platform designed to build Montana's premier home organization service into a data-driven, high-performing business. This system integrates multiple data sources, provides actionable insights, and automates the path from content ideation to client acquisition.
-
-### **Business Goals**
-- **Rank #1** for "professional organizer Missoula Montana"
-- **Generate 20+ qualified leads** per month
-- **Achieve $10K monthly revenue** by Q2 2026
-- **Establish ClutterFreeSpaces** as Montana's organizing authority
+ClutterFreeSpaces is a comprehensive business platform built for Chanel's professional organizing service in Missoula, Montana. The platform combines automated B2B outreach, business intelligence dashboards, and complete website integration to grow her RV organization specialty from zero to profitable operation (first client: 9/5/2025).
 
 ## 🏗️ System Architecture
 
-### **Core Technology Stack**
-```
-┌─────────────────────────────────────────────────────────┐
-│                 BUSINESS INTELLIGENCE                    │
-├──────────────┬────────────────┬───────────────────────┤
-│   Dashboard  │   Analytics    │    AI Insights        │
-│   Commands   │   Tracking     │    & Automation       │
-└──────┬───────┴────────┬───────┴─────────┬──────────────┘
-       │                │                 │
-       ▼                ▼                 ▼
-┌─────────────────────────────────────────────────────────┐
-│                 DATA INTEGRATION LAYER                   │
-│ Google Search Console │ GA4 │ Calendly │ Airtable CRM │
-└─────────────────────────────────────────────────────────┘
-       │                │                 │
-       ▼                ▼                 ▼
-┌─────────────────────────────────────────────────────────┐
-│                 CONTENT & AUTOMATION                     │
-│  Content Pipeline │ Social Media │ Email Sequences   │
-└─────────────────────────────────────────────────────────┘
-```
+### **Three Core Systems:**
 
-### **Database Schema**
-- **SQLite Database**: `.claude/data/metrics.db`
-- **Daily Metrics**: SEO, bookings, conversions, revenue
-- **API Health**: Monitoring and performance tracking
-- **Goals Tracking**: Monthly and quarterly targets
-- **Content Performance**: Blog posts, social media, email campaigns
-- **Lead Journey**: Source attribution and conversion tracking
+**1. Website & Lead Generation** (Squarespace + Custom Code Injections)
+- Custom HTML/JS injections in `squarespace-forms/`
+- SEO-optimized pages with tracking
+- Resource download system with email capture
+- GA4/GTM conversion tracking with IP exclusion
 
-## 📊 Available Commands
+**2. B2B Outreach Engine** (Python + SendGrid)
+- Google Places API business discovery (`scripts/scrapers/`)
+- Email validation via Hunter.io
+- Multi-sequence campaign system (`outreach/campaigns/`)
+- Smart exclusion logic to prevent duplicate sends
 
-### **🌅 Daily Operations**
+**3. Business Intelligence Dashboard** (Shell Scripts + APIs)
+- Daily analytics via `/checkin` command
+- SEO monitoring and competitor tracking
+- Lead pipeline analysis with Airtable/Calendly integration
+- Goal tracking with SQLite databases
 
-#### `/checkin` - Daily Business Dashboard
-Your primary command for daily business intelligence.
+## 📊 Core Development Commands
 
-**Usage:**
+### **Daily Operations**
 ```bash
-/checkin                    # Run daily dashboard
+# Primary business intelligence dashboard
+/checkin                    # Daily metrics, leads, SEO performance
 /checkin --init             # First-time setup
 /checkin --health           # API connection status
-/checkin --history          # 7-day trend analysis
-/checkin --goals            # Goal management
-/checkin --export-json      # Export data
-/checkin --setup-apis       # API configuration help
+
+# Analytics & Monitoring  
+/seo-audit                  # SEO health check
+/competitor-check           # Market intelligence
+/lead-report               # Pipeline analysis
+/weekly-report             # Client-ready summaries
+/content-ideas             # AI content generation
 ```
 
-**Features:**
-- ✅ Real-time SEO metrics from Google Search Console
-- ✅ Booking and lead data from Calendly
-- ✅ CRM pipeline status from Airtable
-- ✅ Website analytics from GA4
-- ✅ AI-powered insights and recommendations
-- ✅ Week-over-week trend analysis
-- ✅ Goal progress tracking
-- ✅ Actionable next steps
-
-### **🔍 SEO & Analytics**
-
-#### `/seo-audit` - Comprehensive SEO Analysis
+### **B2B Campaign Management**
 ```bash
-/seo-audit                  # Full SEO health check
-/seo-audit --competitor     # Compare with Montana competitors
-/seo-audit --keywords       # Keyword opportunity analysis
-/seo-audit --technical      # Technical SEO issues
+# Launch email campaigns with smart exclusion
+python3 scripts/day2_campaign_launcher.py
+
+# Schedule campaigns for optimal timing (8 AM, 1 PM, 4 PM)
+python3 scripts/schedule_campaigns.py
+
+# View scheduled jobs
+atq
+
+# Cancel scheduled job
+atrm <job_id>
 ```
 
-#### `/competitor-check` - Market Intelligence
+### **Server & Webhooks**
 ```bash
-/competitor-check           # Track top 3 Montana organizers
-/competitor-check --deep    # Detailed competitive analysis
-/competitor-check --alerts  # Set up monitoring alerts
+# Start Railway webhook server for Calendly/form integrations
+npm start
+
+# Development mode with auto-restart
+npm run dev
 ```
 
-### **📝 Content & Marketing**
+## 🎯 Campaign Types & Templates
 
-#### `/content-ideas` - AI-Powered Content Generation
+### **Active Campaign Types:**
+- `bretz_warm` - RV dealer warm connections
+- `rv_dealer` - RV dealership outreach
+- `rv_parks` - RV park partnerships  
+- `senior_living` - Downsizing services
+- `moving_company` - Moving partnerships
+- `real_estate_agent` - Realtor collaborations
+- `storage_facilities` - Storage partnerships
+- `cleaning_companies` - Service bundling
+- `government` - Municipal contracts
+
+### **Email Template Convention:**
+Templates located in `outreach/campaigns/templates/`
+- Format: `{campaign_type}_email{sequence_number}.html`
+- Example: `rv_dealer_email1.html`, `senior_living_email2.html`
+- Missing templates prevent campaign sends (check logs)
+
+## 🔧 Critical Configuration
+
+### **SendGrid Setup (REQUIRED)**
+- **Account Type**: Paid ($19.95/month minimum)
+- **API Key**: Full Access permissions
+- **Unsubscribe Group ID**: 27918 (configured in EmailCampaignManager)
+- **Domain Authentication**: em8622.clutter-free-spaces.com
+- **Sender Email**: contact@clutter-free-spaces.com
+
+### **Database Schemas**
+- `outreach/data/b2b_outreach.db` - Campaign tracking, contact management
+- `.claude/data/metrics.db` - Business intelligence metrics
+- Both are SQLite databases, backed up automatically
+
+### **Environment Variables (.env)**
 ```bash
-/content-ideas              # Generate Montana-specific topics
-/content-ideas --seasonal   # Seasonal content opportunities  
-/content-ideas --seo        # SEO-optimized topic suggestions
-/content-ideas --social     # Social media content ideas
+# SendGrid
+SENDGRID_API_KEY=SG.xxx
+SendGrid_API_Key=SG.xxx  # Both formats supported
+
+# Google APIs  
+GOOGLE_CLIENT_ID=xxx
+GOOGLE_CLIENT_SECRET=xxx
+GOOGLECLOUD_API_KEY=xxx
+
+# CRM & Bookings
+AIRTABLE_API_KEY=xxx
+AIRTABLE_BASE_ID=xxx
+CALENDLY_PERSONAL_ACCESS_TOKEN=xxx
+
+# Optional Integrations
+TWILIO_SID=xxx
+TWILIO_SECRET=xxx
 ```
 
-#### `/lead-report` - Lead Generation Analysis
-```bash
-/lead-report                # Source attribution analysis
-/lead-report --funnel       # Conversion funnel breakdown
-/lead-report --roi          # ROI by marketing channel
+### **GA4 Internal Traffic Filtering**
+- **IP Addresses Excluded**: 65.117.210.114, 72.165.29.7
+- **GTM Configuration**: Exception trigger on Google Tag
+- **Method**: JavaScript IP detection with fetch to ipify.org
+
+## 🚀 EmailCampaignManager Architecture
+
+### **Core Class Structure:**
+```python
+# Located: outreach/campaigns/email_campaign_manager.py
+EmailCampaignManager()
+├── get_campaign_contacts(campaign_type)  # Fetch contacts by type
+├── launch_campaign(campaign_type)        # Launch full campaign
+├── start_campaign_sequence(contact, type) # Add contact to sequence
+├── process_scheduled_emails()           # Send queued emails
+└── send_email(contact, template_data)   # Individual email send
 ```
 
-### **📈 Reporting & Analytics**
+### **Smart Exclusion Logic:**
+- Tracks all sent emails in `campaign_sends` table
+- Prevents duplicate sends within campaign sequences
+- Day-to-day exclusion prevents re-targeting same recipients
+- Located in `day2_campaign_launcher.py:get_yesterday_recipients()`
 
-#### `/weekly-report` - Client-Ready Summary
-```bash
-/weekly-report              # Generate PDF/HTML report
-/weekly-report --email      # Email to stakeholder
-/weekly-report --compare    # Month-over-month comparison
-```
+## 🔍 Business Intelligence Features
 
-#### `/revenue-forecast` - Financial Projections
-```bash
-/revenue-forecast           # Current trajectory analysis
-/revenue-forecast --scenario # Conservative/optimistic scenarios
-/revenue-forecast --goals   # Path to revenue targets
-```
+### **Daily Metrics Tracking:**
+- SEO rankings and organic traffic (Google Search Console)
+- Booking conversions (Calendly webhooks)  
+- CRM pipeline status (Airtable API)
+- Website analytics (GA4 API)
+- Revenue and goal tracking
 
-### **⚙️ System Management**
+### **Automated Insights:**
+- Keyword opportunity detection
+- Competitor ranking changes
+- Lead source attribution
+- Conversion funnel analysis
+- Content performance metrics
 
-#### `/automation-status` - System Health
-```bash
-/automation-status          # All integrations health check
-/automation-status --fix    # Auto-fix common issues
-/automation-status --backup # Database backup
-```
-
-## 🔧 API Integrations
-
-### **Required Integrations**
-
-#### **Google Search Console**
-- **Purpose**: SEO performance tracking, keyword monitoring
-- **Setup**: Service account required for automated access
-- **Environment Variables**:
-  ```bash
-  GSC_SERVICE_ACCOUNT_KEY_PATH=/path/to/service-account.json
-  GSC_SITE_URL=https://www.clutter-free-spaces.com
-  ```
-
-#### **Calendly API**
-- **Purpose**: Booking tracking, conversion monitoring
-- **Setup**: Personal Access Token from developer.calendly.com
-- **Environment Variables**:
-  ```bash
-  CALENDLY_PERSONAL_ACCESS_TOKEN=your_token_here
-  ```
-
-#### **Airtable CRM**
-- **Purpose**: Lead pipeline management, project tracking
-- **Setup**: Personal Access Token with read permissions
-- **Environment Variables**:
-  ```bash
-  AIRTABLE_API_KEY=your_api_key_here
-  AIRTABLE_BASE_ID=your_base_id_here
-  ```
-
-#### **SendGrid Email API**
-- **Purpose**: B2B outreach campaigns, email automation
-- **Status**: ✅ Configured and working (Free Trial: 100 emails/day until Oct 27, 2025)
-- **Setup**: Full access API key with domain authentication
-- **Environment Variables**:
-  ```bash
-  SendGrid_API_Key=SG.xxx...xxx  # 69 characters, full access
-  ```
-
-**✅ Verified Configuration**:
-- **Sender Authentication**: `contact@clutter-free-spaces.com` (verified single sender)
-- **Domain Authentication**: `em8622.clutter-free-spaces.com` (verified)
-- **Link Branding**: `url1358.clutter-free-spaces.com` (verified)
-- **Account Type**: Free trial (98% reputation)
-- **Daily Quota**: 100 emails/day (resets at midnight UTC)
-
-**🚨 Critical Notes**:
-- **ONLY use `contact@clutter-free-spaces.com` as sender** - this is the verified single sender
-- Free trial expires October 27, 2025
-- API requires domain authentication for sending (already configured)
-- Working campaign system: `EmailCampaignManager` class in `outreach/campaigns/`
-
-### **Optional Integrations**
-
-#### **Google Analytics 4**
-- **Purpose**: Website visitor analytics, user behavior
-- **Setup**: GA4 Reporting API (complex setup)
-- **Environment Variables**:
-  ```bash
-  GA4_MEASUREMENT_ID=G-XXXXXXXXXX
-  GA4_API_SECRET=your_api_secret
-  ```
-
-#### **Additional Integrations**
-- **SendGrid**: Email automation (`SendGrid_API_Key`)
-- **Twilio**: SMS notifications (`TWILIO_SID`, `TWILIO_SECRET`)
-- **Google Cloud**: Advanced AI features (`GOOGLECLOUD_API_KEY`)
-
-## 🎯 Business Intelligence Features
-
-### **Automated Insights**
-- **SEO Opportunities**: Identify high-impact keyword targets
-- **Conversion Optimization**: Analyze booking funnel performance
-- **Content Performance**: Track ROI of blog posts and social media
-- **Seasonal Trends**: Montana-specific organizing patterns
-- **Competitive Intelligence**: Monitor local market changes
-
-### **Smart Notifications**
-- 🚨 **High Priority**: Booking rate drops below target
-- ⚠️ **Medium Priority**: SEO position changes significantly
-- ℹ️ **Low Priority**: New content opportunities identified
-
-### **Goal Tracking**
-- **Monthly Bookings**: Target 20+ consultations
-- **Organic Traffic**: 500+ clicks per month
-- **Conversion Rate**: 5%+ click-to-booking rate
-- **Revenue Pipeline**: $15K+ quarterly potential
-
-## 📈 Content Strategy Framework
-
-### **Content Pillars**
-1. **Montana Lifestyle Organizing (40%)**
-   - Seasonal storage solutions
-   - RV and recreational vehicle organization
-   - Ranch and rural property organizing
-
-2. **Family & Home Solutions (30%)**
-   - Kitchen organization for family meals
-   - Children's room and toy organization
-   - Home office setup for remote work
-
-3. **Life Transitions (20%)**
-   - Senior downsizing and aging-in-place
-   - Moving and relocation organizing
-   - New baby preparation
-
-4. **Psychology & Wellness (10%)**
-   - Stress reduction through organized spaces
-   - Mindful organizing practices
-
-### **Content Automation Pipeline**
-```
-Ideas → Research → Outline → Draft → Review → Publish → Promote → Analyze
-   ↓         ↓        ↓       ↓       ↓        ↓         ↓        ↓
-  AI      Keyword   SEO    Claude  Manual   Social   Email    ROI
- Topics   Research  Opts   Draft   Review   Media   Campaign  Track
-```
-
-## 🔍 Analytics & Tracking
-
-### **Key Performance Indicators**
-
-#### **SEO Metrics**
-- Organic clicks (Target: 500+/month)
-- Average search position (Target: <15)
-- Click-through rate (Target: >2%)
-- Keyword rankings for Montana terms
-
-#### **Conversion Metrics**
-- Website → Booking rate (Target: 5%)
-- Lead → Customer conversion (Target: 30%)
-- Revenue per booking (Target: $500+)
-- Customer lifetime value
-
-#### **Content Performance**
-- Blog post page views
-- Social media engagement
-- Email open/click rates
-- Content-attributed leads
-
-#### **Business Health**
-- Monthly recurring revenue
-- New customer acquisition rate
-- Customer retention rate
-- Profit margins per service
-
-### **Tracking Implementation**
-
-#### **Enhanced Calendly Tracking**
-```javascript
-// Already implemented in Squarespace header
-gtag('event', 'calendly_booking_click', {
-  'event_category': 'Booking',
-  'event_label': serviceType,
-  'booking_button_text': linkText,
-  'service_context': serviceType
-});
-```
-
-#### **Webhook Integration**
-- ✅ Calendly webhooks configured (invitee.created, invitee.canceled)
-- ✅ Railway API server receiving booking events
-- ✅ GA4 conversion tracking for completed bookings
-
-## 💡 AI-Powered Features
-
-### **Intelligent Recommendations**
-- **Content Topics**: Based on search trends and competitor gaps
-- **SEO Optimization**: Keyword opportunities with traffic potential
-- **Pricing Strategy**: Market analysis for service packages
-- **Seasonal Campaigns**: Montana-specific timing optimization
-
-### **Automated Insights**
-- **Performance Anomalies**: Unusual traffic or conversion patterns
-- **Opportunity Detection**: Untapped market segments
-- **Risk Alerts**: Competitor threats or ranking declines
-- **Growth Recommendations**: Scaling strategies based on data
-
-## 🚀 Getting Started
-
-### **Initial Setup**
-1. **Install Dependencies**: Ensure `sqlite3`, `jq`, `bc` are available
-2. **Configure APIs**: Run `/checkin --setup-apis` for detailed instructions
-3. **Initialize Database**: Run `/checkin --init`
-4. **First Check-in**: Run `/checkin` to see your baseline
-
-### **Daily Workflow**
-1. **Morning**: `/checkin` - Review overnight metrics and set daily priorities
-2. **Midday**: `/content-ideas` - Generate content for the week
-3. **Evening**: `/lead-report` - Follow up on new leads and opportunities
-
-### **Weekly Routine**
-1. **Monday**: `/weekly-report` - Review last week's performance
-2. **Wednesday**: `/seo-audit` - Check SEO health and opportunities
-3. **Friday**: `/competitor-check` - Monitor competitive landscape
-
-## 📁 File Structure
+## 📁 Directory Structure
 
 ```
 ClutterFreeSpaces/
-├── claude.md                          # This documentation
-├── .claude-context                    # Project context
-├── .env                               # API credentials
-│
-├── .claude/
-│   ├── commands/
-│   │   ├── checkin.sh                 # Daily dashboard
-│   │   ├── seo-audit.sh               # SEO analysis
-│   │   ├── content-ideas.sh           # Content generation
-│   │   ├── lead-report.sh             # Lead analytics
-│   │   ├── competitor-check.sh        # Competition tracking
-│   │   ├── weekly-report.sh           # Reporting
-│   │   ├── automation-status.sh       # System health
-│   │   └── revenue-forecast.sh        # Financial projections
-│   │
-│   ├── lib/
-│   │   ├── database.sh                # Database operations
-│   │   ├── api_clients.sh             # API integrations
-│   │   ├── dashboard.sh               # Display formatting
-│   │   └── notifications.sh           # Alert system
-│   │
-│   └── data/
-│       ├── metrics.db                 # SQLite database
-│       ├── schema.sql                 # Database schema
-│       └── backups/                   # Automated backups
-│
-├── content-pipeline/
-│   ├── ideas/                         # Content ideas repository
-│   ├── research/                      # Keyword and competitive research
-│   ├── drafts/                        # Work-in-progress content
-│   ├── scheduled/                     # Ready to publish
-│   └── published/                     # Live content tracking
-│
-├── squarespace-forms/                 # Website integration
-│   └── enhanced-comprehensive-footer.html
-│
-├── config/
-│   ├── api-server.js                  # Railway webhook server
-│   └── google-services/               # Google API integrations
-│
-└── docs/
-    ├── content-strategy/              # Content planning docs
-    ├── technical/                     # Technical documentation
-    └── analysis/                      # Market research
+├── scripts/                    # All automation scripts
+│   ├── day2_campaign_launcher.py    # Main campaign system
+│   ├── schedule_campaigns.py        # Staggered timing system
+│   ├── scrapers/                   # Business discovery tools
+│   └── config-setup/              # OAuth and API setup
+├── outreach/                   # B2B outreach system
+│   ├── campaigns/                  # Email templates & logic
+│   ├── data/b2b_outreach.db       # Campaign database
+│   └── scrapers/                  # Contact discovery
+├── squarespace-forms/          # Website code injections
+├── config/                     # Node.js server & Google services
+│   ├── api-server.js              # Webhook handling
+│   └── google-services/           # GA4, GMB, SEO services
+├── .claude/                    # Business intelligence
+│   ├── commands/                  # Shell script commands
+│   └── data/metrics.db           # Analytics database
+└── archived/                   # Historical/obsolete files
 ```
 
-## 🎛️ Configuration
+## 🧪 Testing & Validation
 
-### **Environment Variables**
-Copy `.env.example` to `.env` and configure:
+### **Campaign Testing:**
+```python
+# Test single campaign without sending
+manager = EmailCampaignManager()
+contacts = manager.get_campaign_contacts('rv_dealer')
+print(f"Found {len(contacts)} contacts")
 
+# Test with limit to avoid accidental mass sends
+sent = manager.launch_campaign('rv_dealer', test_mode=True)  # Limits to 3
+```
+
+### **SendGrid Diagnostics:**
 ```bash
-# Required
-CALENDLY_PERSONAL_ACCESS_TOKEN=your_calendly_token
-AIRTABLE_API_KEY=your_airtable_key
-AIRTABLE_BASE_ID=your_base_id
-
-# Optional but Recommended
-GSC_SERVICE_ACCOUNT_KEY_PATH=/path/to/gsc-service-account.json
-GSC_SITE_URL=https://www.clutter-free-spaces.com
-GA4_MEASUREMENT_ID=G-XXXXXXXXXX
-GA4_API_SECRET=your_ga4_secret
-
-# Additional Services
-SendGrid_API_Key=your_sendgrid_key
-TWILIO_SID=your_twilio_sid
-TWILIO_SECRET=your_twilio_secret
-GOOGLECLOUD_API_KEY=your_google_cloud_key
+# Check API connectivity and account status
+python3 archived/2025-09-09-sendgrid-troubleshooting/sendgrid_diagnostics.py
 ```
 
-### **Goal Configuration**
-Goals are automatically created but can be customized:
+### **Database Inspection:**
+```bash
+# Check campaign status
+sqlite3 outreach/data/b2b_outreach.db "SELECT campaign_type, COUNT(*) FROM campaign_contacts GROUP BY campaign_type;"
 
-```sql
--- Example: Update monthly booking target
-UPDATE goals 
-SET target_value = 25 
-WHERE goal_type = 'monthly_bookings';
+# View recent sends  
+sqlite3 outreach/data/b2b_outreach.db "SELECT * FROM campaign_sends ORDER BY sent_date DESC LIMIT 10;"
 ```
 
-## 🚨 Troubleshooting
+## 🚨 Common Issues & Solutions
 
-### **Common Issues**
+### **SendGrid 401 Errors:**
+- Ensure paid account (free trials have separate API quotas)
+- Verify unsubscribe group ID exists (27918)
+- Check API key has Full Access permissions
 
-#### **API Connection Errors**
-1. Check credentials in `.env`
-2. Run `/checkin --health` for detailed status
-3. Verify API permissions and rate limits
+### **Missing Email Templates:**
+- Campaign contacts get queued but won't send without template
+- Create: `outreach/campaigns/templates/{type}_email1.html`
+- Follow existing template structure and personalization
 
-#### **Database Issues**
-1. Backup: `/checkin --backup`
-2. Reset: Delete `.claude/data/metrics.db` and run `/checkin --init`
-3. Schema updates: Automatic via triggers
+### **Campaign Exclusion Not Working:**
+- Check `get_yesterday_recipients()` method in day2_campaign_launcher.py
+- Verify database contains previous send records
+- Test exclusion logic before mass sends
 
-#### **Command Not Found**
-1. Ensure commands are executable: `chmod +x .claude/commands/*.sh`
-2. Check PROJECT_ROOT environment variable
-3. Verify file permissions
+### **GA4 Tracking Internal Traffic:**
+- Confirm GTM exception trigger is published
+- Test with different networks to verify IP filtering
+- Use GA4 Real-Time reports to validate exclusion
 
-### **Performance Optimization**
-- **Cache Duration**: API responses cached 1-4 hours
-- **Database Cleanup**: Automatic cleanup of old cache entries
-- **Rate Limiting**: Built-in respect for API limits
+## 💡 Development Tips
 
-## 🔒 Security & Privacy
+### **Safe Campaign Development:**
+1. Always test with small contact lists first
+2. Use `test_mode=True` parameters when available  
+3. Check `atq` before scheduling mass campaigns
+4. Monitor SendGrid dashboard during sends
+5. Verify exclusion logic with known test emails
 
-### **Data Protection**
-- **Local Storage**: All data stored locally in SQLite
-- **API Keys**: Environment variables only, never committed
-- **Backups**: Automated local backups, configurable retention
+### **Business Intelligence Workflow:**
+1. Run `/checkin` each morning for daily metrics
+2. Use `/lead-report` after new inquiries  
+3. Schedule `/weekly-report` for client updates
+4. Monitor `/competitor-check` for market changes
 
-### **Access Control**
-- **File Permissions**: Restricted to user account
-- **API Scope**: Minimal required permissions
-- **Logging**: No sensitive data in logs
+### **Email Template Best Practices:**
+- Use existing templates as reference for personalization
+- Include unsubscribe links (handled by SendGrid)
+- Test HTML rendering across email clients
+- Montana-specific content performs better
 
-## 📞 Support & Maintenance
+## 📈 Success Metrics
 
-### **Health Monitoring**
-- **API Health**: Automatic monitoring and alerts
-- **Database Integrity**: Built-in consistency checks
-- **Performance Metrics**: Response time tracking
+### **Current Status (September 2025):**
+- **First Client**: 9/5/2025 (multi-day project, 10-15 hours)
+- **Daily Email Volume**: 61 sent on 9/9/2025
+- **SendGrid Reputation**: 99%
+- **Campaign Types**: 9 active sequences
+- **Website**: Full Google indexing in progress
 
-### **Updates & Maintenance**
-- **Weekly Backups**: Automated database backups
-- **Cache Cleanup**: Automatic expired data removal
-- **Schema Evolution**: Automatic database migrations
-
-## 🎯 Success Metrics
-
-### **30-Day Targets**
-- ✅ Daily check-ins completed
-- ✅ All API integrations functioning
-- 📈 Baseline metrics established
-- 📝 First month of content published
-
-### **90-Day Targets**
-- 🎯 20+ monthly bookings achieved
-- 📊 Top 10 rankings for target keywords
-- 💰 $5K monthly revenue milestone
-- 🤖 Content automation fully operational
-
-### **1-Year Vision**
-- 👑 #1 Montana organizing authority
-- 💼 100+ satisfied clients
-- 💰 $100K annual revenue
-- 🌟 Recognized regional brand
+### **Growth Targets:**
+- 20+ qualified leads per month
+- #1 ranking for "professional organizer Missoula Montana"  
+- $10K monthly revenue by Q2 2026
+- Establish Montana organizing authority
 
 ---
 
-*This system transforms ClutterFreeSpaces from a service business into a data-driven, scalable enterprise. Every decision is backed by data, every opportunity is identified automatically, and every client interaction is optimized for maximum impact.*
-
-**Last Updated**: September 2025  
-**Version**: 1.0  
-**Maintainer**: Josh Nowak & Claude AI
+*This platform transforms ClutterFreeSpaces from a startup into a data-driven, automated business generating consistent leads and revenue through systematic outreach and optimization.*
