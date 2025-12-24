@@ -39,8 +39,34 @@ class GMBService {
 
       return response.data;
     } catch (error) {
-      console.error("Error getting location info:", error);
-      throw error;
+      console.error("Error getting location info:", error.message);
+
+      // Handle quota exceeded gracefully
+      if (error.message?.includes('Quota exceeded') || error.message?.includes('quota')) {
+        return {
+          error: 'quota_exceeded',
+          message: 'Google Business Profile API quota exceeded. Try again later.',
+          locationId: this.locationId,
+          placeId: this.placeId
+        };
+      }
+
+      // Handle auth errors
+      if (error.message?.includes('invalid_grant') || error.message?.includes('Token')) {
+        return {
+          error: 'auth_required',
+          message: 'OAuth token expired or invalid. Please re-authenticate at /auth/google',
+          locationId: this.locationId
+        };
+      }
+
+      // Return structured error instead of throwing
+      return {
+        error: 'api_error',
+        message: error.message,
+        locationId: this.locationId,
+        placeId: this.placeId
+      };
     }
   }
 
@@ -58,30 +84,48 @@ class GMBService {
 
   async getPlacesReviews(limit = 10) {
     try {
-      // Using Google Places API for review data
-      const places = await authService.createAuthenticatedRequest(
-        "places",
-        "v1",
-      );
-
       if (!this.placeId) {
         throw new Error("GOOGLE_PLACE_ID not configured");
       }
 
-      // Search for place details including reviews
-      const response = await places.places.get({
-        name: `places/${this.placeId}`,
-        fields: "reviews,rating,user_ratings_total",
-      });
+      // Get OAuth access token
+      const auth = await authService.initialize();
+      const { token } = await auth.getAccessToken();
 
-      return response.data;
+      if (!token) {
+        throw new Error("No OAuth token available - please authenticate at /auth/google");
+      }
+
+      // Use Places API (New) REST endpoint directly - googleapis library doesn't support this
+      const response = await axios.get(
+        `https://places.googleapis.com/v1/places/${this.placeId}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+            'X-Goog-FieldMask': 'reviews,rating,userRatingCount,displayName'
+          }
+        }
+      );
+
+      console.log("✅ Places API response received");
+
+      return {
+        reviews: response.data.reviews || [],
+        rating: response.data.rating || 0,
+        user_ratings_total: response.data.userRatingCount || 0,
+        displayName: response.data.displayName?.text || this.businessName
+      };
     } catch (error) {
-      console.error("Error fetching Places reviews:", error);
-      // Return mock data structure for development
+      console.error("Error fetching Places reviews:", error.response?.data || error.message);
+
+      // Return error info instead of silently using mock data
       return {
         reviews: [],
-        rating: 4.8,
-        user_ratings_total: 24,
+        rating: 0,
+        user_ratings_total: 0,
+        error: error.response?.data?.error?.message || error.message,
+        note: "Failed to fetch real data - check Places API configuration"
       };
     }
   }
