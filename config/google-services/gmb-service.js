@@ -10,9 +10,15 @@ const axios = require("axios");
 
 class GMBService {
   constructor() {
-    this.locationId = process.env.GMB_LOCATION_ID; // Business Profile ID for GBP API
-    this.placeId = process.env.GOOGLE_PLACE_ID || process.env.GMB_LOCATION_ID; // Place ID for Places API
+    // CFS is a Service Area Business (SAB) - no physical location, no standard Place ID
+    // CID (Business Profile ID): 9832164361965321192
+    // data-pid (Knowledge Panel ID): 5010715
+    // Store Code: 00366519096702437750
+    this.locationId = process.env.GMB_LOCATION_ID || "9832164361965321192";
+    this.cid = "9832164361965321192"; // Customer ID for GBP API
+    this.dataPid = "5010715"; // Knowledge Panel ID for review links
     this.businessName = "ClutterFreeSpaces";
+    // SABs use CID-based review URLs, not Place ID-based
     this.reviewBaseUrl = "https://search.google.com/local/writereview?placeid=";
   }
 
@@ -42,90 +48,111 @@ class GMBService {
       console.error("Error getting location info:", error.message);
 
       // Handle quota exceeded gracefully
-      if (error.message?.includes('Quota exceeded') || error.message?.includes('quota')) {
+      if (
+        error.message?.includes("Quota exceeded") ||
+        error.message?.includes("quota")
+      ) {
         return {
-          error: 'quota_exceeded',
-          message: 'Google Business Profile API quota exceeded. Try again later.',
+          error: "quota_exceeded",
+          message:
+            "Google Business Profile API quota exceeded. Try again later.",
           locationId: this.locationId,
-          placeId: this.placeId
+          placeId: this.placeId,
         };
       }
 
       // Handle auth errors
-      if (error.message?.includes('invalid_grant') || error.message?.includes('Token')) {
+      if (
+        error.message?.includes("invalid_grant") ||
+        error.message?.includes("Token")
+      ) {
         return {
-          error: 'auth_required',
-          message: 'OAuth token expired or invalid. Please re-authenticate at /auth/google',
-          locationId: this.locationId
+          error: "auth_required",
+          message:
+            "OAuth token expired or invalid. Please re-authenticate at /auth/google",
+          locationId: this.locationId,
         };
       }
 
       // Return structured error instead of throwing
       return {
-        error: 'api_error',
+        error: "api_error",
         message: error.message,
         locationId: this.locationId,
-        placeId: this.placeId
+        placeId: this.placeId,
       };
     }
   }
 
   async getReviews(limit = 10) {
     try {
-      // Note: Google My Business API has limited review access
-      // For full review management, you might need to use Google Places API
-      const reviews = await this.getPlacesReviews(limit);
-      return reviews;
+      // CFS is a Service Area Business (SAB) - Places API does NOT work for SABs!
+      // SABs don't have Place IDs (ChIJ...) and return empty from Places API.
+      // Must use Google Business Profile API instead (requires approved access).
+      // GBP API access applied for 2025-12-24 - pending Google approval (1-2 weeks).
+
+      // For now, return placeholder indicating pending API access
+      return {
+        reviews: [],
+        rating: 5.0, // CFS has 4 five-star reviews
+        user_ratings_total: 4,
+        source: "manual", // Until GBP API approved
+        note: "GBP API access pending - real data available after approval",
+        reviewLink: this.getDirectReviewUrl(),
+      };
     } catch (error) {
       console.error("Error fetching reviews:", error);
       throw error;
     }
   }
 
-  async getPlacesReviews(limit = 10) {
+  async getGBPReviews(limit = 10) {
+    // This method will work after GBP API access is approved
     try {
-      if (!this.placeId) {
-        throw new Error("GOOGLE_PLACE_ID not configured");
-      }
-
-      // Get OAuth access token
-      const auth = await authService.initialize();
-      const { token } = await auth.getAccessToken();
-
-      if (!token) {
-        throw new Error("No OAuth token available - please authenticate at /auth/google");
-      }
-
-      // Use Places API (New) REST endpoint directly - googleapis library doesn't support this
-      const response = await axios.get(
-        `https://places.googleapis.com/v1/places/${this.placeId}`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-            'X-Goog-FieldMask': 'reviews,rating,userRatingCount,displayName'
-          }
-        }
+      const mybusiness = await authService.createAuthenticatedRequest(
+        "mybusinessaccountmanagement",
+        "v1",
       );
 
-      console.log("✅ Places API response received");
+      // First, list accounts to get the account name
+      const accountsResponse = await mybusiness.accounts.list();
+      const account = accountsResponse.data.accounts?.[0];
+
+      if (!account) {
+        return {
+          error: "no_accounts",
+          message: "No Google Business Profile accounts found for this user",
+        };
+      }
+
+      // Then list locations
+      const locationsResponse = await mybusiness.accounts.locations.list({
+        parent: account.name,
+      });
 
       return {
-        reviews: response.data.reviews || [],
-        rating: response.data.rating || 0,
-        user_ratings_total: response.data.userRatingCount || 0,
-        displayName: response.data.displayName?.text || this.businessName
+        account: account.name,
+        locations: locationsResponse.data.locations || [],
+        note: "Use location name to fetch reviews via Reviews API",
       };
     } catch (error) {
-      console.error("Error fetching Places reviews:", error.response?.data || error.message);
+      console.error("Error fetching GBP reviews:", error.message);
 
-      // Return error info instead of silently using mock data
+      if (
+        error.message?.includes("quota") ||
+        error.message?.includes("Quota")
+      ) {
+        return {
+          error: "quota_exceeded",
+          message:
+            "GBP API access not yet approved - apply at console.cloud.google.com",
+          appliedDate: "2025-12-24",
+        };
+      }
+
       return {
-        reviews: [],
-        rating: 0,
-        user_ratings_total: 0,
-        error: error.response?.data?.error?.message || error.message,
-        note: "Failed to fetch real data - check Places API configuration"
+        error: "api_error",
+        message: error.message,
       };
     }
   }
@@ -164,8 +191,9 @@ class GMBService {
   }
 
   buildReviewUrl(clientData) {
-    // Build GMB review URL with tracking parameters
-    let reviewUrl = `${this.reviewBaseUrl}${this.locationId}`;
+    // SABs don't have standard Place IDs - use CID-based Maps URL
+    // This redirects to the correct review form for the business profile
+    let reviewUrl = `https://www.google.com/maps?cid=${this.cid}`;
 
     // Add UTM parameters for tracking
     const utmParams = new URLSearchParams({
@@ -176,8 +204,14 @@ class GMBService {
       job_id: clientData.jobId,
     });
 
+    // Note: UTMs may not persist through Maps redirect, but included for logging
     reviewUrl += `&${utmParams.toString()}`;
     return reviewUrl;
+  }
+
+  // Direct review link using data-pid (Knowledge Panel ID)
+  getDirectReviewUrl() {
+    return `https://search.google.com/local/writereview?placeid=${this.dataPid}`;
   }
 
   async respondToReview(reviewId, responseText) {
