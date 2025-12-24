@@ -10,7 +10,8 @@ const axios = require("axios");
 
 class GMBService {
   constructor() {
-    this.locationId = process.env.GMB_LOCATION_ID;
+    this.locationId = process.env.GMB_LOCATION_ID; // Business Profile ID for GBP API
+    this.placeId = process.env.GOOGLE_PLACE_ID || process.env.GMB_LOCATION_ID; // Place ID for Places API
     this.businessName = "ClutterFreeSpaces";
     this.reviewBaseUrl = "https://search.google.com/local/writereview?placeid=";
   }
@@ -63,13 +64,13 @@ class GMBService {
         "v1",
       );
 
-      if (!this.locationId) {
-        throw new Error("GMB_LOCATION_ID not configured");
+      if (!this.placeId) {
+        throw new Error("GOOGLE_PLACE_ID not configured");
       }
 
       // Search for place details including reviews
       const response = await places.places.get({
-        name: `places/${this.locationId}`,
+        name: `places/${this.placeId}`,
         fields: "reviews,rating,user_ratings_total",
       });
 
