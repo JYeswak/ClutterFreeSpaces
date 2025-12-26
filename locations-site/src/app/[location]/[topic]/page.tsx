@@ -207,17 +207,33 @@ export default async function LocationTopicPage({ params }: PageProps) {
               </>
             )}
 
-            {location.neighborhoods && location.neighborhoods.length > 0 && (
-              <>
-                <h3>Areas We Serve in {location.name}</h3>
-                <ul>
-                  {location.neighborhoods.map((neighborhood, idx) => (
-                    <li key={idx}>{neighborhood}</li>
-                  ))}
-                </ul>
-              </>
-            )}
           </div>
+
+          {/* Neighborhoods Section - Visual Grid */}
+          {location.neighborhoods && location.neighborhoods.length > 0 && (
+            <div className="mt-12 p-8 bg-gray-50 rounded-3xl">
+              <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                <svg className="w-5 h-5 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                Areas We Serve in {location.name}
+              </h2>
+              <div className="flex flex-wrap gap-3">
+                {location.neighborhoods.map((neighborhood, idx) => (
+                  <span
+                    key={idx}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-white border border-gray-200 rounded-full text-gray-700 text-sm font-medium hover:border-teal-300 hover:bg-teal-50 transition"
+                  >
+                    <svg className="w-3.5 h-3.5 text-teal-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                    </svg>
+                    {neighborhood}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
