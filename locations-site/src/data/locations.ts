@@ -110,6 +110,256 @@ export const locations: Location[] = [
       "Multiple ski resorts",
       "Extensive wilderness areas"
     ]
+  },
+  // North Texas Locations
+  {
+    slug: "denton",
+    name: "Denton",
+    state: "Texas",
+    stateAbbr: "TX",
+    region: "North Texas",
+    population: 150000,
+    neighborhoods: [
+      "Downtown Denton",
+      "University of North Texas area",
+      "Texas Woman's University area",
+      "Robson Ranch",
+      "Corinth area",
+      "Hickory Creek"
+    ],
+    localFeatures: [
+      "University of North Texas",
+      "Texas Woman's University",
+      "Denton Square",
+      "Ray Roberts Lake"
+    ]
+  },
+  {
+    slug: "flower-mound",
+    name: "Flower Mound",
+    state: "Texas",
+    stateAbbr: "TX",
+    region: "North Texas",
+    population: 80000,
+    neighborhoods: [
+      "The River Walk",
+      "Wellington",
+      "Bridlewood",
+      "Canyon Falls",
+      "Lakeside DFW"
+    ],
+    localFeatures: [
+      "Grapevine Lake",
+      "The River Walk at Central Park",
+      "Twin Coves Park"
+    ]
+  },
+  {
+    slug: "lewisville",
+    name: "Lewisville",
+    state: "Texas",
+    stateAbbr: "TX",
+    region: "North Texas",
+    population: 115000,
+    neighborhoods: [
+      "Old Town Lewisville",
+      "Castle Hills",
+      "Vista Ridge area",
+      "Valley Ridge",
+      "Lakewood Village"
+    ],
+    localFeatures: [
+      "Lake Lewisville",
+      "Vista Ridge Mall",
+      "Music City Mall"
+    ]
+  },
+  {
+    slug: "highland-village",
+    name: "Highland Village",
+    state: "Texas",
+    stateAbbr: "TX",
+    region: "North Texas",
+    population: 16000,
+    neighborhoods: [
+      "The Highlands",
+      "Lakewood",
+      "Highland Shores",
+      "Sellmeyer Hills"
+    ],
+    localFeatures: [
+      "The Shops at Highland Village",
+      "Copperas Branch Park",
+      "Lake Lewisville shoreline"
+    ]
+  },
+  {
+    slug: "frisco",
+    name: "Frisco",
+    state: "Texas",
+    stateAbbr: "TX",
+    region: "North Texas",
+    population: 220000,
+    neighborhoods: [
+      "Stonebriar",
+      "Legacy West",
+      "The Star District",
+      "Newman Village",
+      "Phillips Creek Ranch",
+      "Starwood"
+    ],
+    localFeatures: [
+      "The Star (Dallas Cowboys HQ)",
+      "Stonebriar Centre",
+      "PGA of America Headquarters",
+      "Dr Pepper Ballpark"
+    ]
+  },
+  {
+    slug: "mckinney",
+    name: "McKinney",
+    state: "Texas",
+    stateAbbr: "TX",
+    region: "North Texas",
+    population: 200000,
+    neighborhoods: [
+      "Historic Downtown McKinney",
+      "Craig Ranch",
+      "Stonebridge Ranch",
+      "Adriatica Village",
+      "Trinity Falls",
+      "Eldorado"
+    ],
+    localFeatures: [
+      "Historic Downtown Square",
+      "Adriatica Village",
+      "Heard Natural Science Museum"
+    ]
+  },
+  {
+    slug: "prosper",
+    name: "Prosper",
+    state: "Texas",
+    stateAbbr: "TX",
+    region: "North Texas",
+    population: 35000,
+    neighborhoods: [
+      "Windsong Ranch",
+      "Star Trail",
+      "Whitley Place",
+      "Gentle Creek",
+      "Lakes of Prosper"
+    ],
+    localFeatures: [
+      "Prosper Town Center",
+      "Top-rated Prosper ISD schools",
+      "Frontier Park"
+    ]
+  },
+  {
+    slug: "celina",
+    name: "Celina",
+    state: "Texas",
+    stateAbbr: "TX",
+    region: "North Texas",
+    population: 25000,
+    neighborhoods: [
+      "Historic Downtown Celina",
+      "Light Farms",
+      "Mustang Lakes",
+      "Carter Ranch"
+    ],
+    localFeatures: [
+      "Historic Celina Square",
+      "Light Farms amenity center",
+      "Celina ISD schools"
+    ]
+  },
+  {
+    slug: "plano",
+    name: "Plano",
+    state: "Texas",
+    stateAbbr: "TX",
+    region: "North Texas",
+    population: 290000,
+    neighborhoods: [
+      "Legacy West",
+      "Downtown Plano",
+      "Willow Bend",
+      "Preston Hollow",
+      "Kings Ridge",
+      "Deerfield"
+    ],
+    localFeatures: [
+      "Legacy West",
+      "The Shops at Willow Bend",
+      "Arbor Hills Nature Preserve",
+      "Toyota Music Factory nearby"
+    ]
+  },
+  {
+    slug: "dallas",
+    name: "Dallas",
+    state: "Texas",
+    stateAbbr: "TX",
+    region: "North Texas",
+    population: 1300000,
+    neighborhoods: [
+      "North Dallas",
+      "Preston Hollow",
+      "Lake Highlands",
+      "Far North Dallas",
+      "Addison area",
+      "Richardson border"
+    ],
+    localFeatures: [
+      "Dallas Arts District",
+      "NorthPark Center",
+      "White Rock Lake",
+      "Galleria Dallas"
+    ]
+  },
+  {
+    slug: "fort-worth",
+    name: "Fort Worth",
+    state: "Texas",
+    stateAbbr: "TX",
+    region: "North Texas",
+    population: 970000,
+    neighborhoods: [
+      "Southlake border",
+      "Alliance area",
+      "Clearfork",
+      "TCU area",
+      "North Richland Hills",
+      "Keller area"
+    ],
+    localFeatures: [
+      "Fort Worth Stockyards",
+      "Sundance Square",
+      "TCU campus",
+      "Fort Worth Zoo"
+    ]
+  },
+  {
+    slug: "southlake",
+    name: "Southlake",
+    state: "Texas",
+    stateAbbr: "TX",
+    region: "North Texas",
+    population: 32000,
+    neighborhoods: [
+      "Southlake Town Square area",
+      "Timarron",
+      "Clariden Ranch",
+      "Carillon",
+      "Estes Park"
+    ],
+    localFeatures: [
+      "Southlake Town Square",
+      "Carroll ISD (top-rated schools)",
+      "Bob Jones Nature Center"
+    ]
   }
 ];
 
