@@ -183,30 +183,60 @@ export default async function LocationTopicPage({ params }: PageProps) {
             </div>
           </div>
 
-          {/* Content Section */}
-          <div className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-600">
-            <h2>
-              About {topic.name} in {location.name}
+          {/* Why Choose Us - Visual Grid */}
+          <div className="grid md:grid-cols-3 gap-6 mb-16">
+            <div className="text-center p-6">
+              <div className="w-12 h-12 bg-teal-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <svg className="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              </div>
+              <h3 className="font-semibold text-gray-900 mb-2">Zero Judgment</h3>
+              <p className="text-gray-600 text-sm">
+                We&apos;ve seen it all. No matter the state of your space, we&apos;re here to help, not judge.
+              </p>
+            </div>
+            <div className="text-center p-6">
+              <div className="w-12 h-12 bg-teal-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <svg className="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 className="font-semibold text-gray-900 mb-2">Stress-Free Process</h3>
+              <p className="text-gray-600 text-sm">
+                We handle the heavy lifting. You just point us in the right direction.
+              </p>
+            </div>
+            <div className="text-center p-6">
+              <div className="w-12 h-12 bg-teal-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <svg className="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                </svg>
+              </div>
+              <h3 className="font-semibold text-gray-900 mb-2">Lasting Results</h3>
+              <p className="text-gray-600 text-sm">
+                We create systems you can actually maintain. No more weekend clean-up marathons.
+              </p>
+            </div>
+          </div>
+
+          {/* About Section - Cleaner */}
+          <div className="bg-white border border-gray-100 rounded-3xl p-8 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+              {topic.name} in {location.name}
             </h2>
-            <p>
-              {topic.description}. At Clutter Free Spaces, we believe everyone
-              deserves a home that feels calm and organized. Our {topic.name.toLowerCase()}{" "}
-              services are designed specifically for {location.region} residents who
-              want expert help without the stress or judgment.
+            <p className="text-gray-600 leading-relaxed">
+              {topic.description}. Our {topic.name.toLowerCase()} services are designed
+              specifically for {location.region} residents who want expert help transforming
+              their space into something that actually works for their lifestyle.
             </p>
-
             {location.localFeatures && location.localFeatures.length > 0 && (
-              <>
-                <h3>Serving the {location.name} Community</h3>
-                <p>
-                  Whether you&apos;re near {location.localFeatures.slice(0, 2).join(" or ")},
-                  we understand the unique lifestyle of {location.name} residents.
-                  Our {topic.name.toLowerCase()} solutions are tailored to work with
-                  your home and your life.
-                </p>
-              </>
+              <p className="text-gray-600 leading-relaxed mt-4">
+                Whether you&apos;re near {location.localFeatures.slice(0, 2).join(" or ")},
+                we understand the unique way {location.name} residents live—and we&apos;ll
+                create solutions that fit.
+              </p>
             )}
-
           </div>
 
           {/* Neighborhoods Section - Visual Grid */}
