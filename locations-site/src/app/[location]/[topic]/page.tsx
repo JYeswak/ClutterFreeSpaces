@@ -26,7 +26,9 @@ export async function generateStaticParams() {
   return params;
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { location: locationSlug, topic: topicSlug } = await params;
   const location = getLocation(locationSlug);
   const topic = getTopic(topicSlug);
@@ -36,7 +38,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   const title = `${topic.name} in ${location.name}, ${location.stateAbbr} | Clutter Free Spaces`;
-  const description = `Professional ${topic.name.toLowerCase()} services in ${location.name}, Montana. ${topic.description}. ${topic.priceRange}. Call (406) 285-1525 for a free consultation.`;
+  const phone =
+    location.state === "Texas" ? "(970) 717-0462" : "(406) 285-1525";
+  const description = `Professional ${topic.name.toLowerCase()} services in ${location.name}, ${location.state}. ${topic.description}. ${topic.priceRange}. Call ${phone} for a free consultation.`;
 
   return {
     title,
@@ -58,19 +62,27 @@ export default async function LocationTopicPage({ params }: PageProps) {
     notFound();
   }
 
+  const phone =
+    location.state === "Texas" ? "(970) 717-0462" : "(406) 285-1525";
+  const phoneHref =
+    location.state === "Texas" ? "tel:+19707170462" : "tel:+14062851525";
+
   return (
     <main className="min-h-screen bg-white">
       {/* Header */}
       <header className="bg-emerald-700 text-white py-4">
         <div className="max-w-6xl mx-auto px-4 flex justify-between items-center">
-          <Link href="https://www.clutter-free-spaces.com" className="text-xl font-bold">
+          <Link
+            href="https://www.clutter-free-spaces.com"
+            className="text-xl font-bold"
+          >
             Clutter Free Spaces
           </Link>
           <a
-            href="tel:+14062851525"
+            href={phoneHref}
             className="bg-white text-emerald-700 px-4 py-2 rounded-lg font-semibold hover:bg-emerald-50 transition"
           >
-            (406) 285-1525
+            {phone}
           </a>
         </div>
       </header>
@@ -83,7 +95,8 @@ export default async function LocationTopicPage({ params }: PageProps) {
             {topic.name} in {location.name}, {location.stateAbbr}
           </h1>
           <p className="text-xl text-gray-600 mb-8">
-            Professional {topic.name.toLowerCase()} services for {location.name} residents
+            Professional {topic.name.toLowerCase()} services for {location.name}{" "}
+            residents
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
@@ -93,10 +106,10 @@ export default async function LocationTopicPage({ params }: PageProps) {
               Schedule Free Consultation
             </a>
             <a
-              href="tel:+14062851525"
+              href={phoneHref}
               className="border-2 border-emerald-600 text-emerald-700 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-emerald-50 transition"
             >
-              Call (406) 285-1525
+              Call {phone}
             </a>
           </div>
         </div>
@@ -107,11 +120,15 @@ export default async function LocationTopicPage({ params }: PageProps) {
         <div className="max-w-4xl mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-8 mb-12">
             <div className="bg-gray-50 p-6 rounded-xl">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Service Details</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-4">
+                Service Details
+              </h2>
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Investment:</span>
-                  <span className="font-semibold text-emerald-700">{topic.priceRange}</span>
+                  <span className="font-semibold text-emerald-700">
+                    {topic.priceRange}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Duration:</span>
@@ -119,13 +136,17 @@ export default async function LocationTopicPage({ params }: PageProps) {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Service Area:</span>
-                  <span className="font-semibold">{location.name}, {location.stateAbbr}</span>
+                  <span className="font-semibold">
+                    {location.name}, {location.stateAbbr}
+                  </span>
                 </div>
               </div>
             </div>
 
             <div className="bg-emerald-50 p-6 rounded-xl">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">What&apos;s Included</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-4">
+                What&apos;s Included
+              </h2>
               <ul className="space-y-2">
                 {topic.benefits.map((benefit, idx) => (
                   <li key={idx} className="flex items-start gap-2">
@@ -138,11 +159,14 @@ export default async function LocationTopicPage({ params }: PageProps) {
           </div>
 
           <div className="prose prose-lg max-w-none">
-            <h2>About {topic.name} in {location.name}</h2>
+            <h2>
+              About {topic.name} in {location.name}
+            </h2>
             <p>
-              {topic.description}. As {location.name}&apos;s trusted professional organizer,
-              Clutter Free Spaces brings expert {topic.name.toLowerCase()} solutions tailored
-              to the unique needs of {location.region} residents.
+              {topic.description}. As {location.name}&apos;s trusted
+              professional organizer, Clutter Free Spaces brings expert{" "}
+              {topic.name.toLowerCase()} solutions tailored to the unique needs
+              of {location.region} residents.
             </p>
 
             {location.localFeatures && location.localFeatures.length > 0 && (
@@ -151,8 +175,8 @@ export default async function LocationTopicPage({ params }: PageProps) {
                 <p>
                   We understand the lifestyle of {location.name} residents, from{" "}
                   {location.localFeatures.slice(0, 2).join(" to ")} and beyond.
-                  Our {topic.name.toLowerCase()} solutions are designed to work with your
-                  Montana lifestyle.
+                  Our {topic.name.toLowerCase()} solutions are designed to work
+                  with your {location.region} lifestyle.
                 </p>
               </>
             )}
@@ -178,8 +202,8 @@ export default async function LocationTopicPage({ params }: PageProps) {
             Ready to Transform Your Space?
           </h2>
           <p className="text-xl text-emerald-100 mb-8">
-            Get started with a free consultation. We&apos;ll discuss your goals and
-            create a custom plan for your {location.name} home.
+            Get started with a free consultation. We&apos;ll discuss your goals
+            and create a custom plan for your {location.name} home.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
@@ -202,15 +226,21 @@ export default async function LocationTopicPage({ params }: PageProps) {
       <footer className="bg-gray-900 text-gray-400 py-8">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <p className="mb-2">
-            <a href="tel:+14062851525" className="hover:text-white">
-              (406) 285-1525
+            <a href={phoneHref} className="hover:text-white">
+              {phone}
             </a>
             {" • "}
-            <a href="mailto:contact@clutter-free-spaces.com" className="hover:text-white">
+            <a
+              href="mailto:contact@clutter-free-spaces.com"
+              className="hover:text-white"
+            >
               contact@clutter-free-spaces.com
             </a>
           </p>
-          <p>© 2025 Clutter Free Spaces. Professional Organization Services in Montana.</p>
+          <p>
+            © 2025 Clutter Free Spaces. Professional Organization Services in{" "}
+            {location.region}.
+          </p>
         </div>
       </footer>
     </main>

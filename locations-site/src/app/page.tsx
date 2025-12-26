@@ -4,7 +4,7 @@ import { topics, getTopicsByCategory } from "@/data/topics";
 
 export const metadata = {
   title: "Location Pages | Clutter Free Spaces",
-  description: "Professional home organization services across Montana",
+  description: "Professional home organization services across Montana and North Texas",
 };
 
 export default function Home() {
@@ -70,7 +70,7 @@ export default function Home() {
               topics.slice(0, 4).map((topic) => (
                 <Link
                   key={`${location.slug}-${topic.slug}`}
-                  href={`/${location.slug}/${topic.slug}`}
+                  href={`/locations/${location.slug}/${topic.slug}`}
                   className="block p-4 bg-gray-50 rounded-lg hover:bg-emerald-50 transition"
                 >
                   <span className="text-2xl">{topic.icon}</span>
