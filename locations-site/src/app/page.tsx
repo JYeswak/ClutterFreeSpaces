@@ -71,7 +71,7 @@ export default function Home() {
                 <Link
                   key={`${location.slug}-${topic.slug}`}
                   href={`/locations/${location.slug}/${topic.slug}`}
-                  className="block p-4 bg-gray-50 rounded-lg hover:bg-emerald-50 transition"
+                  className="block p-4 bg-gray-50 rounded-lg hover:bg-teal-50 transition"
                 >
                   <span className="text-2xl">{topic.icon}</span>
                   <p className="font-medium text-gray-900 mt-2">
@@ -88,7 +88,7 @@ export default function Home() {
         <div className="mt-8 text-center">
           <a
             href="https://www.clutter-free-spaces.com"
-            className="text-emerald-600 hover:text-emerald-700 font-medium"
+            className="text-teal-600 hover:text-teal-700 font-medium"
           >
             ← Back to Main Site
           </a>
