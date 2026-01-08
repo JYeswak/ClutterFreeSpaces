@@ -96,7 +96,7 @@ export default function Home() {
                 {montanaLocations.map((location) => (
                   <Link
                     key={location.slug}
-                    href={`/locations/${location.slug}/garage-organization`}
+                    href={`/locations/${location.slug}`}
                     className="inline-flex items-center gap-1.5 px-4 py-2 bg-white border border-rose-200 rounded-full text-gray-700 text-sm font-medium hover:border-rose-400 hover:bg-rose-50 hover:text-rose-600 transition"
                   >
                     <svg
@@ -130,7 +130,7 @@ export default function Home() {
                 {texasLocations.map((location) => (
                   <Link
                     key={location.slug}
-                    href={`/locations/${location.slug}/garage-organization`}
+                    href={`/locations/${location.slug}`}
                     className="inline-flex items-center gap-1.5 px-4 py-2 bg-white border border-rose-200 rounded-full text-gray-700 text-sm font-medium hover:border-rose-400 hover:bg-rose-50 hover:text-rose-600 transition"
                   >
                     <svg
