@@ -65,25 +65,25 @@ export default async function LocationTopicPage({ params }: PageProps) {
 
   return (
     <main className="min-h-screen bg-white">
-      {/* Header - Clean white with teal accents */}
+      {/* Header - Clean white with rose accents */}
       <header className="bg-white border-b border-gray-100 py-4 sticky top-0 z-50 backdrop-blur-sm bg-white/95">
         <div className="max-w-6xl mx-auto px-4 flex justify-between items-center">
           <Link
             href="https://www.clutter-free-spaces.com"
-            className="text-xl font-bold text-gray-900 hover:text-teal-600 transition"
+            className="text-xl font-bold text-gray-900 hover:text-rose-600 transition"
           >
             Clutter Free Spaces
           </Link>
           <div className="flex items-center gap-4">
             <a
               href={phoneHref}
-              className="hidden sm:block text-gray-600 hover:text-teal-600 transition"
+              className="hidden sm:block text-gray-600 hover:text-rose-600 transition"
             >
               {phone}
             </a>
             <a
               href="https://calendly.com/chanelnbasolo/30min"
-              className="bg-teal-500 text-white px-5 py-2 rounded-full font-medium hover:bg-teal-600 transition"
+              className="bg-rose-500 text-white px-5 py-2 rounded-full font-medium hover:bg-rose-600 transition"
             >
               Book Free Consultation
             </a>
@@ -106,13 +106,13 @@ export default async function LocationTopicPage({ params }: PageProps) {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="https://calendly.com/chanelnbasolo/30min"
-              className="bg-teal-500 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-teal-600 transition shadow-lg shadow-teal-500/25"
+              className="bg-rose-500 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-rose-600 transition shadow-lg shadow-rose-500/25"
             >
               Schedule Free Consultation
             </a>
             <a
               href={phoneHref}
-              className="border-2 border-gray-200 text-gray-700 px-8 py-4 rounded-full font-semibold text-lg hover:border-teal-500 hover:text-teal-600 transition"
+              className="border-2 border-gray-200 text-gray-700 px-8 py-4 rounded-full font-semibold text-lg hover:border-rose-500 hover:text-rose-600 transition"
             >
               Call {phone}
             </a>
@@ -151,7 +151,7 @@ export default async function LocationTopicPage({ params }: PageProps) {
               <div className="space-y-4">
                 <div className="flex justify-between items-center pb-3 border-b border-gray-100">
                   <span className="text-gray-600">Investment</span>
-                  <span className="font-semibold text-teal-600">
+                  <span className="font-semibold text-rose-600">
                     {topic.priceRange}
                   </span>
                 </div>
@@ -168,14 +168,14 @@ export default async function LocationTopicPage({ params }: PageProps) {
               </div>
             </div>
 
-            <div className="bg-teal-50 p-8 rounded-3xl">
+            <div className="bg-rose-50 p-8 rounded-3xl">
               <h2 className="text-xl font-bold text-gray-900 mb-6">
                 What&apos;s Included
               </h2>
               <ul className="space-y-3">
                 {topic.benefits.map((benefit, idx) => (
                   <li key={idx} className="flex items-start gap-3">
-                    <span className="text-teal-500 mt-0.5 text-lg">✓</span>
+                    <span className="text-rose-500 mt-0.5 text-lg">✓</span>
                     <span className="text-gray-700">{benefit}</span>
                   </li>
                 ))}
@@ -186,8 +186,8 @@ export default async function LocationTopicPage({ params }: PageProps) {
           {/* Why Choose Us - Visual Grid */}
           <div className="grid md:grid-cols-3 gap-6 mb-16">
             <div className="text-center p-6">
-              <div className="w-12 h-12 bg-teal-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 bg-rose-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <svg className="w-6 h-6 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
               </div>
@@ -197,8 +197,8 @@ export default async function LocationTopicPage({ params }: PageProps) {
               </p>
             </div>
             <div className="text-center p-6">
-              <div className="w-12 h-12 bg-teal-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 bg-rose-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <svg className="w-6 h-6 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
@@ -208,8 +208,8 @@ export default async function LocationTopicPage({ params }: PageProps) {
               </p>
             </div>
             <div className="text-center p-6">
-              <div className="w-12 h-12 bg-teal-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 bg-rose-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <svg className="w-6 h-6 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                 </svg>
               </div>
@@ -292,7 +292,7 @@ export default async function LocationTopicPage({ params }: PageProps) {
                 href="https://www.google.com/maps/place/Clutter+Free+Spaces"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium"
+                className="inline-flex items-center gap-2 text-rose-600 hover:text-rose-700 font-medium"
               >
                 <span>See all reviews on Google</span>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -325,7 +325,7 @@ export default async function LocationTopicPage({ params }: PageProps) {
           {location.neighborhoods && location.neighborhoods.length > 0 && (
             <div className="mt-12 p-8 bg-gray-50 rounded-3xl">
               <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                <svg className="w-5 h-5 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
@@ -335,9 +335,9 @@ export default async function LocationTopicPage({ params }: PageProps) {
                 {location.neighborhoods.map((neighborhood, idx) => (
                   <span
                     key={idx}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-white border border-gray-200 rounded-full text-gray-700 text-sm font-medium hover:border-teal-300 hover:bg-teal-50 transition"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-white border border-gray-200 rounded-full text-gray-700 text-sm font-medium hover:border-rose-300 hover:bg-rose-50 transition"
                   >
-                    <svg className="w-3.5 h-3.5 text-teal-500" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-3.5 h-3.5 text-rose-500" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
                     </svg>
                     {neighborhood}
@@ -350,19 +350,19 @@ export default async function LocationTopicPage({ params }: PageProps) {
       </section>
 
       {/* CTA Section - Teal gradient */}
-      <section className="bg-gradient-to-br from-teal-500 to-teal-600 text-white py-16">
+      <section className="bg-gradient-to-br from-rose-500 to-rose-600 text-white py-16">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Ready to Love Your Space Again?
           </h2>
-          <p className="text-xl text-teal-100 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-rose-100 mb-8 max-w-2xl mx-auto">
             Start with a free, no-pressure consultation. We&apos;ll listen to your
             goals and create a custom plan for your {location.name} home.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="https://calendly.com/chanelnbasolo/30min"
-              className="bg-white text-teal-600 px-8 py-4 rounded-full font-semibold text-lg hover:bg-teal-50 transition shadow-lg"
+              className="bg-white text-rose-600 px-8 py-4 rounded-full font-semibold text-lg hover:bg-rose-50 transition shadow-lg"
             >
               Book Your Free Consultation
             </a>
@@ -381,13 +381,13 @@ export default async function LocationTopicPage({ params }: PageProps) {
         <div className="max-w-4xl mx-auto px-4 text-center">
           <p className="text-white font-medium mb-4">Clutter Free Spaces</p>
           <p className="mb-4">
-            <a href={phoneHref} className="hover:text-teal-400 transition">
+            <a href={phoneHref} className="hover:text-rose-400 transition">
               {phone}
             </a>
             {" • "}
             <a
               href="mailto:contact@clutter-free-spaces.com"
-              className="hover:text-teal-400 transition"
+              className="hover:text-rose-400 transition"
             >
               contact@clutter-free-spaces.com
             </a>

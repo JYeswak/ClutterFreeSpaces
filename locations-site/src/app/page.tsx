@@ -25,20 +25,20 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-4 flex justify-between items-center">
           <Link
             href="https://www.clutter-free-spaces.com"
-            className="text-xl font-bold text-gray-900 hover:text-teal-600 transition"
+            className="text-xl font-bold text-gray-900 hover:text-rose-400 transition"
           >
             Clutter Free Spaces
           </Link>
           <div className="flex items-center gap-4">
             <a
               href={phoneHref}
-              className="hidden sm:block text-gray-600 hover:text-teal-600 transition"
+              className="hidden sm:block text-gray-600 hover:text-rose-400 transition"
             >
               {phone}
             </a>
             <a
               href="https://calendly.com/chanelnbasolo/30min"
-              className="bg-teal-500 text-white px-5 py-2 rounded-full font-medium hover:bg-teal-600 transition"
+              className="bg-rose-400 text-white px-5 py-2 rounded-full font-medium hover:bg-rose-500 transition"
             >
               Book Free Consultation
             </a>
@@ -47,7 +47,7 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-gray-50 to-white">
+      <section className="py-16 md:py-24" style={{ background: 'linear-gradient(to bottom right, #FDE8E8, white)' }}>
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
             Professional Organizing Near You
@@ -59,13 +59,14 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="https://calendly.com/chanelnbasolo/30min"
-              className="bg-teal-500 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-teal-600 transition shadow-lg shadow-teal-500/25"
+              className="bg-rose-400 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-rose-500 transition shadow-lg"
+              style={{ boxShadow: '0 10px 25px -5px rgba(244, 114, 182, 0.3)' }}
             >
               Schedule Free Consultation
             </a>
             <a
               href={phoneHref}
-              className="border-2 border-gray-200 text-gray-700 px-8 py-4 rounded-full font-semibold text-lg hover:border-teal-500 hover:text-teal-600 transition"
+              className="border-2 border-gray-200 text-gray-700 px-8 py-4 rounded-full font-semibold text-lg hover:border-rose-300 hover:text-rose-500 transition"
             >
               Call {phone}
             </a>
@@ -82,7 +83,7 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 gap-8">
             {/* Montana */}
-            <div className="bg-gray-50 rounded-3xl p-8">
+            <div className="rounded-3xl p-8" style={{ backgroundColor: '#FDE8E8' }}>
               <div className="flex items-center gap-3 mb-6">
                 <span className="text-3xl">🏔️</span>
                 <h3 className="text-2xl font-bold text-gray-900">Montana</h3>
@@ -96,10 +97,10 @@ export default function Home() {
                   <Link
                     key={location.slug}
                     href={`/locations/${location.slug}/garage-organization`}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-white border border-gray-200 rounded-full text-gray-700 text-sm font-medium hover:border-teal-400 hover:bg-teal-50 hover:text-teal-700 transition"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-white border border-rose-200 rounded-full text-gray-700 text-sm font-medium hover:border-rose-400 hover:bg-rose-50 hover:text-rose-600 transition"
                   >
                     <svg
-                      className="w-3.5 h-3.5 text-teal-500"
+                      className="w-3.5 h-3.5 text-rose-400"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -116,7 +117,7 @@ export default function Home() {
             </div>
 
             {/* Texas */}
-            <div className="bg-gray-50 rounded-3xl p-8">
+            <div className="rounded-3xl p-8" style={{ backgroundColor: '#FDE8E8' }}>
               <div className="flex items-center gap-3 mb-6">
                 <span className="text-3xl">⛪</span>
                 <h3 className="text-2xl font-bold text-gray-900">North Texas</h3>
@@ -130,10 +131,10 @@ export default function Home() {
                   <Link
                     key={location.slug}
                     href={`/locations/${location.slug}/garage-organization`}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-white border border-gray-200 rounded-full text-gray-700 text-sm font-medium hover:border-teal-400 hover:bg-teal-50 hover:text-teal-700 transition"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-white border border-rose-200 rounded-full text-gray-700 text-sm font-medium hover:border-rose-400 hover:bg-rose-50 hover:text-rose-600 transition"
                   >
                     <svg
-                      className="w-3.5 h-3.5 text-teal-500"
+                      className="w-3.5 h-3.5 text-rose-400"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -174,7 +175,7 @@ export default function Home() {
                     <li key={topic.slug}>
                       <Link
                         href={`/locations/missoula/${topic.slug}`}
-                        className="flex items-center gap-2 text-gray-600 hover:text-teal-600 transition text-sm"
+                        className="flex items-center gap-2 text-gray-600 hover:text-rose-500 transition text-sm"
                       >
                         <span>{topic.icon}</span>
                         <span>{topic.name}</span>
@@ -200,13 +201,13 @@ export default function Home() {
               <Link
                 key={topic.slug}
                 href={`/locations/missoula/${topic.slug}`}
-                className="group block p-6 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md hover:border-teal-200 transition"
+                className="group block p-6 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md hover:border-rose-200 transition"
               >
                 <span className="text-4xl block mb-4">{topic.icon}</span>
-                <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-teal-600 transition">
+                <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-rose-500 transition">
                   {topic.name}
                 </h3>
-                <p className="text-sm text-teal-600 font-medium">
+                <p className="text-sm text-rose-400 font-medium">
                   {topic.priceRange}
                 </p>
               </Link>
@@ -216,19 +217,19 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-gradient-to-br from-teal-500 to-teal-600 text-white py-16">
+      <section className="text-white py-16" style={{ background: 'linear-gradient(to bottom right, #E8B4B8, #D4A5A5)' }}>
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Ready to Love Your Space Again?
           </h2>
-          <p className="text-xl text-teal-100 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-rose-100 mb-8 max-w-2xl mx-auto">
             Start with a free, no-pressure consultation. We&apos;ll listen to
             your goals and create a custom plan for your home.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="https://calendly.com/chanelnbasolo/30min"
-              className="bg-white text-teal-600 px-8 py-4 rounded-full font-semibold text-lg hover:bg-teal-50 transition shadow-lg"
+              className="bg-white text-rose-500 px-8 py-4 rounded-full font-semibold text-lg hover:bg-rose-50 transition shadow-lg"
             >
               Book Your Free Consultation
             </a>
@@ -247,13 +248,13 @@ export default function Home() {
         <div className="max-w-4xl mx-auto px-4 text-center">
           <p className="text-white font-medium mb-4">Clutter Free Spaces</p>
           <p className="mb-4">
-            <a href={phoneHref} className="hover:text-teal-400 transition">
+            <a href={phoneHref} className="hover:text-rose-300 transition">
               {phone}
             </a>
             {" • "}
             <a
               href="mailto:contact@clutter-free-spaces.com"
-              className="hover:text-teal-400 transition"
+              className="hover:text-rose-300 transition"
             >
               contact@clutter-free-spaces.com
             </a>

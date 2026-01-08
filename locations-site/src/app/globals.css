@@ -1,8 +1,17 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Fahkwang:wght@400;500;600;700&display=swap');
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* CFS Brand Colors */
+  --cfs-pink: #FDE8E8;
+  --cfs-pink-dark: #E8B4B8;
+  --cfs-rose: #D4A5A5;
+  --cfs-rose-dark: #8B5A5A;
+  --cfs-text: #1F2937;
+  --cfs-text-light: #6B7280;
 }
 
 @theme inline {
@@ -12,15 +21,12 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Fahkwang', Arial, sans-serif;
 }
