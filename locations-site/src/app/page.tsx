@@ -32,7 +32,7 @@ export default function Home() {
               {locations.map((location) => (
                 <li key={location.slug}>
                   <Link
-                    href={`/${location.slug}/garage-organization`}
+                    href={`/locations/${location.slug}/garage-organization`}
                     className="font-medium text-teal-600 hover:text-teal-800 hover:underline"
                   >
                     {location.name}
@@ -57,7 +57,7 @@ export default function Home() {
                   {categoryTopics.map((topic) => (
                     <li key={topic.slug}>
                       <Link
-                        href={`/missoula/${topic.slug}`}
+                        href={`/locations/missoula/${topic.slug}`}
                         className="text-teal-600 hover:text-teal-800 hover:underline"
                       >
                         {topic.icon} {topic.name}
