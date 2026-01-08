@@ -803,7 +803,7 @@ Ready for your transformation? Let's create systems that actually work for YOUR 
 
 ${problemPost.cta}
 
-DM us or call (406) 551-3364 for your free consultation! 
+DM us or call (406) 285-1525 for your free consultation! 
 
 #ProblemSolved #OrganizingTips #MontanaHomes #ClutterFreeSpaces #OrganizedLiving`;
 
@@ -1303,7 +1303,7 @@ Ready for your transformation? Let's create systems that actually work for YOUR 
 
 ${problemPost.cta}
 
-DM us or call (406) 551-3364 for your free consultation! 
+DM us or call (406) 285-1525 for your free consultation! 
 
 #ProblemSolved #OrganizingTips #MontanaHomes #ClutterFreeSpaces #OrganizedLiving`;
 

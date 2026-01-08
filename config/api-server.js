@@ -2055,7 +2055,7 @@ Best regards,
 Chanel Basolo
 Professional Organizer
 Clutter Free Spaces
-(406) 551-3364
+(406) 285-1525
 contact@clutter-free-spaces.com`,
 
       html: `
@@ -2147,7 +2147,7 @@ contact@clutter-free-spaces.com`,
     <strong>Chanel Basolo</strong><br>
     Professional Organizer<br>
     Clutter Free Spaces<br>
-    (406) 551-3364<br>
+    (406) 285-1525<br>
     contact@clutter-free-spaces.com</p>
   </div>
   

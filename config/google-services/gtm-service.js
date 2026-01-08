@@ -57,7 +57,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         event: "contact_click",
         contact_method: type, // 'phone' or 'email'
         element_text:
-          type === "phone" ? "(406) 551-3364" : "info@clutterfreespaces.com",
+          type === "phone" ? "(406) 285-1525" : "info@clutterfreespaces.com",
       }),
 
       // Calendly booking

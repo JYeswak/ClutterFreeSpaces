@@ -6,7 +6,7 @@ const gmbEnhancementService = require("./gmb-enhancement");
 class ReviewAutomationService {
   constructor() {
     sgMail.setApiKey(process.env.SendGrid_API_Key);
-    this.fromEmail = "info@clutterfreespaces.com";
+    this.fromEmail = "contact@clutter-free-spaces.com";
     this.fromName = "ClutterFree Spaces";
 
     // Fall 2025 specific messaging
@@ -88,7 +88,7 @@ class ReviewAutomationService {
           
           <p style="color: #555; line-height: 1.6;">
             <strong>Questions or need a quick touch-up?</strong> Just reply to this email or call us at 
-            <a href="tel:4065513364" style="color: #8B4F93;">(406) 551-3364</a>. 
+            <a href="tel:4062851525" style="color: #8B4F93;">(406) 285-1525</a>. 
             We offer 30-day maintenance support!
           </p>
           
@@ -114,8 +114,8 @@ class ReviewAutomationService {
           <div style="border-top: 1px solid #eee; padding-top: 20px; margin-top: 30px; text-align: center;">
             <p style="color: #999; font-size: 12px;">
               ClutterFree Spaces | Missoula, Montana<br>
-              📧 info@clutterfreespaces.com | 📱 (406) 551-3364<br>
-              🌐 <a href="https://www.clutterfreespaces.com" style="color: #8B4F93;">www.clutterfreespaces.com</a>
+              📧 contact@clutter-free-spaces.com | 📱 (406) 285-1525<br>
+              🌐 <a href="https://www.clutter-free-spaces.com" style="color: #8B4F93;">www.clutter-free-spaces.com</a>
             </p>
             <p style="color: #ccc; font-size: 10px; margin-top: 15px;">
               You're receiving this because you recently used our services. 
@@ -134,7 +134,7 @@ Would you mind sharing your experience? Your review helps other Montana families
 
 Leave a Google Review: ${clientData.reviewLink || "https://g.page/r/CQqLHNF9HjM_EAE/review"}
 
-Questions or need a quick touch-up? Just reply to this email or call us at (406) 551-3364. We offer 30-day maintenance support!
+Questions or need a quick touch-up? Just reply to this email or call us at (406) 285-1525. We offer 30-day maintenance support!
 
 Thank you for choosing ClutterFree Spaces for your ${serviceName}. It was such a pleasure working with you!
 
@@ -142,8 +142,8 @@ Warmly,
 Chanel & The ClutterFree Spaces Team
 
 ClutterFree Spaces | Missoula, Montana
-info@clutterfreespaces.com | (406) 551-3364
-www.clutterfreespaces.com`,
+contact@clutter-free-spaces.com | (406) 285-1525
+www.clutter-free-spaces.com`,
     };
 
     return emailTemplate;
@@ -250,7 +250,7 @@ www.clutterfreespaces.com`,
             
             <p style="color: #555; line-height: 1.6;">
               <strong>Any questions or concerns?</strong> We're here for you! Reply to this email or 
-              call <a href="tel:4065513364" style="color: #8B4F93;">(406) 551-3364</a>.
+              call <a href="tel:4062851525" style="color: #8B4F93;">(406) 285-1525</a>.
             </p>
             
             <p style="color: #8B4F93; font-weight: bold;">
@@ -261,7 +261,7 @@ www.clutterfreespaces.com`,
             <div style="border-top: 1px solid #eee; padding-top: 20px; margin-top: 30px; text-align: center;">
               <p style="color: #999; font-size: 12px;">
                 ClutterFree Spaces | Missoula, Montana<br>
-                📧 info@clutterfreespaces.com | 📱 (406) 551-3364
+                📧 contact@clutter-free-spaces.com | 📱 (406) 285-1525
               </p>
               <p style="color: #ccc; font-size: 10px; margin-top: 15px;">
                 <a href="#" style="color: #ccc;">No more review reminders</a>

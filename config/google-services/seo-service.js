@@ -4,7 +4,7 @@ class SEOService {
     this.businessDescription =
       "Professional home organization services transforming Montana homes into organized, functional spaces";
     this.serviceArea = "Missoula, Montana and surrounding areas";
-    this.phone = "(406) 551-3364";
+    this.phone = "(406) 285-1525";
     this.email = "contact@clutter-free-spaces.com";
     this.website = "https://www.clutter-free-spaces.com";
     this.address = {
@@ -323,17 +323,17 @@ class SEOService {
       success: true,
       descriptions: {
         homepage:
-          "ClutterFree Spaces transforms Montana homes with professional organization services. Serving Missoula & Western Montana. Call (406) 551-3364 for your free consultation today!",
+          "ClutterFree Spaces transforms Montana homes with professional organization services. Serving Missoula & Western Montana. Call (406) 285-1525 for your free consultation today!",
         about:
           "Meet Chanel, professional organizer and founder of ClutterFree Spaces in Missoula, Montana. Transforming homes with sustainable organization systems since 2023.",
         services:
           "Professional home organization services in Missoula: whole house, RV, garage, and room organization. Montana's trusted organizing experts. Free consultations available.",
         contact:
-          "Ready to transform your space? Contact ClutterFree Spaces in Missoula, Montana. Call (406) 551-3364 or email for your free organizing consultation.",
+          "Ready to transform your space? Contact ClutterFree Spaces in Missoula, Montana. Call (406) 285-1525 or email for your free organizing consultation.",
         servicePages: Object.entries(this.services).reduce(
           (acc, [key, service]) => {
             acc[key] =
-              `${service.description} Professional ${service.name.toLowerCase()} in Missoula, Montana. Call (406) 551-3364 for your free consultation.`;
+              `${service.description} Professional ${service.name.toLowerCase()} in Missoula, Montana. Call (406) 285-1525 for your free consultation.`;
             return acc;
           },
           {},
@@ -409,7 +409,7 @@ class SEOService {
       cta: `
         <h2>Ready to Transform Your Space?</h2>
         <p>Don't let clutter control your life any longer. Contact ClutterFree Spaces today for your free ${service.name.toLowerCase()} consultation in Missoula, Montana.</p>
-        <p><strong>Call:</strong> <a href="tel:+14065513364">(406) 551-3364</a><br>
+        <p><strong>Call:</strong> <a href="tel:+14062851525">(406) 285-1525</a><br>
         <strong>Email:</strong> <a href="mailto:contact@clutter-free-spaces.com">contact@clutter-free-spaces.com</a></p>
       `,
     };

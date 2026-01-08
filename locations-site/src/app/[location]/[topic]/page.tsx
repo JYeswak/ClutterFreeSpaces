@@ -220,6 +220,88 @@ export default async function LocationTopicPage({ params }: PageProps) {
             </div>
           </div>
 
+          {/* Testimonials Section */}
+          <div className="mb-16">
+            <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">
+              What Our Clients Say
+            </h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-white border border-gray-100 p-6 rounded-2xl shadow-sm">
+                <div className="flex gap-1 mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+                <p className="text-gray-600 mb-4 italic">
+                  &quot;Chanel and Clutter Free Space transformed my space! From the initial consult, to the efficient organizing of my space... I am blown away by the transformation.&quot;
+                </p>
+                <p className="font-semibold text-gray-900">— Mandy S.</p>
+                <p className="text-sm text-gray-500">Google Review</p>
+              </div>
+
+              <div className="bg-white border border-gray-100 p-6 rounded-2xl shadow-sm">
+                <div className="flex gap-1 mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+                <p className="text-gray-600 mb-4 italic">
+                  &quot;I cannot recommend Chanel enough! She came to organize my closet, and I am blown away by the transformation.&quot;
+                </p>
+                <p className="font-semibold text-gray-900">— Madison S.</p>
+                <p className="text-sm text-gray-500">Google Review</p>
+              </div>
+
+              <div className="bg-white border border-gray-100 p-6 rounded-2xl shadow-sm">
+                <div className="flex gap-1 mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+                <p className="text-gray-600 mb-4 italic">
+                  &quot;Professional, organized, helpful and kind! Working with Clutter Free Spaces helped me immensely while unpacking into a new home after a major move!&quot;
+                </p>
+                <p className="font-semibold text-gray-900">— Ashley V.</p>
+                <p className="text-sm text-gray-500">Google Review</p>
+              </div>
+
+              <div className="bg-white border border-gray-100 p-6 rounded-2xl shadow-sm">
+                <div className="flex gap-1 mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+                <p className="text-gray-600 mb-4 italic">
+                  &quot;I worked with Chanel to get my 5th Wheel ready for full-time living. She provided a full RV Organization... We&apos;re so happy with the end result!&quot;
+                </p>
+                <p className="font-semibold text-gray-900">— Joshua N.</p>
+                <p className="text-sm text-gray-500">Google Review</p>
+              </div>
+            </div>
+
+            <div className="text-center mt-8">
+              <a
+                href="https://www.google.com/maps/place/Clutter+Free+Spaces"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium"
+              >
+                <span>See all reviews on Google</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
+            </div>
+          </div>
+
           {/* About Section - Cleaner */}
           <div className="bg-white border border-gray-100 rounded-3xl p-8 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
