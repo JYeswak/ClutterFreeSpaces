@@ -31,7 +31,12 @@ export default function Home() {
             <ul className="space-y-2">
               {locations.map((location) => (
                 <li key={location.slug}>
-                  <span className="font-medium">{location.name}</span>
+                  <Link
+                    href={`/${location.slug}/garage-organization`}
+                    className="font-medium text-teal-600 hover:text-teal-800 hover:underline"
+                  >
+                    {location.name}
+                  </Link>
                   <span className="text-gray-500 ml-2">
                     ({location.region})
                   </span>
@@ -50,8 +55,13 @@ export default function Home() {
                 <h3 className="font-semibold text-gray-700 mb-2">{category}</h3>
                 <ul className="space-y-1 pl-4">
                   {categoryTopics.map((topic) => (
-                    <li key={topic.slug} className="text-gray-600">
-                      {topic.icon} {topic.name}
+                    <li key={topic.slug}>
+                      <Link
+                        href={`/missoula/${topic.slug}`}
+                        className="text-teal-600 hover:text-teal-800 hover:underline"
+                      >
+                        {topic.icon} {topic.name}
+                      </Link>
                     </li>
                   ))}
                 </ul>
